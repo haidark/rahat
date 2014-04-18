@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-import socket, sys
+import socket
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-HOST = sys.argv.pop() if len(sys.argv) == 2 else '127.0.0.1'
+HOST = '192.168.1.122'
 PORT = 1060
 
 def recv_all(sock, length):
