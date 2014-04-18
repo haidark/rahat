@@ -15,7 +15,7 @@ def recv_all(sock, length):
 	
 #start server code	
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-HOST = '192.168.1.122'
+HOST = '192.168.1.222'
 PORT = 1060
 
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
