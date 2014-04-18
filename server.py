@@ -35,7 +35,7 @@ def insertNode(cur, SID, info):
 		NID = -1
 	return NID
 	
-def insertLocation(cur, NID, time lat, lon):
+def insertLocation(cur, NID, time, lat, lon):
 	query = "INSERT INTO locations VALUES (NULL, %d, %s, %s, %s)"
 	cur.execute(query, (NID, time, lat, lon))
 	#just in case
