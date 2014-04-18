@@ -30,7 +30,7 @@ def insertNode(cur, SID, info):
 	return NID
 	
 def insertLocation(cur, NID, time, lat, lon):
-	query = "INSERT INTO locations VALUES (NULL, %d, %s, %s, %s)"
+	query = "INSERT INTO locations VALUES (NULL, %s, %s, %s, %s)"
 	cur.execute(query, (NID, time, lat, lon))
 	#just in case
 	cur.connection.commit()
