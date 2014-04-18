@@ -74,7 +74,7 @@ while True:
 	print 'We have accepted a connection from', sockname
 	print 'Socket connects', sc.getsockname(), 'and', sc.getpeername()
 	# get passphrase from client
-	message = recv_all(sc, 6)
+	message = recv_all(sc, 8)
 	print 'The passphrase is', repr(message)
 	#search database for phrase
 	SID = findSIDbyPhrase(cur, message)
