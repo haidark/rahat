@@ -3,7 +3,7 @@
 import socket
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-HOST = '192.168.1.122'
+HOST = '192.168.1.222'
 PORT = 1060
 
 def recv_all(sock, length):
