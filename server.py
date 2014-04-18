@@ -25,7 +25,7 @@ def findNIDbyInfo(cur, info):
 	return NID
 
 def insertNode(cur, SID, info):
-	query = "INSERT INTO nodes VALUES (NULL, %d, %s)"
+	query = "INSERT INTO nodes VALUES (NULL, %s, %s)"
 	cur.execute(query, (SID, info))
 	#just in case
 	cur.connection.commit()
