@@ -34,23 +34,23 @@ while True:
 	message = recv_all(sc, 8)
 	print 'The passphrase is', repr(message)
 	#search database for phrase
-	SID = findSIDbyPhrase(cur, message)
+	SID = DBhelper.findSIDbyPhrase(cur, message)
 	#if SID exists	
 	if  SID != -1:
 		#check if node has been seen before
 		info = str(sc.getpeername()[0])
-		NID = findNIDbyInfo(cur, info)
+		NID = DBhelper.findNIDbyInfo(cur, info)
 		#if node has not been seen before
 		if NID == -1:
 			#create a new node
-			NID = insertNode(cur, SID, info)
+			NID = DBhelper.insertNode(cur, SID, info)
 		
 		#get location info
 		lat = recv_all(sc, 4)
 		lon = recv_all(sc, 4)
 		time = recv_all(sc, 10)		
 		#write the location data to DB
-		LID = insertLocation(cur, NID, time, lat, lon)
+		LID = DBhelper.insertLocation(cur, NID, time, lat, lon)
 	#if not found, raise an error
 	else:
 		print "Session not found!!!!\n closing connection..."
