@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import socket
+import socket, sys
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 HOST = '192.168.1.222'
