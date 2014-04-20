@@ -6,15 +6,6 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 HOST = '192.168.1.222'
 PORT = 1060
 
-def recv_all(sock, length):
-	data = ''
-	while len(data) < length:
-		more = sock.recv(length - len(data))
-		if not more:
-			raise EOFError('socket closed %d bytes into a %d-byte message'
-			% (len(data), length))
-		data += more
-	return data
 
 s.connect((HOST, PORT))
 print 'Client has been assigned socket name', s.getsockname()
