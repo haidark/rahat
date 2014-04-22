@@ -77,8 +77,7 @@ def insertNodeInSession(cur, devID, session):
 	
 def insertLocationInSession(cur, session, nID, time, lat, lon):
 	query = "INSERT INTO {0} VALUES (NULL, %s, %s, %s, %s)".format(session)
-	print query % (session, nID, time, lat, lon)
-	cur.execute(query, (session, nID, time, lat, lon))
+	cur.execute(query, (nID, time, lat, lon))
 	#just in case
 	cur.connection.commit()
 	lID = cur.lastrowid
