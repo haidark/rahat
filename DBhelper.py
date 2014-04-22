@@ -55,8 +55,8 @@ def findNID_SessionbyDevID(cur, devID):
 	query = "SELECT nID, session FROM nodes WHERE devID=%s"
 	count = cur.execute(query, devID)
 	if count == 1:
-		nID = cur.fetchall()[0]
-		session = cur.fetchall()[1]
+		nID = cur.fetchall()[0][0]
+		session = cur.fetchall()[0][1]
 	else:
 		print "Unique node not found for this device ID!!!!!"
 		nID = -1
