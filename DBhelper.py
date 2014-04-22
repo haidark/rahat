@@ -7,7 +7,7 @@ def findSIDbyPhrase(cur, phrase):
 	query = "SELECT SID FROM sessions WHERE phrase=%s"
 	count = cur.execute(query, phrase)
 	if count == 1:
-		SID = cur.fetchall()[0]
+		SID = cur.fetchone()[0]
 	else:
 		print "Unique session not found for this phrase!!!!!"
 		SID = -1	
@@ -17,7 +17,7 @@ def findNIDbyInfo(cur, info):
 	query = "SELECT NID FROM nodes WHERE info=%s"
 	count = cur.execute(query, info)
 	if count == 1:
-		NID = cur.fetchall()[0]
+		NID = cur.fetchone()[0]
 	else:
 		print "Unique node not found for this info!!!!!"
 		NID = -1
@@ -55,9 +55,9 @@ def findNID_SessionbyDevID(cur, devID):
 	query = "SELECT nID, session FROM nodes WHERE devID=%s"
 	count = cur.execute(query, devID)
 	if count == 1:
-		first = cur.fetchall()[0]
-		nID = first[0]
-		session = first[1]
+		row = cur.fetchone()
+		nID = row[0]
+		session = row[1]
 	else:
 		print "Unique node not found for this device ID!!!!!"
 		nID = -1
