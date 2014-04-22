@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 ##########################################################################
-# Server Script for haramain database (layout 1)
+# Server Script for haramain2 database (layout 2)
 ##########################################################################
 import socket
 import pymysql, DBhelper
@@ -35,38 +35,35 @@ while True:
 	print 'Listening at', s.getsockname()
 	sc, sockname = s.accept()
 	
-	# get passphrase from client
+	# get passphrase and devID from client
 	phrase = getChunk(sc)
 	print 'Passphrase: ', phrase
+	devID = getChunk(sc)
+	print 'Device ID: ', devID
 	
 	#connect to the DB
-	conn = pymysql.connect(host='127.0.0.1', user='haidar', passwd='pin101', db='haramain')
+	conn = pymysql.connect(host='127.0.0.1', user='haidar', passwd='pin101', db='haramain2')
 	cur = conn.cursor()
-	#search database for phrase
-	SID = DBhelper.findSIDbyPhrase(cur, phrase)
-	#if SID exists	
-	if  SID != -1:
-		#check if node has been seen before
-		devID = getChunk(sc)
-		print 'Device ID: ', devID
-		NID = DBhelper.findNIDbyInfo(cur, devID)
-		#if node has not been seen before
-		if NID == -1:
-			#create a new node
-			NID = DBhelper.insertNode(cur, SID, devID)
-		
-		#get location info
-		time = getChunk(sc)
-		print 'Time: ', time
-		lat = getChunk(sc)
-		print 'Lattitude: ', lat
-		lon = getChunk(sc)
-		print 'Longitude: ', lon
-		#write the location data to DB
-		LID = DBhelper.insertLocation(cur, NID, time, lat, lon)
-	#if not found, raise an error
-	else:
-		print "Session not found!!!!\n closing connection..."
+	
+	#check if node has been seen before	
+	(nID, session) = DBhelper.findNID_SessionbyDevID(cur, devID)
+	
+	#if node has not been seen before
+	if nID == -1:
+		#create a new node keyed by client's passphrase (later; for now, use session1)
+		session = 'session1'
+		nID = DBhelper.insertNodeInSession(cur, devID, session)
+	
+	#get location info
+	time = getChunk(sc)
+	print 'Time: ', time
+	lat = getChunk(sc)
+	print 'Lattitude: ', lat
+	lon = getChunk(sc)
+	print 'Longitude: ', lon
+	#write the location data to DB
+	LID = DBhelper.insertLocationInSession(cur, session, nID, time, lat, lon)
+
 	cur.close()
 	conn.close()
 	sc.close()

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-
+##########################################################################
+# Python Client script
+##########################################################################
 def preLen(string):
 	#prepends length of the string to the string.
 	
