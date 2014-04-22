@@ -76,7 +76,7 @@ def insertNodeInSession(cur, devID, session):
 	return nID
 	
 def insertLocationInSession(cur, session, nID, time, lat, lon):
-	query = "INSERT INTO table(%s) VALUES (NULL, %s, %s, %s, %s)"
+	query = "INSERT INTO {0} VALUES (NULL, %s, %s, %s, %s)".format(session)
 	print query % (session, nID, time, lat, lon)
 	cur.execute(query, (session, nID, time, lat, lon))
 	#just in case
