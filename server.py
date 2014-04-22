@@ -13,6 +13,22 @@ def recv_all(sock, length):
 		data += more
 	return data
 	
+def getChunk(sock):
+	len = int(recv_all(sock, 2))
+	chunk = recv_all(sock, len)
+	if len == 99 and chunk.endswith('~'):
+		chunk = chunk.rstrip('~') + getChunk(sock)
+	return chunk
+	
+def recvData(sock):
+	phrase = getChunk(sock);
+	devID = getChunk(sock);
+	time = getChunk(sock);
+	lat = getChunk(sock);
+	lon = getChunk(sock);
+	return (phrase, devID, time, lat, lon)
+	
+	
 #start server code	
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 HOST = '192.168.1.222'
