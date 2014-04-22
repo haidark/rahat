@@ -20,14 +20,6 @@ def getChunk(sock):
 		chunk = chunk.rstrip('~') + getChunk(sock)
 	return chunk
 	
-def recvData(sock):
-	phrase = getChunk(sock);
-	devID = getChunk(sock);
-	time = getChunk(sock);
-	lat = getChunk(sock);
-	lon = getChunk(sock);
-	return (phrase, devID, time, lat, lon)
-	
 	
 #start server code	
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -40,31 +32,34 @@ s.listen(1)
 while True:
 	print 'Listening at', s.getsockname()
 	sc, sockname = s.accept()
+	
+	# get passphrase from client
+	phrase = getChunk(sc)
+	print 'Passphrase: ', phrase
+	
 	#connect to the DB
 	conn = pymysql.connect(host='127.0.0.1', user='haidar', passwd='pin101', db='haramain')
 	cur = conn.cursor()
-	
-	print 'We have accepted a connection from', sockname
-	print 'Socket connects', sc.getsockname(), 'and', sc.getpeername()
-	# get passphrase from client
-	message = recv_all(sc, 8)
-	print 'The passphrase is', repr(message)
 	#search database for phrase
-	SID = DBhelper.findSIDbyPhrase(cur, message)
+	SID = DBhelper.findSIDbyPhrase(cur, phrase)
 	#if SID exists	
 	if  SID != -1:
 		#check if node has been seen before
-		info = str(sc.getpeername()[0])
-		NID = DBhelper.findNIDbyInfo(cur, info)
+		devID = getChunk(sc)
+		print 'Device ID: ', devID
+		NID = DBhelper.findNIDbyInfo(cur, devID)
 		#if node has not been seen before
 		if NID == -1:
 			#create a new node
-			NID = DBhelper.insertNode(cur, SID, info)
+			NID = DBhelper.insertNode(cur, SID, devID)
 		
 		#get location info
-		lat = recv_all(sc, 4)
-		lon = recv_all(sc, 4)
-		time = recv_all(sc, 10)		
+		time = getChunk(sc)
+		print 'Time: ', time
+		lat = getChunk(sc)
+		print 'Lattitude: ', lat
+		lon = getChunk(sc)
+		print 'Longitude: ', lon
 		#write the location data to DB
 		LID = DBhelper.insertLocation(cur, NID, time, lat, lon)
 	#if not found, raise an error
