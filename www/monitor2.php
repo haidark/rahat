@@ -7,7 +7,7 @@
 <?php
 
 	
-	$mysqli = new mysqli("127.0.0.1", "www", "pin101", "haramain");
+	$mysqli = new mysqli("127.0.0.1", "www", "pin101", "haramain2");
 	if($mysqli->connect_errno){
 		echo "<p>Failed to connect to MySQL: " . $mysqli->connect_error."</p>";
 	}
