@@ -2,9 +2,16 @@
 
 def preLen(string):
 	#prepends length of the string to the string.
+	
+	#if length is less than 10, pad with leading zero
+	if len(string) < 10:
+		length = '0' + str(len(string))
+	else:
+		length = str(len(string))
+	
 	#if length of string is more than 99 characters, the string is sent piecemeal
 	if len(string) <= 99:
-		return str(len(string))+string
+		return length+string
 	else:
 		return str(99)+string[0:98]+'~'+preLen(string[98:])
 
