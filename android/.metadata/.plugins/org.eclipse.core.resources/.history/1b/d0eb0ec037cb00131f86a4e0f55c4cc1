@@ -44,6 +44,9 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 	private LocationClient mLocationClient;
 	private Location mCurrentLocation;
+    private static final String SERVERIP ="192.168.1.222";
+    private static final int SERVERPORT = 1060;
+    private Socket socket;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,8 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
          * Create a new location client, using the enclosing class to
          * handle callbacks.
          */
-        mLocationClient = new LocationClient(this, this, this);       
+        mLocationClient = new LocationClient(this, this, this);
+        
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -246,7 +250,7 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
     }
     
     class ClientThread implements Runnable{
-    	private Socket socket;
+    	
     	private String message;
     	private String sIP;
     	private int sPort;

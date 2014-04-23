@@ -1734,3 +1734,447 @@ Binding(CTRL+SHIFT+\,
 		,,true),null),
 	org.eclipse.ui.defaultAcceleratorConfiguration,
 	org.eclipse.wst.sse.ui.structuredTextEditorScope,,,system)
+
+!ENTRY org.eclipse.core.resources 2 2 2014-04-23 18:14:16.985
+!MESSAGE Save operation warnings.
+!SUBENTRY 1 org.eclipse.core.resources 2 234 2014-04-23 18:14:16.985
+!MESSAGE The project description file (.project) for 'MyFirstApp' was missing.  This file contains important information about the project.  A new project description file has been created, but some information about the project may have been lost.
+
+!ENTRY org.eclipse.jdt.core 4 4 2014-04-23 18:37:39.129
+!MESSAGE Exception while reading /MyFirstApp/.classpath
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:377)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:797)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(Util.java:1132)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntriesWithException(JavaProject.java:2466)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntries(JavaProject.java:2507)
+	at org.eclipse.jdt.internal.core.JavaProject.readRawClasspath(JavaProject.java:2545)
+	at com.android.ide.eclipse.adt.internal.build.builders.ResourceManagerBuilder.build(ResourceManagerBuilder.java:164)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+Caused by: java.io.FileNotFoundException: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:368)
+	... 19 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2014-04-23 18:37:39.130
+!MESSAGE File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:368)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:797)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(Util.java:1132)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntriesWithException(JavaProject.java:2466)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntries(JavaProject.java:2507)
+	at org.eclipse.jdt.internal.core.JavaProject.readRawClasspath(JavaProject.java:2545)
+	at com.android.ide.eclipse.adt.internal.build.builders.ResourceManagerBuilder.build(ResourceManagerBuilder.java:164)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+
+!ENTRY org.eclipse.jdt.core 4 4 2014-04-23 18:37:39.906
+!MESSAGE Exception while reading /MyFirstApp/.classpath
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:377)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:797)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(Util.java:1132)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntriesWithException(JavaProject.java:2466)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntries(JavaProject.java:2507)
+	at org.eclipse.jdt.internal.core.JavaProject.readRawClasspath(JavaProject.java:2545)
+	at com.android.ide.eclipse.adt.internal.project.BaseProjectHelper.getSourceClasspaths(BaseProjectHelper.java:84)
+	at com.android.ide.eclipse.adt.internal.project.BaseProjectHelper.getSourceClasspaths(BaseProjectHelper.java:103)
+	at com.android.ide.eclipse.adt.internal.build.builders.ChangedFileSetHelper.getJavaResCfs(ChangedFileSetHelper.java:65)
+	at com.android.ide.eclipse.adt.internal.build.builders.PostCompilerBuilder.build(PostCompilerBuilder.java:274)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+Caused by: java.io.FileNotFoundException: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:368)
+	... 22 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2014-04-23 18:37:39.907
+!MESSAGE File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:368)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:797)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(Util.java:1132)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntriesWithException(JavaProject.java:2466)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntries(JavaProject.java:2507)
+	at org.eclipse.jdt.internal.core.JavaProject.readRawClasspath(JavaProject.java:2545)
+	at com.android.ide.eclipse.adt.internal.project.BaseProjectHelper.getSourceClasspaths(BaseProjectHelper.java:84)
+	at com.android.ide.eclipse.adt.internal.project.BaseProjectHelper.getSourceClasspaths(BaseProjectHelper.java:103)
+	at com.android.ide.eclipse.adt.internal.build.builders.ChangedFileSetHelper.getJavaResCfs(ChangedFileSetHelper.java:65)
+	at com.android.ide.eclipse.adt.internal.build.builders.PostCompilerBuilder.build(PostCompilerBuilder.java:274)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+
+!ENTRY org.eclipse.jdt.core 4 4 2014-04-23 18:37:49.760
+!MESSAGE Exception while reading /MyFirstApp/.classpath
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:377)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:797)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(Util.java:1132)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntriesWithException(JavaProject.java:2466)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntries(JavaProject.java:2507)
+	at org.eclipse.jdt.internal.core.JavaProject.readRawClasspath(JavaProject.java:2545)
+	at com.android.ide.eclipse.adt.internal.build.builders.ResourceManagerBuilder.build(ResourceManagerBuilder.java:164)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+Caused by: java.io.FileNotFoundException: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:368)
+	... 19 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2014-04-23 18:37:49.760
+!MESSAGE File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:368)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:797)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(Util.java:1132)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntriesWithException(JavaProject.java:2466)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntries(JavaProject.java:2507)
+	at org.eclipse.jdt.internal.core.JavaProject.readRawClasspath(JavaProject.java:2545)
+	at com.android.ide.eclipse.adt.internal.build.builders.ResourceManagerBuilder.build(ResourceManagerBuilder.java:164)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+
+!ENTRY org.eclipse.jdt.core 4 4 2014-04-23 18:37:49.763
+!MESSAGE Exception while reading /MyFirstApp/.classpath
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:377)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:797)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(Util.java:1132)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntriesWithException(JavaProject.java:2466)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntries(JavaProject.java:2507)
+	at org.eclipse.jdt.internal.core.JavaProject.readRawClasspath(JavaProject.java:2545)
+	at com.android.ide.eclipse.adt.internal.project.BaseProjectHelper.getSourceClasspaths(BaseProjectHelper.java:84)
+	at com.android.ide.eclipse.adt.internal.build.builders.ResourceManagerBuilder.build(ResourceManagerBuilder.java:208)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+Caused by: java.io.FileNotFoundException: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:368)
+	... 20 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2014-04-23 18:37:49.764
+!MESSAGE File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:368)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:797)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(Util.java:1132)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntriesWithException(JavaProject.java:2466)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntries(JavaProject.java:2507)
+	at org.eclipse.jdt.internal.core.JavaProject.readRawClasspath(JavaProject.java:2545)
+	at com.android.ide.eclipse.adt.internal.project.BaseProjectHelper.getSourceClasspaths(BaseProjectHelper.java:84)
+	at com.android.ide.eclipse.adt.internal.build.builders.ResourceManagerBuilder.build(ResourceManagerBuilder.java:208)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+
+!ENTRY org.eclipse.core.resources 4 2 2014-04-23 18:37:49.768
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+Java Model Exception: Java Model Status [Build path contains duplicate entry: 'gen' for project 'MyFirstApp']
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:784)
+	at org.eclipse.jdt.internal.core.JavaProject.setRawClasspath(JavaProject.java:3096)
+	at org.eclipse.jdt.internal.core.JavaProject.setRawClasspath(JavaProject.java:3058)
+	at org.eclipse.jdt.internal.core.JavaProject.setRawClasspath(JavaProject.java:3111)
+	at com.android.ide.eclipse.adt.internal.build.builders.ResourceManagerBuilder.build(ResourceManagerBuilder.java:231)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+!SUBENTRY 1 org.eclipse.jdt.core 4 977 2014-04-23 18:37:49.768
+!MESSAGE Build path contains duplicate entry: 'gen' for project 'MyFirstApp'
+!SUBENTRY 1 org.eclipse.jdt.core 4 977 2014-04-23 18:37:49.768
+!MESSAGE Build path contains duplicate entry: 'gen' for project 'MyFirstApp'
+
+!ENTRY org.eclipse.jdt.core 4 4 2014-04-23 18:37:49.771
+!MESSAGE Exception while reading /MyFirstApp/.classpath
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:377)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:797)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(Util.java:1132)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntriesWithException(JavaProject.java:2466)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntries(JavaProject.java:2507)
+	at org.eclipse.jdt.internal.core.JavaProject.readRawClasspath(JavaProject.java:2545)
+	at com.android.ide.eclipse.adt.internal.project.BaseProjectHelper.getSourceClasspaths(BaseProjectHelper.java:84)
+	at com.android.ide.eclipse.adt.internal.build.builders.PreCompilerBuilder.build(PreCompilerBuilder.java:290)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+Caused by: java.io.FileNotFoundException: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:368)
+	... 20 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2014-04-23 18:37:49.772
+!MESSAGE File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:368)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:797)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(Util.java:1132)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntriesWithException(JavaProject.java:2466)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntries(JavaProject.java:2507)
+	at org.eclipse.jdt.internal.core.JavaProject.readRawClasspath(JavaProject.java:2545)
+	at com.android.ide.eclipse.adt.internal.project.BaseProjectHelper.getSourceClasspaths(BaseProjectHelper.java:84)
+	at com.android.ide.eclipse.adt.internal.build.builders.PreCompilerBuilder.build(PreCompilerBuilder.java:290)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-04-23 18:37:49.780
+!MESSAGE File is Out of sync
+!STACK 0
+com.android.io.StreamException: org.eclipse.core.internal.resources.ResourceException: File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\AndroidManifest.xml.
+	at com.android.ide.eclipse.adt.io.IFileWrapper.getContents(IFileWrapper.java:55)
+	at com.android.ide.common.xml.AndroidManifestParser.parse(AndroidManifestParser.java:609)
+	at com.android.ide.eclipse.adt.internal.project.AndroidManifestHelper.parseUnchecked(AndroidManifestHelper.java:75)
+	at com.android.ide.eclipse.adt.internal.build.builders.PreCompilerBuilder.build(PreCompilerBuilder.java:467)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+Caused by: org.eclipse.core.internal.resources.ResourceException: File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\AndroidManifest.xml.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:783)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:278)
+	at com.android.ide.eclipse.adt.io.IFileWrapper.getContents(IFileWrapper.java:49)
+	... 15 more
+
+!ENTRY org.eclipse.jdt.core 4 4 2014-04-23 18:37:49.793
+!MESSAGE Exception while reading /MyFirstApp/.classpath
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:55)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:377)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:797)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(Util.java:1132)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntriesWithException(JavaProject.java:2466)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntries(JavaProject.java:2507)
+	at org.eclipse.jdt.internal.core.JavaProject.readRawClasspath(JavaProject.java:2545)
+	at com.android.ide.eclipse.adt.internal.project.BaseProjectHelper.getSourceClasspaths(BaseProjectHelper.java:84)
+	at com.android.ide.eclipse.adt.internal.project.BaseProjectHelper.getSourceClasspaths(BaseProjectHelper.java:103)
+	at com.android.ide.eclipse.adt.internal.build.builders.ChangedFileSetHelper.getJavaResCfs(ChangedFileSetHelper.java:65)
+	at com.android.ide.eclipse.adt.internal.build.builders.PostCompilerBuilder.build(PostCompilerBuilder.java:274)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+Caused by: java.io.FileNotFoundException: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:368)
+	... 22 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 271 2014-04-23 18:37:49.794
+!MESSAGE File not found: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\Haidar\Documents\GitHub\rahat\android\MyFirstApp\.classpath (The system cannot find the file specified)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:368)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:797)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:289)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(Util.java:1132)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntriesWithException(JavaProject.java:2466)
+	at org.eclipse.jdt.internal.core.JavaProject.readFileEntries(JavaProject.java:2507)
+	at org.eclipse.jdt.internal.core.JavaProject.readRawClasspath(JavaProject.java:2545)
+	at com.android.ide.eclipse.adt.internal.project.BaseProjectHelper.getSourceClasspaths(BaseProjectHelper.java:84)
+	at com.android.ide.eclipse.adt.internal.project.BaseProjectHelper.getSourceClasspaths(BaseProjectHelper.java:103)
+	at com.android.ide.eclipse.adt.internal.build.builders.ChangedFileSetHelper.getJavaResCfs(ChangedFileSetHelper.java:65)
+	at com.android.ide.eclipse.adt.internal.build.builders.PostCompilerBuilder.build(PostCompilerBuilder.java:274)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+
+!ENTRY org.eclipse.core.resources 4 75 2014-04-23 18:37:49.818
+!MESSAGE Errors occurred during the build.
+!SUBENTRY 1 com.android.ide.eclipse.adt 4 75 2014-04-23 18:37:49.818
+!MESSAGE Errors running builder 'Android Resource Manager' on project 'MyFirstApp'.
+!STACK 1
+Java Model Exception: Java Model Status [Build path contains duplicate entry: 'gen' for project 'MyFirstApp']
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:784)
+	at org.eclipse.jdt.internal.core.JavaProject.setRawClasspath(JavaProject.java:3096)
+	at org.eclipse.jdt.internal.core.JavaProject.setRawClasspath(JavaProject.java:3058)
+	at org.eclipse.jdt.internal.core.JavaProject.setRawClasspath(JavaProject.java:3111)
+	at com.android.ide.eclipse.adt.internal.build.builders.ResourceManagerBuilder.build(ResourceManagerBuilder.java:231)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:733)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+!SUBENTRY 2 org.eclipse.jdt.core 4 977 2014-04-23 18:37:49.818
+!MESSAGE Build path contains duplicate entry: 'gen' for project 'MyFirstApp'
+!SUBENTRY 1 org.eclipse.jdt.core 4 977 2014-04-23 18:37:49.818
+!MESSAGE Build path contains duplicate entry: 'gen' for project 'MyFirstApp'

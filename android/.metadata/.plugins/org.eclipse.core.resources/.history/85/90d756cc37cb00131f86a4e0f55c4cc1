@@ -246,7 +246,7 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
     }
     
     class ClientThread implements Runnable{
-    	private Socket socket;
+    	
     	private String message;
     	private String sIP;
     	private int sPort;

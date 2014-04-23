@@ -44,6 +44,9 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 	private LocationClient mLocationClient;
 	private Location mCurrentLocation;
+    private static final String SERVERIP ="192.168.1.222";
+    private static final int SERVERPORT = 1060;
+    private Socket socket;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,8 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
          * Create a new location client, using the enclosing class to
          * handle callbacks.
          */
-        mLocationClient = new LocationClient(this, this, this);       
+        mLocationClient = new LocationClient(this, this, this);
+        
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -103,8 +107,7 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
 	
 	// Called when the User clicks the Send Location Button
 	public void sendLocation(View view){
-		String IP = "192.168.1.222";
-		int port = 1022;
+		//do something in response to button press
 		
 		//get string from editText field
 		EditText editText = (EditText) findViewById(R.id.edit_1);
@@ -127,7 +130,7 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
 		//send the message to the server
 		String sendMsg = preLen(phrase)+preLen(devId)+preLen(datetime)+preLen(String.valueOf(lat))+preLen(String.valueOf(lon));
 		//open a socket
-		new Thread(new ClientThread(IP, port, sendMsg)).start();	
+		new Thread(new ClientThread()).start();		
 
 	}
 	
@@ -246,23 +249,19 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
     }
     
     class ClientThread implements Runnable{
-    	private Socket socket;
+    	
     	private String message;
-    	private String sIP;
-    	private int sPort;
-    	public ClientThread(String ip, int port, String msg){
+    	public ClientThread(String msg){
     		message = msg;
-    		sIP = ip;
-    		sPort = port;
     	}
     	
     	@Override
     	public void run(){
     		try{
-    			InetAddress serverAddr = InetAddress.getByName(sIP);    			
-    			socket = new Socket(serverAddr, sPort);
+    			InetAddress serverAddr = InetAddress.getByName(SERVERIP);    			
+    			socket = new Socket(serverAddr, SERVERPORT);
     			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-    			out.println(message);
+    			out.println(sendMsg);
     		} catch(UnknownHostException e1){
     			e1.printStackTrace();
     		} catch (IOException e1){
