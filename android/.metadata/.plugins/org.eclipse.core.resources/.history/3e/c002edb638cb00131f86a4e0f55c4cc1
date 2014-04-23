@@ -103,13 +103,13 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
 	
 	// Called when the User clicks the Send Location Button
 	public void sendLocation(View view){
-		String serverName = "haidarkhan.no-ip.org";
-		int port = 1060;
+		String IP = "192.168.1.222";
+		int port = 1022;
 		
 		//get string from editText field
 		EditText editText = (EditText) findViewById(R.id.edit_1);
 		String phrase = editText.getText().toString();
-		phrase = "session1"; //this is for debugging until sessions are fully fleshed out
+		
 		//get the unique device ID
 		String devId = Secure.getString(getBaseContext().getContentResolver(),
                 Secure.ANDROID_ID); 
@@ -127,7 +127,7 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
 		//send the message to the server
 		String sendMsg = preLen(phrase)+preLen(devId)+preLen(datetime)+preLen(String.valueOf(lat))+preLen(String.valueOf(lon));
 		//open a socket
-		new Thread(new ClientThread(serverName, port, sendMsg)).start();	
+		new Thread(new ClientThread(IP, port, sendMsg)).start();	
 
 	}
 	
@@ -248,18 +248,18 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
     class ClientThread implements Runnable{
     	private Socket socket;
     	private String message;
-    	private String sName;
+    	private String sIP;
     	private int sPort;
-    	public ClientThread(String sname, int port, String msg){
+    	public ClientThread(String ip, int port, String msg){
     		message = msg;
-    		sName = sname;
+    		sIP = ip;
     		sPort = port;
     	}
     	
     	@Override
     	public void run(){
     		try{
-    			InetAddress serverAddr = InetAddress.getByName(sName);    			
+    			InetAddress serverAddr = InetAddress.getByName(sIP);    			
     			socket = new Socket(serverAddr, sPort);
     			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
     			out.println(message);
