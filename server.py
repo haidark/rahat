@@ -10,8 +10,7 @@ def recv_all(sock, length):
 	while len(data) < length:
 		more = sock.recv(length - len(data))
 		if not more:
-			raise EOFError('socket closed %d bytes into a %d-byte message'
-			% (len(data), length))
+			raise EOFError('socket closed %d bytes into a %d-byte message' % (len(data), length))
 		data += more
 	return data
 	
@@ -22,6 +21,13 @@ def getChunk(sock):
 		chunk = chunk.rstrip('~') + getChunk(sock)
 	return chunk
 	
+def getData(sock):
+	phrase = getChunk(sc)
+	devID = getChunk(sc)
+	time = getChunk(sc)
+	lat = getChunk(sc)
+	lon = getChunk(sc)
+	return (phrase, devID, time, lat, lon)
 	
 #start server code	
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -35,39 +41,45 @@ while True:
 	print 'Listening at', s.getsockname()
 	sc, sockname = s.accept()
 	
-	# get passphrase from client
-	phrase = getChunk(sc)
-	print 'Passphrase: ', phrase
+	# try getting message from client
+	try:
+		(phrase, devID, time, lat, lon) = getData(sc)
+		print 'Passphrase: ', phrase		
+		#connect to the DB
+		conn = pymysql.connect(host='127.0.0.1', user='haidar', passwd='pin101', db='haramain')
+		cur = conn.cursor()
+		#search database for phrase
+		SID = DBhelper.findSIDbyPhrase(cur, phrase)
+		#if SID exists	
+		if  SID != -1:
+			#check if node has been seen before
+			
+			print 'Device ID: ', devID
+			NID = DBhelper.findNIDbyInfo(cur, devID)
+			#if node has not been seen before
+			if NID == -1:
+				#create a new node
+				NID = DBhelper.insertNode(cur, SID, devID)
+			
+			#get location info
+			
+			print 'Time: ', time
+			
+			print 'Lattitude: ', lat
+			
+			print 'Longitude: ', lon
+			#write the location data to DB
+			LID = DBhelper.insertLocation(cur, NID, time, lat, lon)
+		#if not found, raise an error
+		else:
+			print "Session not found!!!!\n closing connection..."
+		cur.close()
+		conn.close()
+		sc.close()
+		print 'Socket closed'
+	except EOFError:
+		print "Client closed connection"
+		sc.close()
+		print 'Socket closed'
 	
-	#connect to the DB
-	conn = pymysql.connect(host='127.0.0.1', user='haidar', passwd='pin101', db='haramain')
-	cur = conn.cursor()
-	#search database for phrase
-	SID = DBhelper.findSIDbyPhrase(cur, phrase)
-	#if SID exists	
-	if  SID != -1:
-		#check if node has been seen before
-		devID = getChunk(sc)
-		print 'Device ID: ', devID
-		NID = DBhelper.findNIDbyInfo(cur, devID)
-		#if node has not been seen before
-		if NID == -1:
-			#create a new node
-			NID = DBhelper.insertNode(cur, SID, devID)
-		
-		#get location info
-		time = getChunk(sc)
-		print 'Time: ', time
-		lat = getChunk(sc)
-		print 'Lattitude: ', lat
-		lon = getChunk(sc)
-		print 'Longitude: ', lon
-		#write the location data to DB
-		LID = DBhelper.insertLocation(cur, NID, time, lat, lon)
-	#if not found, raise an error
-	else:
-		print "Session not found!!!!\n closing connection..."
-	cur.close()
-	conn.close()
-	sc.close()
-	print 'Socket closed'
+	

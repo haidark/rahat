@@ -28,7 +28,7 @@ s.connect((HOST, PORT))
 print 'Client has been assigned socket name', s.getsockname()
 phrase = 'session1'
 devID = 'python-script'
-time = '1991-09-04'
+time = '1991-09-04 12:25:49'
 lat = '-12.2111'
 lon = '123.41234'
 
