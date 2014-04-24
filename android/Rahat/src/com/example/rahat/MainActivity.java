@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,7 +45,7 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 	private LocationClient mLocationClient;
 	private Location mCurrentLocation;
-	
+	private String dispMsg = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -120,8 +121,11 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
 		double lat = mCurrentLocation.getLatitude();
 		double lon = mCurrentLocation.getLongitude();
 		
+		Time now = new Time();
+		now.setToNow();
+		
 		//set the text in the Text View
-		String dispMsg = preLen(phrase)+"\n"+preLen(devId)+"\n"+preLen(datetime)+"\n"+preLen(String.valueOf(lat))+"\n"+preLen(String.valueOf(lon));
+		dispMsg = dispMsg + now.format("%H:%M:%S") + ": Sending message to server at haidarkhan.no-ip.org...\n";
 		((TextView) findViewById(R.id.text_1)).setText(dispMsg); 
 		
 		//send the message to the server
