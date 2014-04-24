@@ -66,4 +66,7 @@ while True:
 	print '\t(=) Listening at', s.getsockname()
 	clientSock, sockname = s.accept()
 	print "(+) Connected to %s established" % str(sockname)
-	handleClient(clientSock, str(sockname))
+	#multi-threaded
+	thread.start_new_thread(handleClient, (clientSock, str(sockname)))
+	#single process
+	#handleClient(clientSock, str(sockname))
