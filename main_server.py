@@ -24,8 +24,6 @@ def getChunk(sock):
 	
 def handleClient(clientSock, addr):
 	try:
-		# get data from client
-		(phrase, devID, time, lat, lon) = getData(clientSock)
 		# get phrase from client
 		phrase = getChunk(clientSock)
 		
