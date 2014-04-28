@@ -24,33 +24,33 @@ def getChunk(sock):
 	
 def handleClient(clientSock, addr):
 	try:
-		# get phrase from client
-		phrase = getChunk(clientSock)
+		# get phrase from client - going to remove this, client only needs to send deviceID
+		phrase = getChunk(clientSock)		
+		
+		#get devID from client
+		devID = getChunk(clientSock)
 		
 		#connect to the DB
 		conn = pymysql.connect(host='127.0.0.1', user='haidar', passwd='pin101', db='haramain2')
 		cur = conn.cursor()
-		
-		#get devID from client
-		devID = getChunk(clientSock)
-		#check if node has been seen before	
-		(nID, session) = DBhelper.findNID_SessionbyDevID(cur, devID)
-		
-		#if node has not been seen before
-		if nID == -1:
-			#create a new node keyed by client's passphrase (later; for now, use session1)
-			session = 'session1'
-			nID = DBhelper.insertNodeInSession(cur, devID, session)
-		time = getChunk(clientSock)
-		lat = getChunk(clientSock)
-		lon = getChunk(clientSock)
-		#write the location data to DB
-		LID = DBhelper.insertLocationInSession(cur, session, nID, time, lat, lon)
+		#check if node exists
+		try:
+			node = DBhelper.getNode(cur, devID)
+			nID = node[0]
+			session = node[1]
+			time = getChunk(clientSock)
+			lat = getChunk(clientSock)
+			lon = getChunk(clientSock)
+			#write the location data to DB
+			LID = DBhelper.createLocation(cur, session, nID, time, lat, lon)
+			print "(+) Received data. Device ID: %s" % devID
+		#if the node does not exist
+		except NodeError:
+			print "(-) Device not recognized. Device ID: %s" % devID	
 		cur.close()
-		conn.close()
-		print "(+) Received data from %s" % devID
+		conn.close()			
 	except EOFError:
-		print "(-) Client %s closed connection" %addr
+		print "(-) Client %s closed connection" % addr
 	clientSock.close()
 	print "\t(=) Connection with %s closed" % addr
 	

@@ -1,10 +1,56 @@
 ##########################################################################
 ##########################################################################
+##################### HARAMAIN FUNCTIONS #################################
+##########################################################################
+##########################################################################
+def findSIDbyPhrase(cur, phrase):	
+	query = "SELECT SID FROM sessions WHERE phrase=%s"
+	count = cur.execute(query, phrase)
+	if count == 1:
+		SID = cur.fetchone()[0]
+	else:
+		print "Unique session not found for this phrase!!!!!"
+		SID = -1	
+	return SID
+	
+def findNIDbyInfo(cur, info):
+	query = "SELECT NID FROM nodes WHERE info=%s"
+	count = cur.execute(query, info)
+	if count == 1:
+		NID = cur.fetchone()[0]
+	else:
+		print "Unique node not found for this info!!!!!"
+		NID = -1
+	return NID
+
+def insertNode(cur, SID, info):
+	query = "INSERT INTO nodes VALUES (NULL, %s, %s)"
+	cur.execute(query, (SID, info))
+	#just in case
+	cur.connection.commit()
+	NID = cur.lastrowid
+	if NID == None:
+		print "Unable to insert new node!!!"
+		NID = -1
+	return NID
+	
+def insertLocation(cur, NID, time, lat, lon):
+	query = "INSERT INTO locations VALUES (NULL, %s, %s, %s, %s)"
+	cur.execute(query, (NID, time, lat, lon))
+	#just in case
+	cur.connection.commit()
+	LID = cur.lastrowid
+	if LID == None:
+		print "Unable to insert new location!!!"
+		LID = -1
+	return LID
+
+
+##########################################################################
+##########################################################################
 ##################### HARAMAIN 2 FUNCTIONS ###############################
 ##########################################################################
 ##########################################################################
-
-"""SESSION FUNCTIONS"""
 def createSession(cur, session):
 	#creates a new table titled by the session phrase.
 	#raises a SessionError if table with same name already exists
@@ -17,20 +63,7 @@ def createSession(cur, session):
 		cur.execute(query % session)
 		cur.connection.commit()
 		return
-
-def deleteSession(cur, session):
-	#drops the table associated with a session
-	if !SessionExists(cur, session):
-		raise SessionError(session, SessionError.DNE)
-	else:
-		cur.execute("DROP TABLE " + str(session))
-	
-def SessionExists(cur, session):
-	#checks if a session exists, boolean function
-	#returns 1 if session exists and 0 if it does not
-	return cur.execute("SHOW TABLES LIKE %s", session);
-
-"""NODE FUNCTIONS"""	
+		
 def createNode(cur, devID, session='NULL'):
 	#creates a new node in the "nodes" table
 	#the session it belongs to is optional and defaulted to NULL
@@ -54,23 +87,8 @@ def createNode(cur, devID, session='NULL'):
 				print "Unable to create new node."
 				nID = -1
 			return nID
-
-def deleteNode(cur, devID):
-	#Removes the given node from the table of nodes
-	#if the node is active, removes all the rows associated with the node in its session table	
 	
-	#check if node exists, raises NodeError if it does not exist
-	node = getNode(cur, devID)
-	nID = node[0]
-	session = node[2]
-	#check if node is active
-	if session != 'NULL'
-		#delete all rows in its session table associated with its nID
-		cur.execute("DELETE FROM " + str(session) + " WHERE nodeID=%s", nID) 
-	#now delete it from the nodes table
-	cur.execute("DELETE FROM nodes WHERE devID=%s", devID)
-			
-def activateNode(cur, devID, session):
+def addNodetoSession(cur, devID, session):
 	#changes the session of a node to the new session iff the node exists AND is a free node
 	
 	#if the node does not exist or it is already in a session, raises a NodeError
@@ -91,7 +109,7 @@ def freeNode(cur, devID):
 		checkNodeState(getNode(cur, devID))
 	else:
 		return
-
+		
 def getNode(cur, devID):
 	#gets a node from the nodes table and returns the whole row
 	#raises a NodeError if the node does not exist
@@ -123,9 +141,13 @@ def checkNodeState(node):
 	#if the node is free raise Free NodeError
 	else:
 		raise NodeError(devID, NodeError.FRE)
+
+def SessionExists(cur, session):
+	#checks if a session exists, boolean function
+	#returns 1 if session exists and 0 if it does not
+	return cur.execute("SHOW TABLES LIKE %s", session);
 		
-"""LOCATION FUNCTIONS"""	
-def createLocation(cur, session, nID, time, lat, lon):
+def insertLocationInSession(cur, session, nID, time, lat, lon):
 	if !SessionExists(cur, session):
 		raise SessionError(session, SessionError.DNE)
 	else:
@@ -137,29 +159,12 @@ def createLocation(cur, session, nID, time, lat, lon):
 		if lID == None:
 			print "Unable to insert new location!!!"
 			lID = -1
-		return lID	
-		
-"""DISPLAY FUNCTIONS"""
-
-def displaySessions(cur):
-	#displays a list of all active sessions
-	pass
-	
-def displayNodes(cur, session=0):
-	#displays a list of all nodes
-	if session == 0:
-		cur.execute("SELECT * FROM nodes")
-	else:
-		cur.execute("SELECT * FROM nodes WHERE session=%s", session)
-	nodes = cur.fetchall()
-	for node in nodes
-		print node
-
+		return lID
 		
 	
 ##########################################################################
 ##########################################################################
-##################### Exception Definitions ##############################
+##################### Exception definitions ##############################
 ##########################################################################
 ##########################################################################
 
