@@ -5,6 +5,7 @@
 import socket
 import pymysql, DBhelper
 import thread
+from DBhelper import getNode, createLocation
 
 def recv_all(sock, length):
 	data = ''
@@ -35,14 +36,14 @@ def handleClient(clientSock, addr):
 		cur = conn.cursor()
 		#check if node exists
 		try:
-			node = DBhelper.getNode(cur, devID)
+			node = getNode(cur, devID)
 			nID = node[0]
 			session = node[1]
 			time = getChunk(clientSock)
 			lat = getChunk(clientSock)
 			lon = getChunk(clientSock)
 			#write the location data to DB
-			LID = DBhelper.createLocation(cur, session, nID, time, lat, lon)
+			LID = createLocation(cur, session, nID, time, lat, lon)
 			print "(+) Received data. Device ID: %s" % devID
 		#if the node does not exist
 		except NodeError:

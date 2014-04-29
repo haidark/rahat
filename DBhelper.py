@@ -1,3 +1,5 @@
+from errors import SessionError, NodeError, FieldError
+
 ##########################################################################
 ##########################################################################
 ##################### HARAMAIN 2 FUNCTIONS ###############################
@@ -20,7 +22,7 @@ def createSession(cur, session):
 
 def deleteSession(cur, session):
 	#drops the table associated with a session
-	if !SessionExists(cur, session):
+	if ~SessionExists(cur, session):
 		raise SessionError(session, SessionError.DNE)
 	else:
 		cur.execute("DROP TABLE " + str(session))
@@ -43,7 +45,7 @@ def createNode(cur, devID, session='NULL'):
 		return node[0]
 	#if the node does not exist
 	except NodeError as ne:		
-		if ne.msg == NodeError.DNE
+		if ne.msg == NodeError.DNE:
 			query = "INSERT INTO nodes VALUES (NULL, %s, %s)"
 			cur.execute(query, (devID, session))	
 			cur.connection.commit()
@@ -64,7 +66,7 @@ def deleteNode(cur, devID):
 	nID = node[0]
 	session = node[2]
 	#check if node is active
-	if session != 'NULL'
+	if session != 'NULL':
 		#delete all rows in its session table associated with its nID
 		cur.execute("DELETE FROM " + str(session) + " WHERE nodeID=%s", nID) 
 	#now delete it from the nodes table
@@ -126,7 +128,7 @@ def checkNodeState(node):
 		
 """LOCATION FUNCTIONS"""	
 def createLocation(cur, session, nID, time, lat, lon):
-	if !SessionExists(cur, session):
+	if ~SessionExists(cur, session):
 		raise SessionError(session, SessionError.DNE)
 	else:
 		query = "INSERT INTO {0} VALUES (NULL, %s, %s, %s, %s)".format(session)
@@ -152,62 +154,7 @@ def displayNodes(cur, session=0):
 	else:
 		cur.execute("SELECT * FROM nodes WHERE session=%s", session)
 	nodes = cur.fetchall()
-	for node in nodes
+	for node in nodes:
 		print node
 
 		
-	
-##########################################################################
-##########################################################################
-##################### Exception Definitions ##############################
-##########################################################################
-##########################################################################
-
-class Error(Exception):
-	"""Base class for exceptions in this module."""
-    pass
-	
-class NodeError(Error):
-    """Exception raised for errors related to nodes.
-
-    Attributes:
-        devID -- input devID for which node error occurred
-        msg  -- explanation of the error
-		
-	Types:"""
-	DNE = "Node Does Not Exist"
-	AE = "Node Already Exists"
-	ACT = "Node is Active"
-	FRE = "Node is Free"
-    def __init__(self, devID, msg):
-        self.devID = devID
-        self.msg = msg
-
-class SessionError(Error):
-    """Exception raised for errors related to sessions.
-
-    Attributes:
-        session -- input session for which session error occurred
-        msg  -- explanation of the error
-		
-	Types:"""
-	DNE = "Session Does Not Exist"
-	AE = "Session Already Exists"
-	
-    def __init__(self, session, msg):
-        self.session = session
-        self.msg = msg
-		
-class FieldError(Error):
-    """Exception raised for errors related to invalid fields.
-
-    Attributes:
-        field -- input field for which field error occurred
-        msg  -- explanation of the error
-		
-	Types:"""
-	IP = "Invalid Phrase for Session"
-	ID = "Invalid devID for Node"
-    def __init__(self, field, msg):
-        self.field = field
-        self.msg = msg
