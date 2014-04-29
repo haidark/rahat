@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import DBhelper as db
+from errors import SessionError, NodeError, FieldError
 import argparse
 import pymysql
 def DBconnect(host, user, pw):
