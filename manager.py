@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import DBhelper as db
-from errors import SessionError, NodeError, FieldError
+
 import argparse
 import pymysql
 def DBconnect(host, user, pw):
@@ -117,7 +117,7 @@ else:
 	try:
 		db.createSession(cur, ses)
 		print "\t(-) Failure of createSession Test Failed"
-	except SessionError as se:
+	except db.SessionError as se:
 		print "\t(+) Failure of createSession Test Passed. Error Caught:", se.msg
 	
 	
