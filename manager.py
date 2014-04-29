@@ -137,7 +137,7 @@ else:
 		print "(=) List of all nodes"
 		db.displayNodes(cur)
 		print "(=) List of all nodes in session=%s" % ses
-		db.DisplayNodes(cur, ses)
+		db.displayNodes(cur, ses)
 	
 	print "(=) Testing creation of existing node"
 	dx = db.createNode(cur, dev1, ses)
@@ -158,7 +158,7 @@ else:
 	try:
 		db.activateNode(cur, dev2, ses)
 		print "\t(-) Assert Free Node Test Failed"
-	except NodeError as ne:
+	except db.NodeError as ne:
 		print "\t(+) Assert Free Node Test Passed. Error Caught: ", ne.msg
 		
 	print "(=) freeNode Test"
@@ -172,7 +172,7 @@ else:
 	try:
 		db.freeNode(cur, dev2, ses)
 		print "\t(-) Check Node State Test Failed"
-	except NodeError as ne:
+	except db.NodeError as ne:
 		print "\t(+) Check Node State Test Passed. Error Caught: ", ne.msg
 	
 	print "(=) deleteNode Test"
@@ -184,7 +184,7 @@ else:
 	try:
 		db.deleteNode(cur, 'devu')
 		print "(-) deleteNode Test Failed."
-	except NodeError as ne:
+	except db.NodeError as ne:
 		print "(+) deleteNode Test Passed. Error Caught: ", ne.msg
 	
 	print "(=) cleaning up."

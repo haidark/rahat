@@ -30,9 +30,7 @@ def deleteSession(cur, session):
 def SessionExists(cur, session):
 	#checks if a session exists, boolean function
 	#returns 1 if session exists and 0 if it does not
-	b = cur.execute("SHOW TABLES LIKE %s", session)
-	print b
-	return b
+	return cur.execute("SHOW TABLES LIKE %s", session)
 
 """NODE FUNCTIONS"""	
 def createNode(cur, devID, session='NULL'):
