@@ -103,14 +103,14 @@ def getNode(cur, devID):
 		
 def assertFreeNode(node):
 	#if node is not free raise NodeError
-	if node[2] != 'NULL':
+	if node[2] != None:
 		raise NodeError(node[1], NodeError.ACT)
 	else:
 		return node
 
 def assertActiveNode(node):
 	#if node is free raise NodeError	
-	if node[2] == 'NULL':
+	if node[2] == None:
 		raise NodeError(node[1], NodeError.FRE)
 	else:
 		return node
@@ -118,7 +118,7 @@ def assertActiveNode(node):
 def checkNodeState(node):
 	#checks why
 	#if node is not free raise Active NodeError
-	if node[2] != 'NULL':
+	if node[2] != None:
 		raise NodeError(node[1], NodeError.ACT)
 	#if the node is free raise Free NodeError
 	else:
