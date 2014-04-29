@@ -33,7 +33,7 @@ def SessionExists(cur, session):
 	return cur.execute("SHOW TABLES LIKE %s", session)
 
 """NODE FUNCTIONS"""	
-def createNode(cur, devID, session='NULL'):
+def createNode(cur, devID, session=None):
 	#creates a new node in the "nodes" table
 	#the session it belongs to is optional and defaulted to NULL
 	#returns the nID if the node was created or found in the table
@@ -78,7 +78,7 @@ def activateNode(cur, devID, session):
 	#if the node does not exist or it is already in a session, raises a NodeError
 	assertFreeNode(getNode(cur, devID))
 	#if all is well(no errors raised)
-	query = "UPDATE nodes SET session=%s WHERE devID=%s AND session=NULL"
+	query = "UPDATE nodes SET session=%s WHERE devID=%s"
 	count = cur.execute(query, (session, devID))
 	cur.connection.commit()
 	return
