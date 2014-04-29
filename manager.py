@@ -108,7 +108,7 @@ else:
 	print "(========)Testing all DB managing functions(========)"
 	print "(=) Connecting to the DB..."
 	(conn, cur) = DBconnect(host,user,pw)
-	print "(+) Connected!"
+	print "\t(+) Connected!"
 	
 	print "(========)SESSION FUNCTION TESTS(========)"	
 	print "(=) Creating a new session called '%s'" % ses
@@ -116,7 +116,7 @@ else:
 		db.createSession(cur, ses)
 	except db.SessionError as se:
 		pass
-	print "(+) Session created!"
+	print "\t(+) Session created!"
 	print "(=) Testing Failure of createSession function"
 	try:
 		db.createSession(cur, ses)
@@ -155,7 +155,7 @@ else:
 	
 	print "(=) activating device=%s" % dev2
 	db.activateNode(cur, dev2, ses)
-	print "(+) Activated, printing all nodes in %s" % ses
+	print "\t(+) Activated, printing all nodes in %s" % ses
 	db.displayNodes(cur, ses)
 	
 	print "(=) Assert Free Node Test"
@@ -169,12 +169,12 @@ else:
 
 	print "(=) freeing device=%s" % dev1
 	db.freeNode(cur, dev1)
-	print "(+) Freed, printing all nodes"
+	print "\t(+) Freed, printing all nodes"
 	db.displayNodes(cur)
 	
 	print "(=) Check Node State Test"
 	try:
-		db.freeNode(cur, dev2)
+		db.freeNode(cur, dev1)
 		print "\t(-) Check Node State Test Failed"
 	except db.NodeError as ne:
 		print "\t(+) Check Node State Test Passed. Error Caught: ", ne.msg
@@ -187,9 +187,9 @@ else:
 	print "(=) deleting non-existent device."
 	try:
 		db.deleteNode(cur, 'devu')
-		print "(-) deleteNode Test Failed."
+		print "\t(-) deleteNode Test Failed."
 	except db.NodeError as ne:
-		print "(+) deleteNode Test Passed. Error Caught: ", ne.msg
+		print "\t(+) deleteNode Test Passed. Error Caught: ", ne.msg
 	
 	print "(=) cleaning up."
 	
