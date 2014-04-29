@@ -110,7 +110,7 @@ else:
 	print "(+) Connected!"
 	
 	print "(========)SESSION FUNCTION TESTS(========)"	
-	print "(=) Creating a new session called '%s" % ses
+	print "(=) Creating a new session called '%s'" % ses
 	db.createSession(cur, ses)
 	print "(+) Session created!"
 	print "(=) Testing Failure of createSession function"
