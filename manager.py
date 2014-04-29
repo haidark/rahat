@@ -128,7 +128,7 @@ else:
 	
 	
 	#check if everything went well
-	if d1 == -1 or d2 == -1 or or d3 == -1:
+	if d1 == -1 or d2 == -1 or d3 == -1:
 		"\t(-) Node Creation failed! Printing list of all Nodes."
 		db.displayNodes(cur)
 	else:
