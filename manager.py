@@ -125,11 +125,10 @@ else:
 	d1 = db.createNode(cur, dev1, ses)
 	d2 = db.createNode(cur, dev2)
 	d3 = db.createNode(cur, dev3);
-	print "(=) Testing creation of existing node"
-	dx = db.createNode(cur, dev1, ses)
+	
 	
 	#check if everything went well
-	if d1 == -1 or d2 == -1 or dx == -1 or d3 == -1:
+	if d1 == -1 or d2 == -1 or or d3 == -1:
 		"\t(-) Node Creation failed! Printing list of all Nodes."
 		db.displayNodes(cur)
 	else:
@@ -139,6 +138,8 @@ else:
 		print "(=) List of all nodes in session=%s" % ses
 		db.DisplayNodes(cur, ses)
 	
+	print "(=) Testing creation of existing node"
+	dx = db.createNode(cur, dev1, ses)
 	if dx == d1:
 		"\t(+) Existing Node Creation Test Passed. nIDs are the same. Warning printed"
 	else:
