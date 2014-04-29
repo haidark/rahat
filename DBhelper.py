@@ -66,7 +66,7 @@ def deleteNode(cur, devID):
 	nID = node[0]
 	session = node[2]
 	#check if node is active
-	if session != 'NULL':
+	if session != None:
 		#delete all rows in its session table associated with its nID
 		cur.execute("DELETE FROM " + str(session) + " WHERE nodeID=%s", nID) 
 	#now delete it from the nodes table
