@@ -106,14 +106,14 @@ def getNode(cur, devID):
 def assertFreeNode(node):
 	#if node is not free raise NodeError
 	if node[2] != 'NULL':
-		raise NodeError(devID, NodeError.ACT)
+		raise NodeError(node[1], NodeError.ACT)
 	else:
 		return node
 
 def assertActiveNode(node):
 	#if node is free raise NodeError	
 	if node[2] == 'NULL':
-		raise NodeError(devID, NodeError.FRE)
+		raise NodeError(node[1], NodeError.FRE)
 	else:
 		return node
 
@@ -121,10 +121,10 @@ def checkNodeState(node):
 	#checks why
 	#if node is not free raise Active NodeError
 	if node[2] != 'NULL':
-		raise NodeError(devID, NodeError.ACT)
+		raise NodeError(node[1], NodeError.ACT)
 	#if the node is free raise Free NodeError
 	else:
-		raise NodeError(devID, NodeError.FRE)
+		raise NodeError(node[1], NodeError.FRE)
 		
 """LOCATION FUNCTIONS"""	
 def createLocation(cur, session, nID, time, lat, lon):
