@@ -5,7 +5,7 @@ import argparse
 import pymysql
 def DBconnect(host, user, pw):
 	#connect to the DB
-	conn = pymysql.connect(host, user, passwd, db='haramain2')
+	conn = pymysql.connect(host, user, pw, db='haramain2')
 	cur = conn.cursor()
 	return (conn, cur)
 	
