@@ -30,7 +30,7 @@ parser.add_argument("-f", "--free", help="free a node", metavar='deviceID')
 #-S to list all active sessions
 parser.add_argument("-S", "--SESSIONS", help="list all active sessions", action="store_true")
 #-N to list all nodes and include [SESSIONNAME] to list all nodes in a session
-parser.add_argument("-N", "--NODES", help="list all nodes in a session, use * for a list of all nodes", metavar='passphrase')
+parser.add_argument("-N", "--NODES", help="list all nodes in a session, use 0 for a list of all nodes", metavar='passphrase')
 
 args = parser.parse_args()
 
@@ -84,7 +84,7 @@ elif args.SESSIONS == True:
 elif args.NODES != None:
 	#list nodes
 	(conn, cur) = DBconnect(host, user, pw)
-	if args.NODES == '*':
+	if args.NODES == '0':
 		db.displayNodes(cur)
 	else:
 		db.displayNodes(cur, args.NODES)
