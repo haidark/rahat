@@ -5,7 +5,7 @@ import argparse
 import pymysql
 def DBconnect(host, user, pw):
 	#connect to the DB
-	conn = pymysql.connect(host='127.0.0.1', user='haidar', passwd='pin101', db='haramain2')
+	conn = pymysql.connect(host, user, passwd, db='haramain2')
 	cur = conn.cursor()
 	return (conn, cur)
 	
@@ -33,6 +33,10 @@ parser.add_argument("-S", "--SESSIONS", help="list all active sessions", action=
 parser.add_argument("-N", "--NODES", help="list all nodes in a session, use 0 for a list of all nodes", metavar='passphrase')
 
 args = parser.parse_args()
+
+host = '127.0.0.1'
+user='haidar'
+pw='pin101'
 
 if args.session != None:
 	#create a new session
