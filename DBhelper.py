@@ -20,10 +20,10 @@ def createSession(cur, session):
 
 def deleteSession(cur, session):
 	#drops the table associated with a session
-	if ~SessionExists(cur, session):
-		raise SessionError(session, SessionError.DNE)
-	else:
+	if SessionExists(cur, session):
 		cur.execute("DROP TABLE " + str(session))
+	else:
+		raise SessionError(session, SessionError.DNE)
 	
 def SessionExists(cur, session):
 	#checks if a session exists, boolean function
@@ -126,7 +126,7 @@ def checkNodeState(node):
 		
 """LOCATION FUNCTIONS"""	
 def createLocation(cur, session, nID, time, lat, lon):
-	if ~SessionExists(cur, session):
+	if not SessionExists(cur, session):
 		raise SessionError(session, SessionError.DNE)
 	else:
 		query = "INSERT INTO {0} VALUES (NULL, %s, %s, %s, %s)".format(session)
