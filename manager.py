@@ -84,7 +84,7 @@ elif args.free != None:
 elif args.SESSIONS == True:
 	#list all sessions
 	(conn, cur) = DBconnect(host, user, pw)
-	print "-----Session List-----"
+	print "\t-----Session List-----"
 	db.displaySessions(cur)
 	DBclose(conn, cur)
 	
@@ -92,10 +92,10 @@ elif args.NODES != None:
 	#list nodes
 	(conn, cur) = DBconnect(host, user, pw)
 	if args.NODES == '0':
-		print "-----Node List-----"
+		print "\t-----Node List-----"
 		db.displayNodes(cur)
 	else:
-		print "-----Node List in Session : %s-----" % args.NODES
+		print "\t-----Node List in Session : %s-----" % args.NODES
 		db.displayNodes(cur, args.NODES)
 	DBclose(conn, cur)
 	
