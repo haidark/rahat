@@ -70,7 +70,7 @@ elif args.delete != None:
 elif args.activate != None:
 	#activate a node
 	(conn, cur) = DBconnect(host, user, pw)
-	db.activateNode(cur, agrs.activate[0], args.activate[1])
+	db.activateNode(cur, args.activate[0], args.activate[1])
 	DBclose(conn, cur)
 	print "Added node with device ID: " + args.activate[0] + " to session with passphrase: " + args.activate[1]
 	
