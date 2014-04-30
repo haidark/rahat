@@ -124,6 +124,10 @@ else:
 		pass
 	print "\t(+) Session created!"
 #---------------------------------------------------------------------------------------------------------#	
+	print "(=) Testing displaySessions function"
+	print "(=) List of all sessions"
+	db.displaySessions(cur)
+#---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing Failure of createSession function"
 	try:
 		db.createSession(cur, ses)
