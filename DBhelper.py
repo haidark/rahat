@@ -153,7 +153,10 @@ def createLocation(cur, session, nID, time, lat, lon):
 
 def displaySessions(cur):
 	#displays a list of all active sessions
-	pass
+	cur.execute("SHOW TABLES")
+	sessions = cur.fetchall()
+	for session in sessions:
+		print "\t", session
 	
 def displayNodes(cur, session=0):
 	#displays a list of all nodes

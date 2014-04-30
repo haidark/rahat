@@ -163,7 +163,7 @@ else:
 		db.createNode(cur, dev4, 'invalidsession')
 		print "\t(-) Invalid Session Node Test failed."
 	except db.SessionError as se:
-		print "\t(+) Invalid Session Node Test passed."
+		print "\t(+) Invalid Session Node Test passed. Error Caught: ", se.msg
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) activateNode Test"
 	
