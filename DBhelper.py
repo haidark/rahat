@@ -40,7 +40,6 @@ def createNode(cur, devID, session=None):
 	#check if the node already exists
 	try:
 		node = getNode(cur, devID)
-		print "Node with devID=%s already exists." % devID
 		return node[0]
 	#if the node does not exist
 	except NodeError as ne:		
@@ -58,7 +57,6 @@ def createNode(cur, devID, session=None):
 				nID = cur.lastrowid
 				#Never expect this if statement to pass but leaving it in there just in case
 				if nID == None:
-					print "Unable to create new node."
 					nID = -1
 				return nID
 
@@ -148,7 +146,6 @@ def createLocation(cur, session, nID, time, lat, lon):
 		lID = cur.lastrowid
 		#Never expect this if statement to pass but leaving it in there just in case
 		if lID == None:
-			print "Unable to insert new location!!!"
 			lID = -1
 		return lID	
 		
@@ -166,7 +163,7 @@ def displayNodes(cur, session=0):
 		cur.execute("SELECT * FROM nodes WHERE session=%s", session)
 	nodes = cur.fetchall()
 	for node in nodes:
-		print node
+		print "\t", node
 
 ##########################################################################
 ##########################################################################
