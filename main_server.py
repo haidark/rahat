@@ -5,7 +5,7 @@
 import socket
 import pymysql, DBhelper
 import thread
-from DBhelper import getNode, createLocation
+from DBhelper import getNode, createLocation, NodeError
 
 def recv_all(sock, length):
 	data = ''
@@ -38,7 +38,7 @@ def handleClient(clientSock, addr):
 		try:
 			node = getNode(cur, devID)
 			nID = node[0]
-			session = node[1]
+			session = node[2]
 			time = getChunk(clientSock)
 			lat = getChunk(clientSock)
 			lon = getChunk(clientSock)
