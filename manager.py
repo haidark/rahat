@@ -44,58 +44,60 @@ if args.session != None:
 	(conn, cur) = DBconnect(host, user, pw)
 	db.createSession(cur, args.session)
 	DBclose(conn, cur)
+	print "Created session with passphrase: " + args.session
 	
 elif args.archive != None:
 	#archive session
 	(conn, cur) = DBconnect(host, user, pw)
 	db.deleteSession(cur, args.archive)
 	DBclose(conn, cur)
-	print args.archive
+	print "Deleted session with passphrase: " + args.archive
 	
 elif args.node != None:
 	#create a new node
 	(conn, cur) = DBconnect(host, user, pw)
 	db.createNode(cur, args.node)
 	DBclose(conn, cur)
-	print args.node
+	print "Created node with device ID: " + args.node
 	
 elif args.delete != None:
 	#delete a node
 	(conn, cur) = DBconnect(host, user, pw)
 	db.deleteNode(cur, args.delete)
 	DBclose(conn, cur)
-	print args.delete
+	print "Deleted node with device ID: " + args.delete
 	
 elif args.activate != None:
 	#activate a node
 	(conn, cur) = DBconnect(host, user, pw)
 	db.activateNode(cur, agrs.activate[0], args.activate[1])
 	DBclose(conn, cur)
-	print args.activate
+	print "Added node with device ID: " + args.activate[0] + " to session with passphrase: " + args.activate[1]
 	
 elif args.free != None:
 	#free a node
 	(conn, cur) = DBconnect(host, user, pw)
 	db.freeNode(cur, args.free)
 	DBclose(conn, cur)
-	print args.free
+	print "Freed node with device ID: " + args.free
 	
 elif args.SESSIONS == True:
 	#list all sessions
 	(conn, cur) = DBconnect(host, user, pw)
+	print "-----Session List-----"
 	db.displaySessions(cur)
 	DBclose(conn, cur)
-	print args.SESSIONS
 	
 elif args.NODES != None:
 	#list nodes
 	(conn, cur) = DBconnect(host, user, pw)
 	if args.NODES == '0':
+		print "-----Node List-----"
 		db.displayNodes(cur)
 	else:
+		print "-----Node List in Session : %s-----" % args.NODES
 		db.displayNodes(cur, args.NODES)
 	DBclose(conn, cur)
-	print args.NODES
 	
 else:
 	#run a test of each function

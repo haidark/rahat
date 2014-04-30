@@ -22,6 +22,7 @@ def deleteSession(cur, session):
 	#drops the table associated with a session
 	if SessionExists(cur, session):
 		cur.execute("DROP TABLE " + str(session))
+		cur.connection.commit()
 	else:
 		raise SessionError(session, SessionError.DNE)
 	
@@ -69,6 +70,7 @@ def deleteNode(cur, devID):
 		cur.execute("DELETE FROM " + str(session) + " WHERE nodeID=%s", nID) 
 	#now delete it from the nodes table
 	cur.execute("DELETE FROM nodes WHERE devID=%s", devID)
+	cur.connection.commit()
 			
 def activateNode(cur, devID, session):
 	#changes the session of a node to the new session iff the node exists AND is a free node
@@ -85,6 +87,7 @@ def freeNode(cur, devID):
 	#changes the session column of a node to NULL
 	query = "UPDATE nodes set session=NULL WHERE devID=%s"
 	count = cur.execute(query, devID)
+	cur.connection.commit()
 	#if something goes wrong
 	if count == 0:
 		#check if node exists or node was already free
