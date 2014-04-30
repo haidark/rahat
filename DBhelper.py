@@ -46,7 +46,7 @@ def createNode(cur, devID, session=None):
 	except NodeError as ne:		
 		if ne.msg == NodeError.DNE:
 			#if user specifies a session and it does not exist
-			if session ~= None and not SessionExists(cur, session):
+			if session != None and not SessionExists(cur, session):
 				#raise a session does not exist error
 				raise SessionError(session, SessionError.DNE)
 			#otherwise proceed as normal
