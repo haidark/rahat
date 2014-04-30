@@ -45,16 +45,22 @@ def createNode(cur, devID, session=None):
 	#if the node does not exist
 	except NodeError as ne:		
 		if ne.msg == NodeError.DNE:
-			query = "INSERT INTO nodes VALUES (NULL, %s, %s)"
-			cur.execute(query, (devID, session))	
-			cur.connection.commit()
-			#get the node ID
-			nID = cur.lastrowid
-			#Never expect this if statement to pass but leaving it in there just in case
-			if nID == None:
-				print "Unable to create new node."
-				nID = -1
-			return nID
+			#if user specifies a session and it does not exist
+			if session ~= None and not SessionExists(cur, session):
+				#raise a session does not exist error
+				raise SessionError(session, SessionError.DNE)
+			#otherwise proceed as normal
+			else:
+				query = "INSERT INTO nodes VALUES (NULL, %s, %s)"
+				cur.execute(query, (devID, session))	
+				cur.connection.commit()
+				#get the node ID
+				nID = cur.lastrowid
+				#Never expect this if statement to pass but leaving it in there just in case
+				if nID == None:
+					print "Unable to create new node."
+					nID = -1
+				return nID
 
 def deleteNode(cur, devID):
 	#Removes the given node from the table of nodes
@@ -77,11 +83,15 @@ def activateNode(cur, devID, session):
 	
 	#if the node does not exist or it is already in a session, raises a NodeError
 	assertFreeNode(getNode(cur, devID))
+	#if the specified session does not exist, raise a SessionError
+	if not SessionExists(cur, session):
+		raise SessionError(session, SessionError.DNE)
+	else:
 	#if all is well(no errors raised)
-	query = "UPDATE nodes SET session=%s WHERE devID=%s"
-	count = cur.execute(query, (session, devID))
-	cur.connection.commit()
-	return
+		query = "UPDATE nodes SET session=%s WHERE devID=%s"
+		count = cur.execute(query, (session, devID))
+		cur.connection.commit()
+		return
 		
 def freeNode(cur, devID):
 	#changes the session column of a node to NULL
