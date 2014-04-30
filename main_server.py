@@ -39,12 +39,15 @@ def handleClient(clientSock, addr):
 			node = getNode(cur, devID)
 			nID = node[0]
 			session = node[2]
-			time = getChunk(clientSock)
-			lat = getChunk(clientSock)
-			lon = getChunk(clientSock)
-			#write the location data to DB
-			LID = createLocation(cur, session, nID, time, lat, lon)
-			print "(+) Received data. Device ID: %s" % devID
+			if session == None:
+				print "(-) Node is not active. Device ID: %s" % devID
+			else:
+				time = getChunk(clientSock)
+				lat = getChunk(clientSock)
+				lon = getChunk(clientSock)
+				#write the location data to DB
+				LID = createLocation(cur, session, nID, time, lat, lon)
+				print "(+) Received data. Device ID: %s" % devID
 		#if the node does not exist
 		except NodeError:
 			print "(-) Device not recognized. Device ID: %s" % devID	
