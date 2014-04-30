@@ -35,4 +35,4 @@ lon = '123.41234'
 msg = preLen(phrase)+ preLen(devID) + preLen(time) + preLen(lat) + preLen(lon)
 s.sendall(msg) 
 print 'Location info sent'
-s.close()
+s.closed()

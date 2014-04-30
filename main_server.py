@@ -3,7 +3,7 @@
 # Server Script for haramain2 database (layout 2)
 ##########################################################################
 import socket
-import pymysql, DBhelper
+import pymysql
 import thread
 from DBhelper import getNode, createLocation, NodeError
 
@@ -25,15 +25,16 @@ def getChunk(sock):
 	
 def handleClient(clientSock, addr):
 	try:
+		#connect to the DB
+		conn = pymysql.connect(host='127.0.0.1', user='haidar', passwd='pin101', db='haramain2')
+		cur = conn.cursor()
+		
 		# get phrase from client - going to remove this, client only needs to send deviceID
 		phrase = getChunk(clientSock)		
 		
 		#get devID from client
-		devID = getChunk(clientSock)
+		devID = getChunk(clientSock)		
 		
-		#connect to the DB
-		conn = pymysql.connect(host='127.0.0.1', user='haidar', passwd='pin101', db='haramain2')
-		cur = conn.cursor()
 		#check if node exists
 		try:
 			node = getNode(cur, devID)
@@ -51,10 +52,11 @@ def handleClient(clientSock, addr):
 		#if the node does not exist
 		except NodeError:
 			print "(-) Device not recognized. Device ID: %s" % devID	
-		cur.close()
-		conn.close()			
+	# if client hangs				
 	except EOFError:
 		print "(-) Client %s closed connection" % addr
+	cur.close()
+	conn.close()
 	clientSock.close()
 	print "\t(=) Connection with %s closed" % addr
 	
