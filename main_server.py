@@ -29,9 +29,6 @@ def handleClient(clientSock, addr):
 		conn = pymysql.connect(host='127.0.0.1', user='haidar', passwd='pin101', db='haramain2')
 		cur = conn.cursor()
 		
-		# get phrase from client - going to remove this, client only needs to send deviceID
-		phrase = getChunk(clientSock)		
-		
 		#get devID from client
 		devID = getChunk(clientSock)		
 		

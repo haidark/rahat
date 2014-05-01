@@ -14,7 +14,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.IntentSender;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.support.v4.app.Fragment;
@@ -68,6 +67,8 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
     @Override
     protected void onStart() {
         super.onStart();
+      //check if google play services are installed
+      	servicesConnected();
         // Connect the client.
         mLocationClient.connect();
     }
@@ -104,36 +105,42 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
 	
 	// Called when the User clicks the Send Location Button
 	public void sendLocation(View view){
-		String serverName = "haidarkhan.no-ip.org";
-		int port = 1060;
-		
-		//get string from editText field
-		EditText editText = (EditText) findViewById(R.id.edit_1);
-		String phrase = editText.getText().toString();
-		phrase = "session1"; //this is for debugging until sessions are fully fleshed out
-		//get the unique device ID
-		String devId = Secure.getString(getBaseContext().getContentResolver(),
-                Secure.ANDROID_ID); 
-		
-		//get the time & location
+		if(servicesConnected()){
+			//get string from editText field
+			EditText editText = (EditText) findViewById(R.id.edit_1);
+			//String edit = editText.getText().toString();
+			
+			String serverName = "haidarkhan.no-ip.org";
+			int port = 1060;
+			
+			//spawn a client thread to send the message
+			Thread client = new Thread(new ClientThread(serverName, port));
+			client.start();
+			try {
+				client.join();
+			} catch (InterruptedException e) {
+				Toast.makeText(this, "Thread: " + client.getName() + " interrupted!\n", Toast.LENGTH_SHORT).show();
+			}
+		} else {
+			dispMsg = "Google Play Services not available!\n" + dispMsg;			
+		}
+		((TextView) findViewById(R.id.text_1)).setText(dispMsg);
+	}
+	
+	public String packLocation(){
+    	//get the unique device ID
+		String devId = Secure.getString(getBaseContext().getContentResolver(), Secure.ANDROID_ID); 
+		//Last best location
 		mCurrentLocation = mLocationClient.getLastLocation();
+		//get time of location capture
 		String datetime = Epoch2DateString(mCurrentLocation.getTime(), "yyyy-MM-dd HH:mm:ss");
+		//get location coordinates
 		double lat = mCurrentLocation.getLatitude();
 		double lon = mCurrentLocation.getLongitude();
 		
-		Time now = new Time();
-		now.setToNow();
-		
-		//set the text in the Text View
-		dispMsg = dispMsg + now.format("%H:%M:%S") + ": Sending message to server at haidarkhan.no-ip.org...\n";
-		((TextView) findViewById(R.id.text_1)).setText(dispMsg); 
-		
-		//send the message to the server
-		String sendMsg = preLen(phrase)+preLen(devId)+preLen(datetime)+preLen(String.valueOf(lat))+preLen(String.valueOf(lon));
-		//open a socket
-		new Thread(new ClientThread(serverName, port, sendMsg)).start();	
-
-	}
+		//assemble the message
+		return preLen(devId)+preLen(datetime)+preLen(String.valueOf(lat))+preLen(String.valueOf(lon));
+    }
 	
 	private String preLen(String str){
 		//Prepends the length of the string to the string
@@ -200,7 +207,6 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
     public void onConnected(Bundle dataBundle) {
         // Display the connection status
         Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
-
     }
     
     /*
@@ -249,30 +255,39 @@ GooglePlayServicesClient.OnConnectionFailedListener  {
         }
     }
     
+        
     class ClientThread implements Runnable{
     	private Socket socket;
-    	private String message;
     	private String sName;
     	private int sPort;
-    	public ClientThread(String sname, int port, String msg){
-    		message = msg;
+    	
+    	public ClientThread(String sname, int port){
     		sName = sname;
     		sPort = port;
     	}
     	
     	@Override
     	public void run(){
-    		try{
+    		try{    			
+    			//get teh current time
+    			Time now = new Time();
+    			now.setToNow();
+    			String message = packLocation();
     			InetAddress serverAddr = InetAddress.getByName(sName);    			
     			socket = new Socket(serverAddr, sPort);
     			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
     			out.println(message);
+    			//set the text in the Text View
+    			dispMsg = "Location sent @ " + now.format("%H:%M:%S") + "\n" + dispMsg;
     		} catch(UnknownHostException e1){
     			e1.printStackTrace();
+    			dispMsg = e1.getMessage() + "\n" + dispMsg;
     		} catch (IOException e1){
     			e1.printStackTrace();
-    		}catch(Exception e){
+    			dispMsg = e1.getMessage() + "\n" + dispMsg;
+    		} catch(Exception e){
     			e.printStackTrace();
+    			dispMsg = e.getMessage() + "\n" + dispMsg;
     		}
     	}
     }

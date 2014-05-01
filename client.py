@@ -26,13 +26,12 @@ PORT = 1060
 
 s.connect((HOST, PORT))
 print 'Client has been assigned socket name', s.getsockname()
-phrase = 'session1'
 devID = 'python-script'
 time = '1991-09-04 12:25:49'
 lat = '-12.2111'
 lon = '123.41234'
 
-msg = preLen(phrase)+ preLen(devID) + preLen(time) + preLen(lat) + preLen(lon)
+msg = preLen(devID) + preLen(time) + preLen(lat) + preLen(lon)
 s.sendall(msg) 
 print 'Location info sent'
 s.closed()

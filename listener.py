@@ -73,9 +73,6 @@ class ClientHandlerThread(Thread):
 			conn = pymysql.connect(self.dbHost, self.dbUser, self.dbPass, self.dbDb)
 			cur = conn.cursor()
 			
-			# get phrase from client - going to remove this, client only needs to send deviceID
-			phrase = self.getChunk()		
-			
 			#get devID from client
 			devID = self.getChunk()		
 			
