@@ -61,6 +61,7 @@ class ClientHandlerThread(Thread):
 	def __init__(self, clientSock, dbInfo):
 		Thread.__init__(self)
 		self.cSock = clientSock
+		self.sockname = clientSock.getsockname()
 		self.dbHost = dbInfo[0]
 		self.dbUser = dbInfo[1]
 		self.dbPass = dbInfo[2]
@@ -97,11 +98,11 @@ class ClientHandlerThread(Thread):
 				print "(-) Device not recognized. Device ID: %s" % devID			
 		# if client hangs up
 		except EOFError:
-			print "(-) Client %s closed connection" % str(cSock.getsockname())
+			print "(-) Client %s closed connection" % str(self.sockname)
 		cur.close()
 		conn.close()	
 		self.cSock.close()
-		print "\t(=) Connection with %s closed" % str(cSock.getsockname())
+		print "\t(=) Connection with %s closed" % str(self.sockname)
 		
 	def recv_all(self, length):
 		data = ''
