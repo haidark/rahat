@@ -101,7 +101,7 @@ class ClientHandlerThread(Thread):
 		cur.close()
 		conn.close()	
 		self.cSock.close()
-		print "\t(=) Connection with %s closed" % str(self.cSock.getsockname())
+		print "\t(=) Connection with %s closed" % str(cSock.getsockname())
 		
 	def recv_all(self, length):
 		data = ''
