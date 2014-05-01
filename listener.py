@@ -103,10 +103,10 @@ class ClientHandlerThread(Thread):
 		self.cSock.close()
 		print "\t(=) Connection with %s closed" % str(self.cSock.getsockName())
 		
-	def recv_all(sock, length):
+	def recv_all(self, length):
 		data = ''
 		while len(data) < length:
-			more = sock.recv(length - len(data))
+			more = self.cSock.recv(length - len(data))
 			if not more:
 				raise EOFError('socket closed %d bytes into a %d-byte message' % (len(data), length))
 			data += more
