@@ -61,7 +61,7 @@ class ClientHandlerThread(Thread):
 	def __init__(self, clientSock, dbInfo):
 		Thread.__init__(self)
 		self.cSock = clientSock
-		self.sockname = clientSock.getsockname()
+		self.sockname = clientSock.getpeername()
 		self.dbHost = dbInfo[0]
 		self.dbUser = dbInfo[1]
 		self.dbPass = dbInfo[2]
