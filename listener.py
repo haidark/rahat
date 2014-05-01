@@ -22,7 +22,7 @@ class Listener(Thread):
 		self.host = host
 		self.port = port
 	
-	DBINFO = ('192.168.1.222', 'haidar', 'pin101', 'haramain2')
+	DBINFO = ('127.0.0.1', 'haidar', 'pin101', 'haramain2')
 	
 	def run(self):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
