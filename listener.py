@@ -21,7 +21,7 @@ class Listener(Thread):
 		Thread.__init__(self)
 		self.host = host
 		self.port = port
-
+	
 	DBINFO = ('192.168.1.222', 'haidar', 'pin101', 'haramain2')
 	
 	def run(self):
@@ -34,7 +34,7 @@ class Listener(Thread):
 			clientSock, sockname = s.accept()
 			print "(+) Connected to %s established" % str(sockname)
 			#multi-threaded
-			clientThread = ClientHandlerThread(clientSock, DBINFO)
+			clientThread = ClientHandlerThread(clientSock, Listener.DBINFO)
 			clientThread.start()
 #----------------------------------------------------------------------------------------------#
 class ClientHandlerThread(Thread):
