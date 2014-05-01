@@ -72,10 +72,10 @@ class ClientHandlerThread(Thread):
 			cur = conn.cursor()
 			
 			# get phrase from client - going to remove this, client only needs to send deviceID
-			phrase = getChunk()		
+			phrase = ClientHandlerThread.getChunk()		
 			
 			#get devID from client
-			devID = getChunk()		
+			devID = self.getChunk()		
 			
 			#check if node exists
 			try:
