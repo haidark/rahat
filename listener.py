@@ -72,7 +72,7 @@ class ClientHandlerThread(Thread):
 			cur = conn.cursor()
 			
 			# get phrase from client - going to remove this, client only needs to send deviceID
-			phrase = ClientHandlerThread.getChunk()		
+			phrase = self.getChunk()		
 			
 			#get devID from client
 			devID = self.getChunk()		
@@ -85,9 +85,9 @@ class ClientHandlerThread(Thread):
 				if session == None:
 					print "(-) Node is not active. Device ID: %s" % devID
 				else:
-					time = getChunk()
-					lat = getChunk()
-					lon = getChunk()
+					time = self.getChunk()
+					lat = self.getChunk()
+					lon = self.getChunk()
 					#write the location data to DB
 					LID = createLocation(cur, session, nID, time, lat, lon)
 					print "(+) Received data. Device ID: %s" % devID
