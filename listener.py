@@ -2,8 +2,9 @@ import pymysql
 import socket
 from DBhelper import getNode, createLocation, NodeError
 from threading import Thread
+from multiprocessing import Process
 #----------------------------------------------------------------------------------------------#
-class Listener(Thread):
+class Listener(Process):
 	"""Listener Class - inherits from threading.Thread
 		Static Members:
 			DBINFO tuple which containt database information - (host, user, pass, db)
@@ -18,7 +19,7 @@ class Listener(Thread):
 	"""
 	
 	def __init__(self, host, port):
-		Thread.__init__(self)
+		Process.__init__(self)
 		self.host = host
 		self.port = port
 	
@@ -111,7 +112,7 @@ class ClientHandlerThread(Thread):
 			data += more
 		return data
 	
-	def getChunk():
+	def getChunk(self):
 		len = int(recv_all(self.cSock, 2))
 		chunk = recv_all(self.cSock, len)
 		if len == 99 and chunk.endswith('~'):
