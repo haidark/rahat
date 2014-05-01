@@ -113,8 +113,8 @@ class ClientHandlerThread(Thread):
 		return data
 	
 	def getChunk(self):
-		len = int(self.recv_all(self.cSock, 2))
-		chunk = self.recv_all(self.cSock, len)
+		len = int(self.recv_all(2))
+		chunk = self.recv_all(len)
 		if len == 99 and chunk.endswith('~'):
 			chunk = chunk.rstrip('~') + getChunk()
 		return chunk
