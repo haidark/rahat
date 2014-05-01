@@ -35,7 +35,7 @@ class Listener(Process):
 			clientSock, sockname = s.accept()
 			print "(+) Connected to %s established" % str(sockname)
 			#multi-threaded
-			clientThread = ClientHandlerThread(clientSock, Listener.DBINFO)
+			clientThread = ClientHandlerThread(clientSock, sockname, Listener.DBINFO)
 			clientThread.start()
 #----------------------------------------------------------------------------------------------#
 class ClientHandlerThread(Thread):
@@ -58,10 +58,10 @@ class ClientHandlerThread(Thread):
 			getChunk - gets data formatted with data length in first two bytes, returns data string
 	"""
 	
-	def __init__(self, clientSock, dbInfo):
+	def __init__(self, clientSock, clientAddr, dbInfo):
 		Thread.__init__(self)
 		self.cSock = clientSock
-		self.sockname = clientSock.getpeername()
+		self.sockname = str(clientAddr)
 		self.dbHost = dbInfo[0]
 		self.dbUser = dbInfo[1]
 		self.dbPass = dbInfo[2]
