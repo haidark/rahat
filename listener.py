@@ -5,15 +5,15 @@ from threading import Thread
 from multiprocessing import Process
 #----------------------------------------------------------------------------------------------#
 class Listener(Process):
-	"""Listener Class - inherits from threading.Thread
+	"""Listener Class - inherits from multiprocessing.Process
 		Static Members:
-			DBINFO tuple which containt database information - (host, user, pass, db)
+			DBINFO tuple which contains database information - (host, user, pass, db)
 		Members:
 			host - Host IP address to listen on - string "xxx.xxx.xxx.xxx"
 			port - Port number to listen on - int > 1000
 		
 		Functions:
-			implements theading.Thread.run() - can be multi threaded
+			implements multiprocessing.Process.run() - can be multi process
 			run() - socket code to bind to (IP, port) and accepts all clients
 					spawns client thread to handle clients
 	"""
@@ -33,7 +33,7 @@ class Listener(Process):
 		while True:
 			print '\t(=) Listening at', s.getsockname()
 			clientSock, sockname = s.accept()
-			print "(+) Connected to %s established" % str(sockname)
+			print "(=) Connection to %s established" % str(sockname)
 			#multi-threaded
 			clientThread = ClientHandlerThread(clientSock, sockname, Listener.DBINFO)
 			clientThread.start()
@@ -50,7 +50,7 @@ class ClientHandlerThread(Thread):
 			dbDb - Name of database on Database
 		
 		Functions:
-			implements theading.Thread.run() - can be multi threaded
+			implements threading.Thread.run() - can be multi threaded
 			run() - gets location info from client, handles all errors
 					if valid data, writes it to the DB
 					
@@ -109,7 +109,7 @@ class ClientHandlerThread(Thread):
 		while len(data) < length:
 			more = self.cSock.recv(length - len(data))
 			if not more:
-				raise EOFError('socket closed %d bytes into a %d-byte message' % (len(data), length))
+				raise EOFError('(-) Socket closed %d bytes into a %d-byte message' % (len(data), length))
 			data += more
 		return data
 	
