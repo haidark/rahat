@@ -97,7 +97,7 @@ class ClientHandlerThread(Thread):
 				print "(-) Device not recognized. Device ID: %s" % devID			
 		# if client hangs up
 		except EOFError:
-			print "(-) Client %s closed connection" % str(self.cSock.getsockname())
+			print "(-) Client %s closed connection" % str(cSock.getsockname())
 		cur.close()
 		conn.close()	
 		self.cSock.close()
