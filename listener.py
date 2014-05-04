@@ -24,7 +24,7 @@ class Listener(Process):
 		Process.__init__(self)
 		self.host = host
 		self.port = port
-		logging.basicConfig(filename='listener.log', level=logging.INFO)
+		logging.basicConfig(filename='listener.log', format='%(levelname)s:%(message)s', level=logging.INFO)
 	
 	DBINFO = ('127.0.0.1', 'haidar', 'pin101', 'haramain2')
 	
