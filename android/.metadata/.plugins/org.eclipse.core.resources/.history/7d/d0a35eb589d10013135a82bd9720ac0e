@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Rahat</string>
+    <string name="action_settings">Settings</string>
+	<string name="edit_1">Time Interval (mins)</string>
+	<string name="text_info"></string>
+	<string name="text_scroll"></string>
+	<string name="button_send">Send Now</string>
+	<string name="button_service">Auto Send</string>
+	<string name="title_activity_main">MainActivity</string>
+</resources>

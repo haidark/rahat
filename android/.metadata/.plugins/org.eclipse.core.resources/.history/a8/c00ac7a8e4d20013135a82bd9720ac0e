@@ -1,0 +1,25 @@
+package com.example.rahat;
+
+import com.google.android.gms.location.LocationClient;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.location.LocationManager;
+import android.util.Log;
+import android.widget.Toast;
+
+
+public class AlarmReceiver extends BroadcastReceiver 
+{
+	@Override
+	public void onReceive(Context context, Intent intent)
+	{     
+		Log.d("InAlarm", "Reached onReceive");
+		mLocationClient = new LocationClient(context, null, null);
+		//new ClientTask().execute(serverName, port);
+		// Show the toast  like in above screen shot
+		Toast.makeText(context, "Alarm Triggered and Location Sent", Toast.LENGTH_LONG).show();
+	}
+     
+}

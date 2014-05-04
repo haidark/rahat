@@ -1,5 +1,6 @@
 import pymysql
 import socket
+import time
 from DBhelper import getNode, createLocation, NodeError
 from threading import Thread
 from multiprocessing import Process
@@ -31,9 +32,7 @@ class Listener(Process):
 		s.bind((self.host, self.port))
 		s.listen(5)
 		while True:
-			print '\t(=) Listening at', s.getsockname()
 			clientSock, sockname = s.accept()
-			print "(=) Connection to %s established" % str(sockname)
 			#multi-threaded
 			clientThread = ClientHandlerThread(clientSock, sockname, Listener.DBINFO)
 			clientThread.start()
@@ -69,6 +68,8 @@ class ClientHandlerThread(Thread):
 		
 	def run(self):
 		try:
+			#get current time
+			now = time.strftime("%m/%d/%Y %H:%M:%S")
 			#connect to the DB
 			conn = pymysql.connect(self.dbHost, self.dbUser, self.dbPass, self.dbDb)
 			cur = conn.cursor()
@@ -82,24 +83,23 @@ class ClientHandlerThread(Thread):
 				nID = node[0]
 				session = node[2]
 				if session == None:
-					print "(-) Node is not active. Device ID: %s" % devID
+					print "(-) %s: Node is not active. Device ID: %s" % now, devID
 				else:
 					time = self.getChunk()
 					lat = self.getChunk()
 					lon = self.getChunk()
 					#write the location data to DB
 					LID = createLocation(cur, session, nID, time, lat, lon)
-					print "(+) Received data. Device ID: %s" % devID
+					print "(+) %s: Received data. Device ID: %s" % now, devID
 			#if the node does not exist
 			except NodeError:
-				print "(-) Device not recognized. Device ID: %s" % devID			
+				print "(-) %s: Device not recognized. Device ID: %s" % now, devID			
 		# if client hangs up
 		except EOFError:
-			print "(-) Client %s closed connection" % str(self.sockname)
+			print "(-) %s: Client %s closed connection" % now, str(self.sockname)
 		cur.close()
 		conn.close()	
 		self.cSock.close()
-		print "\t(=) Connection with %s closed" % str(self.sockname)
 		
 	def recv_all(self, length):
 		data = ''
