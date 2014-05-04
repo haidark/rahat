@@ -83,20 +83,20 @@ class ClientHandlerThread(Thread):
 				nID = node[0]
 				session = node[2]
 				if session == None:
-					print "(-) %s: Node is not active. Device ID: %s" % now, devID
+					print "(-) %s: Node is not active. Device ID: %s" % (now, devID)
 				else:
 					locTime = self.getChunk()
 					lat = self.getChunk()
 					lon = self.getChunk()
 					#write the location data to DB
 					LID = createLocation(cur, session, nID, locTime, lat, lon)
-					print "(+) %s: Received data. Device ID: %s" % now, devID
+					print "(+) %s: Received data. Device ID: %s" % (now, devID)
 			#if the node does not exist
 			except NodeError:
-				print "(-) %s: Device not recognized. Device ID: %s" % now, devID			
+				print "(-) %s: Device not recognized. Device ID: %s" % (now, devID)			
 		# if client hangs up
 		except EOFError:
-			print "(-) %s: Client %s closed connection" % now, str(self.sockname)
+			print "(-) %s: Client %s closed connection" % (now, str(self.sockname))
 		cur.close()
 		conn.close()	
 		self.cSock.close()
