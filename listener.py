@@ -85,11 +85,11 @@ class ClientHandlerThread(Thread):
 				if session == None:
 					print "(-) %s: Node is not active. Device ID: %s" % now, devID
 				else:
-					time = self.getChunk()
+					locTime = self.getChunk()
 					lat = self.getChunk()
 					lon = self.getChunk()
 					#write the location data to DB
-					LID = createLocation(cur, session, nID, time, lat, lon)
+					LID = createLocation(cur, session, nID, locTime, lat, lon)
 					print "(+) %s: Received data. Device ID: %s" % now, devID
 			#if the node does not exist
 			except NodeError:
