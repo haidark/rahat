@@ -1,6 +1,7 @@
 import pymysql
 import socket
 import time
+import logging
 from DBhelper import getNode, createLocation, NodeError
 from threading import Thread
 from multiprocessing import Process
@@ -23,6 +24,7 @@ class Listener(Process):
 		Process.__init__(self)
 		self.host = host
 		self.port = port
+		logging.basicConfig(filename='listener.log', level=logging.INFO)
 	
 	DBINFO = ('127.0.0.1', 'haidar', 'pin101', 'haramain2')
 	
@@ -83,6 +85,7 @@ class ClientHandlerThread(Thread):
 				nID = node[0]
 				session = node[2]
 				if session == None:
+					logging.info("(-) %s: Node is not active. Device ID: %s" % (now, devID))
 					print "(-) %s: Node is not active. Device ID: %s" % (now, devID)
 				else:
 					locTime = self.getChunk()
@@ -90,12 +93,15 @@ class ClientHandlerThread(Thread):
 					lon = self.getChunk()
 					#write the location data to DB
 					LID = createLocation(cur, session, nID, locTime, lat, lon)
+					logging.info("(+) %s: Received data. Device ID: %s" % (now, devID))
 					print "(+) %s: Received data. Device ID: %s" % (now, devID)
 			#if the node does not exist
 			except NodeError:
+				logging.info("(-) %s: Device not recognized. Device ID: %s" % (now, devID))
 				print "(-) %s: Device not recognized. Device ID: %s" % (now, devID)			
 		# if client hangs up
 		except EOFError:
+			logging.info("(-) %s: Client %s closed connection" % (now, str(self.sockname)))
 			print "(-) %s: Client %s closed connection" % (now, str(self.sockname))
 		cur.close()
 		conn.close()	
