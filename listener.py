@@ -30,7 +30,7 @@ class Listener(Process):
 		while True:
 			clientSock, sockname = self.listenSock.accept()
 			#multi-threaded client handler
-			clientThread = ClientHandlerThread(clientSock, sockname, 15, listenerID)
+			clientThread = ClientHandlerThread(clientSock, sockname, 15, self.listenerID)
 			clientThread.start()
 #----------------------------------------------------------------------------------------------#
 class ClientHandlerThread(Thread):
