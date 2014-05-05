@@ -61,18 +61,22 @@ class ClientHandlerThread(Thread):
 	def __init__(self, clientSock, clientAddr, dbInfo):
 		Thread.__init__(self)
 		self.cSock = clientSock
+		self.cSock.settimeout(15)
 		self.sockname = str(clientAddr)
 		self.dbInfo = dbInfo
 		
 	def run(self):
 		try:
+			logMsg = 'Place holder for log message'
 			#get current time
 			now = time.strftime("%m/%d/%Y %H:%M:%S")
 			#connect to the database by constructing a DBManager object
 			db = DBManager(self.dbInfo)
+			#start the clock
+			start = time.clock()
 			#get devID from client
 			devID = self.getChunk()		
-			logMsg = ''
+			
 			#check if node exists
 			try:
 				node = db.getNode(devID)
@@ -84,15 +88,17 @@ class ClientHandlerThread(Thread):
 					locTime = self.getChunk()
 					lat = self.getChunk()
 					lon = self.getChunk()
+					#stop the clock
+					stop = time.clock()
 					#write the location data to DB
 					LID = db.createLocation(session, nID, locTime, lat, lon)
-					logMsg = "(+) %s: Received data. Device ID: %s" % (now, devID)
+					logMsg = "(+) %s: Received data in " + str(start-stop) + " seconds. Device ID: %s" % (now, devID)
 			#if the node does not exist
 			except NodeError:
 				logMsg = "(-) %s: Device not recognized. Device ID: %s" % (now, devID)
 		# if client hangs up
-		except EOFError:
-			logMsg = "(-) %s: Client %s closed connection" % (now, str(self.sockname))
+		except (EOFError, socket.timeout):
+			logMsg = "(-) %s: Client %s closed connection or timed-out" % (now, str(self.sockname))
 
 		logging.info(logMsg)
 		print logMsg
