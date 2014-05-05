@@ -72,8 +72,6 @@ class ClientHandlerThread(Thread):
 			now = time.strftime("%m/%d/%Y %H:%M:%S")
 			#connect to the database by constructing a DBManager object
 			db = DBManager(self.dbInfo)
-			#start the clock
-			start = time.clock()
 			#get devID from client
 			devID = self.getChunk()		
 			
@@ -83,22 +81,20 @@ class ClientHandlerThread(Thread):
 				nID = node[0]
 				session = node[2]
 				if session == None:
-					logMsg = "(-) %s: Node is not active. Device ID: %s" % (now, devID)
+					logMsg = "(-) %s: Node at %s is not active. Device ID: %s" % (now, self.sockname, devID)
 				else:
 					locTime = self.getChunk()
 					lat = self.getChunk()
 					lon = self.getChunk()
-					#stop the clock
-					stop = time.clock()
 					#write the location data to DB
 					LID = db.createLocation(session, nID, locTime, lat, lon)
-					logMsg = "(+) %s: Received data in %0.4f seconds. Device ID: %s" % (now, stop-start, devID)
+					logMsg = "(+) %s: Received data from %s. Device ID: %s" % (now, self.sockname, devID)
 			#if the node does not exist
 			except NodeError:
-				logMsg = "(-) %s: Device not recognized. Device ID: %s" % (now, devID)
+				logMsg = "(-) %s: Device at %s not recognized. Device ID: %s" % (now, self.sockname, devID)
 		# if client hangs up
 		except (EOFError, socket.timeout):
-			logMsg = "(-) %s: Client %s closed connection or timed-out" % (now, str(self.sockname))
+			logMsg = "(-) %s: Client %s closed connection or timed-out" % (now, self.sockname)
 
 		logging.info(logMsg)
 		print logMsg

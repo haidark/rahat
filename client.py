@@ -55,8 +55,8 @@ locTime = '1991-11-04 00:00:01'
 lat = '0.0'
 lon = '0.0'
 
-for i in range(0,100):
-	cThread = ClientThread(HOST, PORT, devID, locTime, lat, lon, 0)
+for i in range(0,20):
+	cThread = ClientThread(HOST, PORT, devID, locTime, lat, lon, i)
 	cThread.run()
 
 
