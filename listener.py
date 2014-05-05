@@ -30,7 +30,7 @@ class Listener(Process):
 	def run(self):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		s.bind((self.host, self.port))
+		s.bind((socket.gethostname(), self.port))
 		s.listen(5)
 		while True:
 			clientSock, sockname = s.accept()
@@ -72,31 +72,30 @@ class ClientHandlerThread(Thread):
 			db = DBManager(self.dbInfo)
 			#get devID from client
 			devID = self.getChunk()		
-			
+			logMsg = ''
 			#check if node exists
 			try:
 				node = db.getNode(devID)
 				nID = node[0]
 				session = node[2]
 				if session == None:
-					logging.info("(-) %s: Node is not active. Device ID: %s" % (now, devID))
-					print "(-) %s: Node is not active. Device ID: %s" % (now, devID)
+					logMsg = "(-) %s: Node is not active. Device ID: %s" % (now, devID)
 				else:
 					locTime = self.getChunk()
 					lat = self.getChunk()
 					lon = self.getChunk()
 					#write the location data to DB
 					LID = db.createLocation(session, nID, locTime, lat, lon)
-					logging.info("(+) %s: Received data. Device ID: %s" % (now, devID))
-					print "(+) %s: Received data. Device ID: %s" % (now, devID)
+					logMsg = "(+) %s: Received data. Device ID: %s" % (now, devID)
 			#if the node does not exist
 			except NodeError:
-				logging.info("(-) %s: Device not recognized. Device ID: %s" % (now, devID))
-				print "(-) %s: Device not recognized. Device ID: %s" % (now, devID)			
+				logMsg = "(-) %s: Device not recognized. Device ID: %s" % (now, devID)
 		# if client hangs up
 		except EOFError:
-			logging.info("(-) %s: Client %s closed connection" % (now, str(self.sockname)))
-			print "(-) %s: Client %s closed connection" % (now, str(self.sockname))
+			logMsg = "(-) %s: Client %s closed connection" % (now, str(self.sockname))
+
+		logging.info(logMsg)
+		print logMsg
 		db.close()
 		self.cSock.close()
 		
