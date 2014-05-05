@@ -10,16 +10,18 @@ class Listener(Process):
 		Static Members:
 			None
 		Members:
-			listenSock - bound socket which can be listened on from multiple listeners			
+			listenSock - bound socket which can be listened on from multiple listeners
+			listenerID - Identifier for this listener		
 		Functions:
 			implements multiprocessing.Process.run() - can be multi process
 			run() - socket code to bind to (IP, port) and accepts all clients
 					spawns client thread to handle clients
 	"""
 	
-	def __init__(self, listenSock):
+	def __init__(self, listenSock, listenerID):
 		Process.__init__(self)
 		self.listenSock  = listenSock
+		self.listenerID = listenerID
 		logging.basicConfig(filename='listener.log', format='%(levelname)s:%(message)s', level=logging.INFO)
 	
 	def run(self):
@@ -28,7 +30,7 @@ class Listener(Process):
 		while True:
 			clientSock, sockname = self.listenSock.accept()
 			#multi-threaded client handler
-			clientThread = ClientHandlerThread(clientSock, sockname, 15)
+			clientThread = ClientHandlerThread(clientSock, sockname, 15, listenerID)
 			clientThread.start()
 #----------------------------------------------------------------------------------------------#
 class ClientHandlerThread(Thread):
@@ -39,6 +41,7 @@ class ClientHandlerThread(Thread):
 			cSock - socket which holds client connection - socket
 			sockname - name assigned to remote socket
 			timeout - time in seconds before connection is dropped due to inactivity
+			parentID - parent listener identifier
 		Functions:
 			implements threading.Thread.run() - can be multi threaded
 			run() - gets location info from client, handles all errors
@@ -49,17 +52,20 @@ class ClientHandlerThread(Thread):
 	"""
 	DBINFO = ('127.0.0.1', 'haidar', 'pin101', 'haramain2')
 	
-	def __init__(self, clientSock, clientAddr, timeout):
+	def __init__(self, clientSock, clientAddr, timeout, parentID):
 		Thread.__init__(self)
 		self.cSock = clientSock
 		self.cSock.settimeout(timeout)
 		self.sockname = str(clientAddr)
+		self.parentID = parentID
 		
 	def run(self):
 		try:
 			logMsg = 'Place holder for log message'
 			#get current time
 			now = time.strftime("%m/%d/%Y %H:%M:%S")
+			#prepend parent ID in from of time
+			now = str(self.parentID) + " " + now
 			#connect to the database by constructing a DBManager object
 			db = DBManager(ClientHandlerThread.DBINFO)
 			#get devID from client
@@ -113,5 +119,9 @@ if __name__=="__main__":
 	sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 	sock.bind(('192.168.1.222', 1060))
 	
-	t = Listener(sock)
-	t.run()
+	t1 = Listener(sock, 1)
+	t2 = Listener(sock, 2)
+	t1.start()
+	t2.start()
+	while True:
+		pass
