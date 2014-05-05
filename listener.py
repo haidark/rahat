@@ -92,7 +92,7 @@ class ClientHandlerThread(Thread):
 					stop = time.clock()
 					#write the location data to DB
 					LID = db.createLocation(session, nID, locTime, lat, lon)
-					logMsg = "(+) %s: Received data in %s seconds. Device ID: %s" % (now, str(start-stop), devID)
+					logMsg = "(+) %s: Received data in %0.4f seconds. Device ID: %s" % (now, stop-start, devID)
 			#if the node does not exist
 			except NodeError:
 				logMsg = "(-) %s: Device not recognized. Device ID: %s" % (now, devID)
