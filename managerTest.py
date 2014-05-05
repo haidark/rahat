@@ -1,19 +1,8 @@
 #!/usr/bin/env python
 
-import DBhelper as db
+from DBManager import DBManager, SessionError, NodeError
 
 import argparse
-import pymysql
-def DBconnect(host, user, pw):
-	#connect to the DB
-	conn = pymysql.connect(host, user, pw, db='haramain2')
-	cur = conn.cursor()
-	return (conn, cur)
-	
-def DBclose(conn, cur):
-	cur.close()
-	conn.close()
-
 parser = argparse.ArgumentParser()
 
 #-s SESSIONNAME to create a new session
@@ -35,69 +24,53 @@ parser.add_argument("-N", "--NODES", help="list all nodes in a session, use 0 fo
 
 args = parser.parse_args()
 
-host = '127.0.0.1'
-user='haidar'
-pw='pin101'
+DBINFO = ('127.0.0.1', 'haidar', 'pin101', 'haramain2')
+db = DBManager(DBINFO)
 
 if args.session != None:
 	#create a new session
-	(conn, cur) = DBconnect(host, user, pw)
-	db.createSession(cur, args.session)
-	DBclose(conn, cur)
+	db.createSession(args.session)
 	print "Created session with passphrase: " + args.session
 	
 elif args.archive != None:
 	#archive session
-	(conn, cur) = DBconnect(host, user, pw)
-	db.deleteSession(cur, args.archive)
-	DBclose(conn, cur)
+	db.deleteSession(args.archive)
 	print "Deleted session with passphrase: " + args.archive
 	
 elif args.node != None:
 	#create a new node
-	(conn, cur) = DBconnect(host, user, pw)
-	db.createNode(cur, args.node)
-	DBclose(conn, cur)
+	db.createNode(args.node)
+
 	print "Created node with device ID: " + args.node
 	
 elif args.delete != None:
 	#delete a node
-	(conn, cur) = DBconnect(host, user, pw)
-	db.deleteNode(cur, args.delete)
-	DBclose(conn, cur)
+	db.deleteNode(args.delete)
 	print "Deleted node with device ID: " + args.delete
 	
 elif args.activate != None:
 	#activate a node
-	(conn, cur) = DBconnect(host, user, pw)
-	db.activateNode(cur, args.activate[0], args.activate[1])
-	DBclose(conn, cur)
+	db.activateNode(args.activate[0], args.activate[1])
 	print "Added node with device ID: " + args.activate[0] + " to session with passphrase: " + args.activate[1]
 	
 elif args.free != None:
 	#free a node
-	(conn, cur) = DBconnect(host, user, pw)
-	db.freeNode(cur, args.free)
-	DBclose(conn, cur)
+	db.freeNode(args.free)
 	print "Freed node with device ID: " + args.free
 	
 elif args.SESSIONS == True:
 	#list all sessions
-	(conn, cur) = DBconnect(host, user, pw)
 	print "\t-----Session List-----"
-	db.displaySessions(cur)
-	DBclose(conn, cur)
+	db.displaySessions()
 	
 elif args.NODES != None:
 	#list nodes
-	(conn, cur) = DBconnect(host, user, pw)
 	if args.NODES == '0':
 		print "\t-----Node List-----"
-		db.displayNodes(cur)
+		db.displayNodes()
 	else:
 		print "\t-----Node List in Session : %s-----" % args.NODES
-		db.displayNodes(cur, args.NODES)
-	DBclose(conn, cur)
+		db.displayNodes(args.NODES)
 	
 else:
 #------------------------------------------TESTING CODE---------------------------------------------------#	
@@ -110,38 +83,34 @@ else:
 #---------------------------------------------------------------------------------------------------------#	
 	print "(========)Testing all DB managing functions(========)"
 #---------------------------------------------------------------------------------------------------------#	
-	print "(=) Connecting to the DB..."
-	(conn, cur) = DBconnect(host,user,pw)
-	print "\t(+) Connected!"
-#---------------------------------------------------------------------------------------------------------#	
 #---------------------------------------------------------------------------------------------------------#	
 	print "(========)SESSION FUNCTION TESTS(========)"	
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Creating a new session called '%s'" % ses
 	try:
-		db.createSession(cur, ses)
-	except db.SessionError as se:
+		db.createSession(ses)
+	except SessionError as se:
 		pass
 	print "\t(+) Session created!"
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing displaySessions function"
 	print "(=) List of all sessions"
-	db.displaySessions(cur)
+	db.displaySessions()
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing Failure of createSession function"
 	try:
-		db.createSession(cur, ses)
+		db.createSession(ses)
 		print "\t(-) Failure of createSession Test Failed"
-	except db.SessionError as se:
+	except SessionError as se:
 		print "\t(+) Failure of createSession Test Passed. Error Caught:", se.msg
 #---------------------------------------------------------------------------------------------------------#		
 #---------------------------------------------------------------------------------------------------------#		
 	print "(========)NODE FUNCTION TESTS(========)"
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Creating nodes"
-	d1 = db.createNode(cur, dev1, ses)
-	d2 = db.createNode(cur, dev2)
-	d3 = db.createNode(cur, dev3);	
+	d1 = db.createNode(dev1, ses)
+	d2 = db.createNode(dev2)
+	d3 = db.createNode(dev3);	
 
 	if d1 == -1 or d2 == -1 or d3 == -1:
 		print "\t(-) Node Creation failed."
@@ -150,68 +119,68 @@ else:
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing displayNodes function"
 	print "(=) List of all nodes"
-	db.displayNodes(cur)
+	db.displayNodes()
 	print "(=) List of all nodes in session=%s" % ses
-	db.displayNodes(cur, ses)
+	db.displayNodes(ses)
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Testing creation of existing node"
-	dx = db.createNode(cur, dev1, ses)
+	dx = db.createNode(dev1, ses)
 	if dx == d1:
 		print "\t(+) Existing Node Creation Test Passed. nIDs are the same. Warning printed"
 	else:
 		print "\t(-) Existing Node Creation Test Failed. nIDs are not the same. Printing list of all Nodes."
-		db.displayNodes(cur)
+		db.displayNodes()
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing creation of node with invalid session"
 	try:
-		db.createNode(cur, dev4, 'invalidsession')
+		db.createNode(dev4, 'invalidsession')
 		print "\t(-) Invalid Session Node Test failed."
-	except db.SessionError as se:
+	except SessionError as se:
 		print "\t(+) Invalid Session Node Test passed. Error Caught: ", se.msg
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) activateNode Test"
 	
 	print "(=) activating device=%s" % dev2
-	db.activateNode(cur, dev2, ses)
+	db.activateNode(dev2, ses)
 	print "\t(+) Activated, printing all nodes in %s" % ses
-	db.displayNodes(cur, ses)
+	db.displayNodes(ses)
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Assert Free Node Test"
 	try:
-		db.activateNode(cur, dev2, ses)
+		db.activateNode(dev2, ses)
 		print "\t(-) Assert Free Node Test Failed"
-	except db.NodeError as ne:
+	except NodeError as ne:
 		print "\t(+) Assert Free Node Test Passed. Error Caught: ", ne.msg
 #---------------------------------------------------------------------------------------------------------#			
 	print "(=) freeNode Test"
 
 	print "(=) freeing device=%s" % dev1
-	db.freeNode(cur, dev1)
+	db.freeNode(dev1)
 	print "\t(+) Freed, printing all nodes"
-	db.displayNodes(cur)
+	db.displayNodes()
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Check Node State Test"
 	try:
-		db.freeNode(cur, dev1)
+		db.freeNode(dev1)
 		print "\t(-) Check Node State Test Failed"
-	except db.NodeError as ne:
+	except NodeError as ne:
 		print "\t(+) Check Node State Test Passed. Error Caught: ", ne.msg
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) deleteNode Test"
 	
 	print "(=) deleting device=%s" % dev3
-	db.deleteNode(cur, dev3)
+	db.deleteNode(dev3)
 	
 	print "(=) deleting non-existent device."
 	try:
-		db.deleteNode(cur, 'devu')
+		db.deleteNode('devu')
 		print "\t(-) deleteNode Test Failed."
-	except db.NodeError as ne:
+	except NodeError as ne:
 		print "\t(+) deleteNode Test Passed. Error Caught: ", ne.msg
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Cleaning up...."		
-	db.deleteNode(cur, dev1)
-	db.deleteNode(cur, dev2)	
-	db.deleteSession(cur, ses)		
-	DBclose(conn, cur)	
+	db.deleteNode(dev1)
+	db.deleteNode(dev2)	
+	db.deleteSession(ses)		
+	db.close()	
 #---------------------------------------------------------------------------------------------------------#	
