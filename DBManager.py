@@ -148,7 +148,7 @@ class DBManager:
 			
 	"""LOCATION FUNCTIONS"""	
 	def createLocation(self, session, nID, time, lat, lon):
-		if not self.SessionExists(cur, session):
+		if not self.SessionExists(session):
 			raise SessionError(session, SessionError.DNE)
 		else:
 			query = "INSERT INTO {0} VALUES (NULL, %s, %s, %s, %s)".format(session)
