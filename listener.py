@@ -1,8 +1,7 @@
-import pymysql
 import socket
 import time
 import logging
-from DBhelper import getNode, createLocation, NodeError
+from DBManager import DBManager, NodeError
 from threading import Thread
 from multiprocessing import Process
 #----------------------------------------------------------------------------------------------#
@@ -63,25 +62,20 @@ class ClientHandlerThread(Thread):
 		Thread.__init__(self)
 		self.cSock = clientSock
 		self.sockname = str(clientAddr)
-		self.dbHost = dbInfo[0]
-		self.dbUser = dbInfo[1]
-		self.dbPass = dbInfo[2]
-		self.dbDb = dbInfo[3]
+		self.dbInfo = dbInfo
 		
 	def run(self):
 		try:
 			#get current time
 			now = time.strftime("%m/%d/%Y %H:%M:%S")
-			#connect to the DB
-			conn = pymysql.connect(self.dbHost, self.dbUser, self.dbPass, self.dbDb)
-			cur = conn.cursor()
-			
+			#connect to the database by constructing a DBManager object
+			db = DBManager(self.dbInfo)
 			#get devID from client
 			devID = self.getChunk()		
 			
 			#check if node exists
 			try:
-				node = getNode(cur, devID)
+				node = db.getNode(devID)
 				nID = node[0]
 				session = node[2]
 				if session == None:
@@ -92,7 +86,7 @@ class ClientHandlerThread(Thread):
 					lat = self.getChunk()
 					lon = self.getChunk()
 					#write the location data to DB
-					LID = createLocation(cur, session, nID, locTime, lat, lon)
+					LID = db.createLocation(session, nID, locTime, lat, lon)
 					logging.info("(+) %s: Received data. Device ID: %s" % (now, devID))
 					print "(+) %s: Received data. Device ID: %s" % (now, devID)
 			#if the node does not exist
@@ -103,8 +97,7 @@ class ClientHandlerThread(Thread):
 		except EOFError:
 			logging.info("(-) %s: Client %s closed connection" % (now, str(self.sockname)))
 			print "(-) %s: Client %s closed connection" % (now, str(self.sockname))
-		cur.close()
-		conn.close()	
+		db.close()
 		self.cSock.close()
 		
 	def recv_all(self, length):
