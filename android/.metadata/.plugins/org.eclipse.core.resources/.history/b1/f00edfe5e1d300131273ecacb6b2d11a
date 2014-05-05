@@ -9,13 +9,17 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
@@ -28,18 +32,19 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class AutoSendService extends Service implements 
-GooglePlayServicesClient.ConnectionCallbacks,
-GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
+		GooglePlayServicesClient.ConnectionCallbacks,
+		GooglePlayServicesClient.OnConnectionFailedListener,
+		LocationListener {
 	private LocationClient mLocationClient;
 	private LocationRequest mLocationRequest;
-	private Location  mCurrentLocation;
+	private long interval;
+	public static boolean serviceRunning = false;
+	private static int ONGOING_NOTIFICATION_ID = 110491;
+
 	@Override
-	public void onCreate() {
-		// Start up the thread running the service.  Note that we create a
-		// separate thread because the service normally runs in the process's
-		// main thread, which we don't want to block.  We also make it
-		// background priority so CPU-intensive work will not disrupt our UI.
+	public void onCreate() {		
 		super.onCreate();
+		//start a location client if google play services are available
 		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 	    if (resp == ConnectionResult.SUCCESS) {
 	        mLocationClient = new LocationClient(this, this, this);
@@ -49,13 +54,29 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 	        Toast.makeText(this, "Google Play Service Error " + resp,
 	                Toast.LENGTH_LONG).show();
 	    }
+
+	    //let the outside world know service is running
+	    serviceRunning = true;
 		Log.d("AutoSendService", "Create");
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-	    Log.d("AutoSendService", "Start");	    
-		return super.onStartCommand(intent, flags, startId);
+	    //get the users interval value
+		Bundle extras = intent.getExtras();
+	    interval = (long) extras.get("interval");
+	    String notifMsg = "Sending Location every " + interval/60/1000 + " minutes";
+	    
+	    //make the service a foreground service with this notification
+	    Notification notification = new Notification(R.drawable.ic_launcher, getText(R.string.notif_text), System.currentTimeMillis());
+	    Intent notificationIntent = new Intent(this, MainActivity.class);
+	    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+	    notification.setLatestEventInfo(this, getText(R.string.notification_title), notifMsg, pendingIntent);
+	    startForeground(ONGOING_NOTIFICATION_ID, notification);
+		
+	    Log.d("AutoSendService", "Interval value is: " + interval);	    
+		return START_STICKY;
 	}
 	
 	@Override
@@ -69,28 +90,33 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 		mLocationClient.removeLocationUpdates(this);
 		mLocationClient.disconnect();
 		Log.d("AutoSendService", "Destroy");
+		serviceRunning = false;
 		super.onDestroy();		
 	}
 	
 	@Override
 	public void onLocationChanged(Location location) {		
 		String msg = packLocation(location);
+		new ClientTask().execute(MainActivity.serverName, MainActivity.port, packLocation(location));
+		
+		//get the current time
+		Time now = new Time();
+		now.setToNow();
+		//Toast to show location was sent
+		Toast.makeText(this, "Location sent at " + now.format("%H:%M:%S"), Toast.LENGTH_LONG).show();
 		Log.d("AutoSendService", msg);
 	}
 	
 	@Override
 	public void onConnected(Bundle connectionHint) {
 		if (mLocationClient != null && mLocationClient.isConnected()) {
-	    	mCurrentLocation = mLocationClient.getLastLocation();
-	    	Log.d("AutoSendService", "Location = " + mCurrentLocation.toString());
-	    	
+   	
 	        mLocationRequest = LocationRequest.create();
-	        mLocationRequest.setInterval(1000)
+	        mLocationRequest.setInterval(interval)
 	                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 	                .setSmallestDisplacement(0);
 
-	        mLocationClient.requestLocationUpdates(mLocationRequest, this);
-	        
+	        mLocationClient.requestLocationUpdates(mLocationRequest, this);	        
 	    }
 	}
 	
@@ -110,9 +136,8 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
      */
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        
+    	Toast.makeText(this, "Connection Failed!", Toast.LENGTH_SHORT).show();
     }
-    
     
     private String packLocation(Location loc){
     	//get the unique device ID
@@ -165,9 +190,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
     		String message = strings[2];
     		Socket socket;
     		try{    			
-    			//get the current time
-    			Time now = new Time();
-    			now.setToNow();
+    			
     						
     			//get server IP and connect to it
     			InetAddress serverAddr = InetAddress.getByName(sName);    			
@@ -177,7 +200,7 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
     			out.println(message);
     			socket.close();
     			//set the text in the Text View
-    			return "Location sent @ " + now.format("%H:%M:%S");
+    			return "";
     			
     		} catch(UnknownHostException e1){
     			e1.printStackTrace();

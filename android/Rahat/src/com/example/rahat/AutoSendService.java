@@ -113,6 +113,7 @@ public class AutoSendService extends Service implements
    	
 	        mLocationRequest = LocationRequest.create();
 	        mLocationRequest.setInterval(interval)
+	        		.setFastestInterval(interval)
 	                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 	                .setSmallestDisplacement(0);
 
