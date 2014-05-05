@@ -12,11 +12,11 @@ class DBManager:
 	def __init__(self, info):
 		#connect to the DB
 		self.conn = pymysql.connect(host=info[0], user=info[1], passwd=info[2], db=info[3])
-		self.cur = conn.cursor()
+		self.cur = self.conn.cursor()
 		
-	def close(self):
-		self.conn.close()
+	def close(self):		
 		self.cur.close()
+		self.conn.close()
 		
 	"""SESSION FUNCTIONS"""
 	def createSession(self, session):
