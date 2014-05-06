@@ -1,14 +1,42 @@
 import pymysql
 
 class DBManager:
-	"""DBManager class holds functions to carry out actions on the database 
+	"""DBManager class - holds functions to carry out actions on the database 
 	while maintaining integrity of the data
 	
-	to construct a new DBManager, pass the constructor a tuple containing database login info:
+	To construct a new DBManager, pass the constructor a tuple containing database login info:
 		db = DBManager((host, user, password, db))
-		
-	use db.close() to free its resources
+	Make sure to use db.close() to free its resources
+		Static Members:
+			None
+		Members:
+			conn - connection to the database
+			cur - cursor for the connection to the database		
+		Functions:
+			----Database-------------------------------------------------------------------------------------------
+			__init__(info) - connects to database and creates a cursor object
+			close() - closes connection to database
+			----Sessions-------------------------------------------------------------------------------------------
+			createSession(session) - creates a new session if one by the same name DNE
+			deleteSession(session) - deletes a session if it exists (TODO also free all nodes in that session)
+			SessionExists(session) - returns true if the session exists, false otherwise
+			----Nodes----------------------------------------------------------------------------------------------
+			createNode(devID[, session]) - creates a new node if one by the same name DNE, 
+				adds to session if provided and exists
+			deleteNode(devID) - deletes a node and removes any location entries in its current session table
+			activateNode(devID, session) - adds an existing node to a session
+			freeNode(devID) - frees an existing node from its session
+			getNode(devID) - gets a node from the nodes table
+			assertFreeNode(devID) - raises an error if the node is not free
+			assertActiveNode(devID) - raises an error if the node is free
+			checkNodeState(devID) - checks if node is free or active and raises appropriate error
+			----Locations------------------------------------------------------------------------------------------
+			createLocation(session, nID, time, lat, lon) - adds location row to a session table
+			----Display--------------------------------------------------------------------------------------------
+			displaySessions() - prints a list of all session tables (TODO: only sessions)
+			displayNodes([session]) - prints a list of all nodes or all nodes in a session
 	"""
+
 	def __init__(self, info):
 		#connect to the DB
 		self.conn = pymysql.connect(host=info[0], user=info[1], passwd=info[2], db=info[3])

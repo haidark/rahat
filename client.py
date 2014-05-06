@@ -1,23 +1,13 @@
 #!/usr/bin/env python
 from threading import Thread
 import socket
-import time
-##########################################################################
-# Timer class to time statements
-##########################################################################
-class Timer:    
-    def __enter__(self):
-        self.start = time.clock()
-        return self
 
-    def __exit__(self, *args):
-        self.end = time.clock()
-        self.interval = self.end - self.start
 ##########################################################################
 # Python Client Thread
 ##########################################################################
 class ClientThread(Thread):
 	def __init__(self, HOST, PORT, devID, locTime, lat, lon, waitTime):
+		Thread.__init__(self)
 		self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.HOST = HOST
 		self.PORT = PORT		
