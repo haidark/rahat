@@ -108,7 +108,7 @@ class GoogleMapAPI {
      *
      * @var bool
      */
-    var $mobile=false;
+    var $mobile=true;
     
     /**
      * The viewport meta tag allows more values than these defaults; you can get more info here: http://www.html-5.com/metatags/index.html#viewport-meta-tag
@@ -1318,9 +1318,9 @@ class GoogleMapAPI {
     		
     		if($_prev_coords !== ""){
     		  $_lt1=$_prev_coords["lat"];
-    		  $_ln1=$_prev_coords["long"];
+    		  $_ln1=$_prev_coords["lon"];
     		  $_lt2=$_next_coords["lat"];
-              $_ln2=$_next_coords["long"];
+              $_ln2=$_next_coords["lon"];
     		  $id = $this->addPolyLineByCoords($_ln1, $_lt1, $_ln2, $_lt2, $id, $color, $weight, $opacity);
     		}
     	}

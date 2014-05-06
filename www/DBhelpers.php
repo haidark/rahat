@@ -10,7 +10,7 @@ function getNodesByPhrase($mysqli, $phrase){
 
 function getLocationsByPhrase_NID($mysqli, $phrase, $nID){
 	$locations = NULL;
-	$rows = $mysqli->query("SELECT time, lat, lon FROM {$phrase} WHERE nodeID='{$nID}'");
+	$rows = $mysqli->query("SELECT time, lat, lon FROM {$phrase} WHERE nodeID='{$nID}' ORDER BY time DESC");
 	for($rowNum = 0; $rowNum < $rows->num_rows; $rowNum++){
 		$locations[$rowNum] = $rows->fetch_assoc();
 	}

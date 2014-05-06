@@ -16,6 +16,8 @@
 	//Maps stuff
 	$MAP_OBJECT = new GoogleMapAPI(); 
 	$MAP_OBJECT->_minify_js = isset($_REQUEST["min"])?FALSE:TRUE;
+	$MAP_OBJECT->setWidth('100%');
+	$MAP_OBJECT->setHeight('100%');
 	if(isset($_POST["node"])){
 			$selNode = $nodes[$_POST["node"]];
 			//get all locations of the node
@@ -28,6 +30,7 @@
 					$MAP_OBJECT->addMarkerByCoords(floatval($location["lon"]),floatval($location["lat"]),"Location Number {$locNum}", $location["time"]);
 					$locNum++;
 				}
+				$MAP_OBJECT->addPolylineByCoordsArray($locations);
 			}
 	}
 ?>
@@ -36,42 +39,27 @@
 	<meta charset="UTF-8"><title>Monitor</title>
 	<?=$MAP_OBJECT->getHeaderJS();?>
 	<?=$MAP_OBJECT->getMapJS();?>
+	<style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map { height: 100% }
+    </style>
 </head>
-<body>
-
-<div id="selectNode">
-		<form action="monitor2.php" method="POST">
-			<p>Select Node:</p>
-			<select name="node">
-			<?php
-			for($nodeNum = 0; $nodeNum < count($nodes); $nodeNum++){
-				$node = $nodes[$nodeNum];
-				echo "<option value=\"{$nodeNum}\"> {$node["devID"]} </option>";
-			}
-			?>
-			</select>
-			<input type="hidden" id="phrase" name="phrase" value="<?php echo $phrase?>">
-			<p><input type="submit" /></p>
-		</form>
-</div>
-
-<?php		
-	if( isset($_POST["node"])){
-		$MAP_OBJECT->printOnLoad();
-		$MAP_OBJECT->printMap();
-		//$MAP_OBJECT->printSidebar();
-		/*
-		if(isset($locations)){
-			//print out a table (caption is devID)
-			echo "<table><caption>".$selNode["devID"]."</caption>\n";
-			echo "<tr><th>Time</th><th>Latitude</th><th>Longitude</th></tr>";		
-			foreach($locations as $location){
-				echo "<tr><td>{$location["time"]}</td><td>{$location["lat"]}</td><td>{$location["lon"]}</td></tr>";
-			}
-			echo "</table>";	
-		}*/
-	}		
+<body><?php
+	
+	$MAP_OBJECT->printMap();
+	$MAP_OBJECT->printOnLoad();
+	//$MAP_OBJECT->printSidebar();
+	/*
+	if(isset($locations)){
+		//print out a table (caption is devID)
+		echo "<table><caption>".$selNode["devID"]."</caption>\n";
+		echo "<tr><th>Time</th><th>Latitude</th><th>Longitude</th></tr>";		
+		foreach($locations as $location){
+			echo "<tr><td>{$location["time"]}</td><td>{$location["lat"]}</td><td>{$location["lon"]}</td></tr>";
+		}
+		echo "</table>";	
+	}*/	
 ?>
 </body>
-
 </html>
