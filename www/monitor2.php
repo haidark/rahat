@@ -1,5 +1,5 @@
 <?php
-	if(!isset($_POST["phrase"]) and !isset($_POST["node"])){
+	if(!isset($_POST["phrase"]) or !isset($_POST["node"])){
 		header("Location: phrase.php");
 	}
 	include_once("GoogleMap.php");
@@ -10,28 +10,32 @@
 	if($mysqli->connect_errno){
 		echo "<p>Failed to connect to MySQL: " . $mysqli->connect_error."</p>";
 	}
-	$phrase = $_POST["phrase"];
-	$nodes = getNodesByPhrase($mysqli, $phrase);
+	
 
 	//Maps stuff
 	$MAP_OBJECT = new GoogleMapAPI(); 
 	$MAP_OBJECT->_minify_js = isset($_REQUEST["min"])?FALSE:TRUE;
 	$MAP_OBJECT->setWidth('100%');
 	$MAP_OBJECT->setHeight('100%');
-	if(isset($_POST["node"])){
-			$selNode = $nodes[$_POST["node"]];
-			//get all locations of the node
-			$locations = getLocationsByPhrase_NID($mysqli, $phrase, $selNode["nID"]);		
-			// if $locations is not NULL
-			if(isset($locations)){
-			//plot all the locations on the map
-				$locNum = 1;
-				foreach($locations as $location){
-					$MAP_OBJECT->addMarkerByCoords(floatval($location["lon"]),floatval($location["lat"]),"Location Number {$locNum}", $location["time"]);
-					$locNum++;
-				}
-				$MAP_OBJECT->addPolylineByCoordsArray($locations);
-			}
+	
+	//get the passphrase from the POST global var
+	$phrase = $_POST["phrase"];
+	//get a list of nodes keyed by this pass phrase
+	$nodes = getNodesByPhrase($mysqli, $phrase);
+	//select the node the user chose
+	$selNode = $nodes[$_POST["node"]];
+	//get all locations of that node
+	$locations = getLocationsByPhrase_NID($mysqli, $phrase, $selNode["nID"]);		
+	// if $locations is not NULL
+	if(isset($locations)){
+	//plot all the locations on the map
+		$locNum = 1;
+		foreach($locations as $location){
+			$MAP_OBJECT->addMarkerByCoords(floatval($location["lon"]),floatval($location["lat"]),"Location Number {$locNum}", $location["time"]);
+			$locNum++;
+		}
+		//draw lines connecting the markers
+		$MAP_OBJECT->addPolylineByCoordsArray($locations);			
 	}
 ?>
 <html>
@@ -45,21 +49,10 @@
       #map { height: 100% }
     </style>
 </head>
-<body><?php
-	
+<body><?php	
 	$MAP_OBJECT->printMap();
 	$MAP_OBJECT->printOnLoad();
 	//$MAP_OBJECT->printSidebar();
-	/*
-	if(isset($locations)){
-		//print out a table (caption is devID)
-		echo "<table><caption>".$selNode["devID"]."</caption>\n";
-		echo "<tr><th>Time</th><th>Latitude</th><th>Longitude</th></tr>";		
-		foreach($locations as $location){
-			echo "<tr><td>{$location["time"]}</td><td>{$location["lat"]}</td><td>{$location["lon"]}</td></tr>";
-		}
-		echo "</table>";	
-	}*/	
 ?>
 </body>
 </html>
