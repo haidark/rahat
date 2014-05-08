@@ -66,10 +66,14 @@ class DBManager:
 		#creates a new table titled by the session phrase.
 		#5 columns: lID, nodeID, time, lat, lon
 		
+		#make sure input is a number, ValueError raised otherwise
+		days = float(days)
+		
+		#check if session exists
 		if self.SessionExists(phrase):
 			raise SessionError(phrase, SessionError.AE)
 		else:
-			#get the duration in days and make a timedelta object
+			#get the duration in days and make a time-delta object
 			duration = datetime.timedelta(days=days)
 			#set the current time as start
 			now = datetime.datetime.now()
