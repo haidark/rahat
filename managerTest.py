@@ -29,7 +29,7 @@ db = DBManager()
 if args.session != None:
 	#create a new session
 	db.createSession(args.session[0], int(args.session[1]))
-	print "Created session with passphrase: " + args.session[0] + " for " args.session[1] + " days"
+	print "Created session with passphrase: " + args.session[0] + " for " + args.session[1] + " days"
 	
 elif args.archive != None:
 	#archive session
