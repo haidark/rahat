@@ -146,7 +146,7 @@ class DBManager:
 		#checks if a node exists, boolean function
 		#returns true if node exists and false if it does not
 		nodeExists = self.cur.execute("SELECT nID FROM nodes WHERE devID=%s", devID)
-		return sessionExists
+		return nodeExists
 		
 	def deleteNode(self, devID):
 		#Removes the given node from the table of nodes
@@ -228,7 +228,7 @@ class DBManager:
 	
 	def getNodes(self, phrase=0):
 		#displays a list of all nodes
-		if session == 0:
+		if phrase == 0:
 			self.cur.execute("SELECT * FROM nodes")
 		else:
 			#get the table name
