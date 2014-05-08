@@ -128,14 +128,11 @@ else:
 		print node
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Testing creation of existing node"
-	dx = db.createNode(dev1)
-	if dx == d1:
-		print "\t(+) Existing Node Creation Test Passed. nIDs are the same. Warning printed"
-	else:
-		print "\t(-) Existing Node Creation Test Failed. nIDs are not the same. Printing list of all Nodes."
-		nodes = db.getNodes()
-		for node in nodes:
-			print node
+	try:
+		dx = db.createNode(dev1)
+		print "\t(-) Existing Node Creation Test Failed."
+	except:
+		print "\t(+) Existing Node Creation Test Passed."
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) activateNode Test"
 	
