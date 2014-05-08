@@ -154,8 +154,7 @@ else:
 
 	print "(=) freeing device=%s" % dev2
 	db.freeNode(dev2)
-	print "\t(+) Freed, printing all nodes"
-	db.displayNodes()
+	print "\t(+) Freed"
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Check Node State Test"
 	try:
@@ -164,8 +163,7 @@ else:
 	except NodeError as ne:
 		print "\t(+) Check Node State Test Passed. Error Caught: ", ne.msg
 #---------------------------------------------------------------------------------------------------------#		
-	print "(=) deleteNode Test"
-	
+	print "(=) deleteNode Test"	
 	print "(=) deleting device=%s" % dev3
 	db.deleteNode(dev3)
 	
