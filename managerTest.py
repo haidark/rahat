@@ -5,8 +5,8 @@ from DBManager import DBManager, SessionError, NodeError
 import argparse
 parser = argparse.ArgumentParser()
 
-#-s SESSIONNAME to create a new session
-parser.add_argument("-s", "--session", help="create a new session", metavar='passphrase')
+#-s SESSIONNAME DAYS to create a new session for DAYS days
+parser.add_argument("-s", "--session", help="create a new session for days", nargs=2, metavar=('passphrase', 'days'))
 #-a SESSIONNAME to archive a session
 parser.add_argument("-a", "--archive", help="archive a session", metavar='passphrase')
 #-n DEVID to create a new node
@@ -24,13 +24,12 @@ parser.add_argument("-N", "--NODES", help="list all nodes in a session, use 0 fo
 
 args = parser.parse_args()
 
-DBINFO = ('127.0.0.1', 'haidar', 'pin101', 'haramain2')
-db = DBManager(DBINFO)
+db = DBManager()
 
 if args.session != None:
 	#create a new session
-	db.createSession(args.session)
-	print "Created session with passphrase: " + args.session
+	db.createSession(args.session[0], int(args.session[1]))
+	print "Created session with passphrase: " + args.session[0] + " for " args.session[1] + " days"
 	
 elif args.archive != None:
 	#archive session
@@ -61,17 +60,20 @@ elif args.free != None:
 elif args.SESSIONS == True:
 	#list all sessions
 	print "\t-----Session List-----"
-	db.displaySessions()
+	sessions = db.getSessions()
+	for session in sessions:
+		print session
 	
 elif args.NODES != None:
 	#list nodes
 	if args.NODES == '0':
 		print "\t-----Node List-----"
-		db.displayNodes()
+		nodes = db.getNodes()
 	else:
 		print "\t-----Node List in Session : %s-----" % args.NODES
-		db.displayNodes(args.NODES)
-	
+		nodes = db.getNodes(args.NODES)
+	for node in nodes:
+		print node
 else:
 #------------------------------------------TESTING CODE---------------------------------------------------#	
 	ses = 'testsession'
@@ -86,20 +88,22 @@ else:
 #---------------------------------------------------------------------------------------------------------#	
 	print "(========)SESSION FUNCTION TESTS(========)"	
 #---------------------------------------------------------------------------------------------------------#	
-	print "(=) Creating a new session called '%s'" % ses
+	print "(=) Creating a new session called '%s' for 1 day" % ses
 	try:
-		db.createSession(ses)
+		db.createSession(ses, 1)
 	except SessionError as se:
-		pass
+		print "\t(-) Failed to create session! Already Exists"
 	print "\t(+) Session created!"
 #---------------------------------------------------------------------------------------------------------#	
-	print "(=) Testing displaySessions function"
+	print "(=) Testing getSessions function"
 	print "(=) List of all sessions"
-	db.displaySessions()
+	sessions = db.getSessions()
+	for session in sessions:
+		print session
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing Failure of createSession function"
 	try:
-		db.createSession(ses)
+		db.createSession(ses, 1)
 		print "\t(-) Failure of createSession Test Failed"
 	except SessionError as se:
 		print "\t(+) Failure of createSession Test Passed. Error Caught:", se.msg
@@ -108,7 +112,7 @@ else:
 	print "(========)NODE FUNCTION TESTS(========)"
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Creating nodes"
-	d1 = db.createNode(dev1, ses)
+	d1 = db.createNode(dev1)
 	d2 = db.createNode(dev2)
 	d3 = db.createNode(dev3);	
 
@@ -119,31 +123,28 @@ else:
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing displayNodes function"
 	print "(=) List of all nodes"
-	db.displayNodes()
-	print "(=) List of all nodes in session=%s" % ses
-	db.displayNodes(ses)
+	nodes = db.getNodes()
+	for node in nodes:
+		print node
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Testing creation of existing node"
-	dx = db.createNode(dev1, ses)
+	dx = db.createNode(dev1)
 	if dx == d1:
 		print "\t(+) Existing Node Creation Test Passed. nIDs are the same. Warning printed"
 	else:
 		print "\t(-) Existing Node Creation Test Failed. nIDs are not the same. Printing list of all Nodes."
-		db.displayNodes()
-#---------------------------------------------------------------------------------------------------------#	
-	print "(=) Testing creation of node with invalid session"
-	try:
-		db.createNode(dev4, 'invalidsession')
-		print "\t(-) Invalid Session Node Test failed."
-	except SessionError as se:
-		print "\t(+) Invalid Session Node Test passed. Error Caught: ", se.msg
+		nodes = db.getNodes()
+		for node in nodes:
+			print node
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) activateNode Test"
 	
 	print "(=) activating device=%s" % dev2
 	db.activateNode(dev2, ses)
 	print "\t(+) Activated, printing all nodes in %s" % ses
-	db.displayNodes(ses)
+	nodes = db.getNodes(ses)
+	for node in nodes:
+		print node
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Assert Free Node Test"
 	try:
@@ -154,14 +155,14 @@ else:
 #---------------------------------------------------------------------------------------------------------#			
 	print "(=) freeNode Test"
 
-	print "(=) freeing device=%s" % dev1
-	db.freeNode(dev1)
+	print "(=) freeing device=%s" % dev2
+	db.freeNode(dev2)
 	print "\t(+) Freed, printing all nodes"
 	db.displayNodes()
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Check Node State Test"
 	try:
-		db.freeNode(dev1)
+		db.freeNode(dev2)
 		print "\t(-) Check Node State Test Failed"
 	except NodeError as ne:
 		print "\t(+) Check Node State Test Passed. Error Caught: ", ne.msg

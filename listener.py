@@ -36,7 +36,7 @@ class Listener(Process):
 class ClientHandlerThread(Thread):
 	"""ClientHandlerThread Class - inherits from threading.Thread
 		Static Members:
-			DBINFO tuple which contains database information - (host, user, pass, db)
+			None
 		Members:
 			cSock - socket which holds client connection - socket
 			sockname - name assigned to remote socket
@@ -50,7 +50,7 @@ class ClientHandlerThread(Thread):
 			recv_all(sock, length) - blocking call to receive length bytes from client, returns length bytes
 			getChunk() - gets data formatted with data length in first two bytes, returns data string
 	"""
-	DBINFO = ('127.0.0.1', 'haidar', 'pin101', 'haramain2')
+	
 	
 	def __init__(self, clientSock, clientAddr, timeout, parentID):
 		Thread.__init__(self)
@@ -64,10 +64,10 @@ class ClientHandlerThread(Thread):
 			logMsg = 'Place holder for log message'
 			#get current time
 			now = time.strftime("%m/%d/%Y %H:%M:%S")
-			#prepend parent ID in from of time
+			#prepend parent ID to time string
 			now = str(self.parentID) + " " + now
 			#connect to the database by constructing a DBManager object
-			db = DBManager(ClientHandlerThread.DBINFO)
+			db = DBManager()
 			#get devID from client
 			devID = self.getChunk()		
 			
@@ -75,15 +75,20 @@ class ClientHandlerThread(Thread):
 			try:
 				node = db.getNode(devID)
 				nID = node[0]
-				session = node[2]
-				if session == None:
+				
+				#get the location time and data from the client
+				locTime = self.getChunk()
+				lat = self.getChunk()
+				lon = self.getChunk()
+				
+				#update node location in nodes table regardless of whether it is active
+				db.updateNodeLocation(nID, locTime, lat, lon)
+				tblName = node[2]
+				if tblName == None:
 					logMsg = "(-) %s: Node at %s is not active. Device ID: %s" % (now, self.sockname, devID)
 				else:
-					locTime = self.getChunk()
-					lat = self.getChunk()
-					lon = self.getChunk()
 					#write the location data to DB
-					LID = db.createLocation(session, nID, locTime, lat, lon)
+					db.createLocation(tblName, nID, locTime, lat, lon)
 					logMsg = "(+) %s: Received data from %s. Device ID: %s" % (now, self.sockname, devID)
 			#if the node does not exist
 			except NodeError:
