@@ -108,18 +108,16 @@ class NodeHandler(Thread):
 			#skip the first iteration
 			if index == 0:
 				continue
-			lID = location['lID']
-		
+			lID = location['lID']	
+			#if location is the same at self.locations[Start]
+			if self.sameLoc(location, self.locations[Start]):
+				locToDel.append(lID)
+				lEnd = index
 			else:
-				#if location is the same at self.locations[Start]
-				if self.sameLoc(location, self.locations[Start]):
-					locToDel.append(lID)
-					lEnd = index
-				else:
-					if not Start == End:
-						locToDel.pop()
-					Start = index
-					End = index
+				if not Start == End:
+					locToDel.pop()
+				Start = index
+				End = index
 		
 		#open a connection to the DB
 		db = DBManager()		
