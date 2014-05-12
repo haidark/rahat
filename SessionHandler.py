@@ -54,7 +54,7 @@ class SessionHandler(Process):
 			#but first check if they have already been started
 			for node in self.nodes:
 				#if not started
-				if not self.nodesDict[node.devID] 
+				if not self.nodesDict[node.devID] :
 					#start the thread
 					node.start()
 					#ensure start is not called again
