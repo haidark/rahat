@@ -35,6 +35,8 @@ class SessionHandler(Process):
 		Process.__init__(self)
 		#initialize local members from passed DB data
 		self.setLocals(sessionData)
+		#initialize list to hold NodeHandler objects
+		sef.nodes = list()
 		#initialize dictionary to hold state of housekeeping thread for each NodeHandler object
 		#also prevents more than one NodeHandler to be instantiated for one node
 		self.nodesDict = dict()
