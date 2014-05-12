@@ -151,6 +151,8 @@ class NodeHandler(Thread):
 		self.update()
 		#put last locations in a dict object
 		lastLoc = {'lat': self.lastLat, 'lon': self.lastLon}
+		print self.lastLat
+		print self.lastLon
 		#TODO get return location from the nodes table
 		returnLoc = {'lat': self.lastLat, 'lon': self.lastLon}
 		return self.sameLoc(lastLoc, returnLoc)	
