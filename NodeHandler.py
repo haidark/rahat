@@ -143,11 +143,11 @@ class NodeHandler(Thread):
 	#checks if two locations are pointing to roughly the same area
 	#location1 and location2 are dictionaries with keys 'lat' and 'lon'
 	def sameLoc(self, location1, location2):
-		tol = 1
+		tol = .001
 		lat1 = location1['lat']
 		lon1 = location1['lon']
 		lat2 = location2['lat']
-		lon2 = location2['lat']
+		lon2 = location2['lon']
 		#check for unavailable locations
 		if not None in (lat1, lon1, lat2, lon2):
 			lat1 = float(lat1)
@@ -156,7 +156,6 @@ class NodeHandler(Thread):
 			lon2 = float(lon2)
 			#if euclidean distance is near 0
 			d = sqrt((lat1-lat2)**2 + (lon1-lon2)**2)
-			print d
 			return d < tol
 		else:
 			#gracefully return False
