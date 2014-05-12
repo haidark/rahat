@@ -46,7 +46,7 @@ class DBManager:
 	def __init__(self):
 		#connect to the DB
 		self.conn = pymysql.connect(host=DBManager.DBINFO[0], user=DBManager.DBINFO[1], passwd=DBManager.DBINFO[2], db=DBManager.DBINFO[3])
-		self.cur = self.conn.cursor(pymysql.cursor.DictCursor)
+		self.cur = self.conn.cursor(pymysql.cursors.DictCursor)
 		
 	def close(self):		
 		self.cur.close()
