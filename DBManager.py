@@ -247,7 +247,7 @@ class DBManager:
 	
 	"""LOCATION FUNCTIONS"""	
 	def getLocations(self, tblName, nID):
-		query = "SELECT * FROM {0} WHERE nID=%s".format(tblName)
+		query = "SELECT * FROM {0} WHERE nodeID=%s".format(tblName)
 		self.cur.execute(query, nID)
 		return self.cur.fetchall()
 	
