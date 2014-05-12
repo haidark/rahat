@@ -139,10 +139,10 @@ class NodeHandler(Thread):
 	#location1 and location2 are dictionaries with keys 'lat' and 'lon'
 	def sameLoc(self, location1, location2):
 		tol = .0001
-		lat1 = location1['lat']
-		lon1 = location1['lon']
-		lat2 = location2['lat']
-		lon2 = location2['lat']
+		lat1 = float(location1['lat'])
+		lon1 = float(location1['lon'])
+		lat2 = float(location2['lat'])
+		lon2 = float(location2['lat'])
 		#if euclidean distance is near 0
 		return sqrt((lat1-lat2)**2 + (lon1-lon2)**2) < tol
 	
