@@ -44,7 +44,7 @@ if __name__=="__main__":
 				
 		#cleanup SessionHandler objects and remove keys from sessionsDict
 		#Dict to hold all phrases of active sessions (from database) (dict is faster than list)
-		phraseDict = [session['phrase']:1 for session in sessions]
+		phraseDict = {session['phrase']:1 for session in sessions}
 		
 		#remove sessionHandlers that have ended and sessions that have expired (phrase not in phraseList)
 		for sessionHandler in sessionHandlers[:]:
