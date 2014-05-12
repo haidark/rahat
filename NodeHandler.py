@@ -73,7 +73,7 @@ class NodeHandler(Thread):
 		self.updateLocations()
 		
 		#loop over every location
-		for location in self.locations
+		for location in self.locations:
 			lID = location['lID']
 			locTime = location['time']
 			locLat - location['lat']
@@ -104,7 +104,7 @@ class NodeHandler(Thread):
 		End = 0
 		
 		#loop over every location
-		for index, location in enumerate(self.locations)
+		for index, location in enumerate(self.locations):
 			#skip the first iteration
 			if index == 0:
 				continue
