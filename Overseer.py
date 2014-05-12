@@ -29,6 +29,7 @@ if __name__=="__main__":
 		db = DBManager()
 		#get all sessions data from DB
 		sessions = db.getSessions()
+		print sessions
 		db.close()
 		print "(+) Retrieved Session information from DB"
 		#generate SessionHandler objects add keys to sessionDict
