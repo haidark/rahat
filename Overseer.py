@@ -34,7 +34,6 @@ if __name__=="__main__":
 		#generate SessionHandler objects add keys to sessionDict
 		#for each row in sessions table
 		for session in sessions:
-			print session
 			#if this row does not have a sessionHandler, make one for it and start it
 			if not session['phrase'] in sessionsDict:
 				sessionHandler = SessionHandler(session)

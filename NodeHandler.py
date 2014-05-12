@@ -139,20 +139,27 @@ class NodeHandler(Thread):
 	#location1 and location2 are dictionaries with keys 'lat' and 'lon'
 	def sameLoc(self, location1, location2):
 		tol = .0001
-		lat1 = float(location1['lat'])
-		lon1 = float(location1['lon'])
-		lat2 = float(location2['lat'])
-		lon2 = float(location2['lat'])
-		#if euclidean distance is near 0
-		return sqrt((lat1-lat2)**2 + (lon1-lon2)**2) < tol
+		lat1 = location1['lat']
+		lon1 = location1['lon']
+		lat2 = location2['lat']
+		lon2 = location2['lat']
+		#check for unavailable locations
+		if not None in (lat1, lon1, lat2, lon2):
+			lat1 = float(lat1)
+			lon1 = float(lon1)
+			lat2 = float(lat2)
+			lon2 = float(lon2)
+			#if euclidean distance is near 0
+			return sqrt((lat1-lat2)**2 + (lon1-lon2)**2) < tol
+		else:
+			#gracefully return False
+			return False
 	
 	#boolean function to check if this node has been returned
 	def returned(self):
 		self.update()
 		#put last locations in a dict object
 		lastLoc = {'lat': self.lastLat, 'lon': self.lastLon}
-		print self.lastLat
-		print self.lastLon
 		#TODO get return location from the nodes table
 		returnLoc = {'lat': self.lastLat, 'lon': self.lastLon}
 		return self.sameLoc(lastLoc, returnLoc)	
