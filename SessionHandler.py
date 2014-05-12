@@ -133,7 +133,7 @@ class SessionHandler(Process):
 		#get current time
 		now = datetime.now()
 		# return true if expiration time has not been exceeded
-		return self.endTime < now
+		return self.endTime > now
 
 	
 	def NodesHealthAlert(self):
