@@ -148,10 +148,10 @@ class SessionHandler(Process):
 				pass
 			elif timeSinceLast < warnDiff:
 				#The node is not acting normally
-				print "Warning: "+str(node.devID)+"has not reported for "+timeSinceLast.minutes+" minutes"
+				print "Warning: "+str(node.devID)+"has not reported for "+timeSinceLast.seconds/60+" minutes"
 				#TODO construct Alert Object to let the user know
 			else:
 				#The node has not reported in a long time
-				print "Alert: "+str(node.devID)+"has not reported for "+timeSinceLast.minutes+" minutes"
+				print "Alert: "+str(node.devID)+"has not reported for "+timeSinceLast.seconds/60+" minutes"
 				#TODO construct Alert Object to let the user know
 				
