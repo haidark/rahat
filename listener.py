@@ -4,6 +4,7 @@ import logging
 from DBManager import DBManager, NodeError
 from threading import Thread
 from multiprocessing import Process
+
 #----------------------------------------------------------------------------------------------#
 class Listener(Process):
 	"""Listener Class - inherits from multiprocessing.Process
@@ -22,7 +23,7 @@ class Listener(Process):
 		Process.__init__(self)
 		self.listenSock  = listenSock
 		self.listenerID = listenerID
-		logging.basicConfig(filename='listener.log', format='%(levelname)s:%(message)s', level=logging.INFO)
+		logging.basicConfig(filename='Listener.log', format='%(asctime)s: %(message)s', level=logging.INFO)
 	
 	def run(self):
 		self.listenSock.listen(5)
@@ -62,10 +63,8 @@ class ClientHandlerThread(Thread):
 	def run(self):
 		try:
 			logMsg = 'Place holder for log message'
-			#get current time
-			now = time.strftime("%m/%d/%Y %H:%M:%S")
-			#prepend parent ID to time string
-			now = str(self.parentID) + " " + now
+			#prepend parent ID to logging message
+			parentID = str(self.parentID)
 			#connect to the database by constructing a DBManager object
 			db = DBManager()
 			#get devID from client
@@ -74,7 +73,7 @@ class ClientHandlerThread(Thread):
 			#check if node exists
 			try:
 				node = db.getNode(devID)
-				nID = node[0]
+				nID = node['nID']
 				
 				#get the location time and data from the client
 				locTime = self.getChunk()
@@ -83,22 +82,22 @@ class ClientHandlerThread(Thread):
 				
 				#update node location in nodes table regardless of whether it is active
 				db.updateNodeLocation(nID, locTime, lat, lon)
-				tblName = node[2]
+				sessionTblName = node['session']
 				if tblName == None:
-					logMsg = "(-) %s: Node at %s is not active. Device ID: %s" % (now, self.sockname, devID)
+					logMsg = "(-) %s - Node is not active. Device ID: %s" % (parentID, devID)
 				else:
 					#write the location data to DB
-					db.createLocation(tblName, nID, locTime, lat, lon)
-					logMsg = "(+) %s: Received data from %s. Device ID: %s" % (now, self.sockname, devID)
+					db.createLocation(sessionTblName, nID, locTime, lat, lon)
+					logMsg = "(+) %s - Received data. Device ID: %s" % (parentID, devID)
 			#if the node does not exist
 			except NodeError:
-				logMsg = "(-) %s: Device at %s not recognized. Device ID: %s" % (now, self.sockname, devID)
+				logMsg = "(-) %s - Device at %s not recognized. Device ID: %s" % (parentID, self.sockname, devID)
 		# if client hangs up
 		except (EOFError, socket.timeout):
-			logMsg = "(-) %s: Client %s closed connection or timed-out" % (now, self.sockname)
+			logMsg = "(-) %s - Client %s closed connection or timed-out" % (parentID, self.sockname)
 
 		logging.info(logMsg)
-		print logMsg
+		# print logMsg
 		db.close()
 		self.cSock.close()
 		

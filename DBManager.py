@@ -6,7 +6,7 @@ class DBManager:
 	while maintaining integrity of the data
 	
 	To construct a new DBManager, pass the constructor a tuple containing database login info:
-		db = DBManager((host, user, password, db))
+		db = DBManager()
 	Make sure to use db.close() to free its resources
 		Static Members:
 			DBINFO tuple which contains database information - (host, user, pass, db)
@@ -16,24 +16,27 @@ class DBManager:
 		Functions:
 			----Database-------------------------------------------------------------------------------------------
 			__init__() - connects to database and creates a cursor object
-			close() - closes connection to database
+			close() - closes connection to database and closes cursor object
+			
 			----Sessions-------------------------------------------------------------------------------------------
-			getSession(phrase) - gets a session from the sessions table
 			createSession(phrase, duration) - creates a new session if one by the same name DNE TODO error check duraion
 			deleteSession(phrase) - deletes a session if it exists and frees all nodes in that session
+			getSession(phrase) - gets a session from the sessions table
+			getSessions() - gets all sessions in the session table (useful for printing)
 			SessionExists(phrase) - returns true if the session exists, false otherwise
-			displaySessions() - gets all sessions in the session table (useful for printing)
+
 			----Nodes----------------------------------------------------------------------------------------------
-			getNode(devID) - gets a node from the nodes table
 			createNode(devID) - creates a new node if one by the same name DNE
-			NodeExists(devID) - returns true if the node exists, false otherwise	 	
 			deleteNode(devID) - deletes a node and removes any location entries in its current session table
 			activateNode(devID, phrase) - adds an existing node to a session
-			freeNode(devID) - frees an existing node from its session			
+			freeNode(devID) - frees an existing node from its session
+			getNode(devID) - gets a node from the nodes table
+			getNodes([phrase]) - gets all nodes or all nodes in a session (useful for printing)
+			NodeExists(devID) - returns true if the node exists, false otherwise				
 			assertFreeNode(devID) - raises an error if the node is not free
 			assertActiveNode(devID) - raises an error if the node is free
 			checkNodeState(devID) - checks if node is free or active and raises appropriate error
-			getNodes([phrase]) - gets all nodes or all nodes in a session (useful for printing)
+
 			----Locations------------------------------------------------------------------------------------------
 			createLocation(tblName, nID, time, lat, lon) - adds location row to a session table
 			updateNodeLocation(nID, time, lat, lon) - updates last known location of node
@@ -43,22 +46,13 @@ class DBManager:
 	def __init__(self):
 		#connect to the DB
 		self.conn = pymysql.connect(host=DBManager.DBINFO[0], user=DBManager.DBINFO[1], passwd=DBManager.DBINFO[2], db=DBManager.DBINFO[3])
-		self.cur = self.conn.cursor()
+		self.cur = self.conn.cursor(pymysql.cursor.DictCursor)
 		
 	def close(self):		
 		self.cur.close()
 		self.conn.close()
 		
 	"""SESSION FUNCTIONS"""
-	def getSession(self, phrase):
-		#gets a session from the sessions table and returns the whole row
-		#raises a SessionError if the session does not exist
-		sessionExists = self.cur.execute("SELECT * FROM sessions WHERE phrase=%s", phrase)
-		if sessionExists == 0:
-			raise SessionError(devID, SessionError.DNE)
-		else:
-			return self.cur.fetchone()
-	
 	def createSession(self, phrase, days):		
 		#raises a SessionError if session with same name already exists
 		#creates an entry in the sessions table with start time now, and duration in days 
@@ -107,7 +101,7 @@ class DBManager:
 		#deletes the session associated with the phrase
 		#o.w. raises a Session DNE error
 		session = self.getSession(phrase)
-		tblName = str(session[2])
+		tblName = str(session['tblName'])
 		#delete the row from the session table
 		self.cur.execute("DELETE FROM sessions WHERE phrase=%s", phrase)
 		#drop the session table
@@ -121,6 +115,15 @@ class DBManager:
 		#returns true if session exists and false if it does not
 		sessionExists = self.cur.execute("SELECT sID FROM sessions WHERE phrase=%s", phrase)
 		return sessionExists
+	
+	def getSession(self, phrase):
+		#gets a session from the sessions table and returns the whole row
+		#raises a SessionError if the session does not exist
+		sessionExists = self.cur.execute("SELECT * FROM sessions WHERE phrase=%s", phrase)
+		if sessionExists == 0:
+			raise SessionError(devID, SessionError.DNE)
+		else:
+			return self.cur.fetchone()
 	
 	def getSessions(self):
 		#displays a list of all active sessions
@@ -146,24 +149,18 @@ class DBManager:
 			nID = self.cur.lastrowid
 			return nID
 	
-	def NodeExists(self, devID):
-		#checks if a node exists, boolean function
-		#returns true if node exists and false if it does not
-		nodeExists = self.cur.execute("SELECT nID FROM nodes WHERE devID=%s", devID)
-		return nodeExists
-		
 	def deleteNode(self, devID):
 		#Removes the given node from the table of nodes
 		#if the node is active, removes all the rows associated with the node in its session table	
 		
 		#check if node exists, raises NodeError if it does not exist
 		node = self.getNode(devID)
-		nID = node[0]
-		tblName = node[2]
+		nID = node['nID']
+		sessionTblName = node['session']
 		#check if node is active
-		if tblName != None:
+		if sessionTblName != None:
 			#delete all rows in its session table associated with its nID
-			self.cur.execute("DELETE FROM " + str(tblName) + " WHERE nodeID=%s", nID) 
+			self.cur.execute("DELETE FROM " + str(sessionTblName) + " WHERE nodeID=%s", nID) 
 		#now delete it from the nodes table
 		self.cur.execute("DELETE FROM nodes WHERE devID=%s", devID)
 		self.cur.connection.commit()
@@ -177,7 +174,7 @@ class DBManager:
 		#try to get the tblName of the session
 		#SessionError.DNE raised if it fails
 		session = self.getSession(phrase)
-		tblName = session[2]
+		tblName = session['tblName']
 		
 		#if all is well(no errors raised) update the row
 		#set session table column to tblName
@@ -206,43 +203,54 @@ class DBManager:
 			raise NodeError(devID, NodeError.DNE)
 		else:
 			return self.cur.fetchone()
-			
+	
+	def getNodes(self, phrase=0):
+		#get all nodes
+		if phrase == 0:
+			self.cur.execute("SELECT * FROM nodes")
+		else:
+			#get the table name
+			session = self.getSession(phrase)
+			sessionTblName = session['session']
+			self.cur.execute("SELECT * FROM nodes WHERE session=%s", sessionTblName)
+		nodes = self.cur.fetchall()
+		return nodes
+	
+	def NodeExists(self, devID):
+		#checks if a node exists, boolean function
+		#returns true if node exists and false if it does not
+		nodeExists = self.cur.execute("SELECT nID FROM nodes WHERE devID=%s", devID)
+		return nodeExists
+	
 	def assertFreeNode(self, node):
 		#if node is not free raise NodeError
-		if node[2] != None:
-			raise NodeError(node[1], NodeError.ACT)
+		if node['session'] != None:
+			raise NodeError(node['devID'], NodeError.ACT)
 		else:
 			return node
 			
 	def assertActiveNode(self, node):
 		#if node is free raise NodeError	
-		if node[2] == None:
-			raise NodeError(node[1], NodeError.FRE)
+		if node['session'] == None:
+			raise NodeError(node['devID'], NodeError.FRE)
 		else:
 			return node
 			
 	def checkNodeState(self, node):
 		#checks why
 		#if node is not free raise Active NodeError
-		if node[2] != None:
-			raise NodeError(node[1], NodeError.ACT)
+		if node['session'] != None:
+			raise NodeError(node['devID'], NodeError.ACT)
 		#if the node is free raise Free NodeError
 		else:
-			raise NodeError(node[1], NodeError.FRE)
-	
-	def getNodes(self, phrase=0):
-		#displays a list of all nodes
-		if phrase == 0:
-			self.cur.execute("SELECT * FROM nodes")
-		else:
-			#get the table name
-			session = self.getSession(phrase)
-			tblName = session[2]
-			self.cur.execute("SELECT * FROM nodes WHERE session=%s", tblName)
-		nodes = self.cur.fetchall()
-		return nodes
+			raise NodeError(node['devID'], NodeError.FRE)
 	
 	"""LOCATION FUNCTIONS"""	
+	def getLocations(self, tblName, nID):
+		query = "SELECT * FROM {0} WHERE nID=%s".format(tblName)
+		self.cur.execute(query, nID)
+		return self.cur.fetchall()
+	
 	def createLocation(self, tblName, nID, time, lat, lon):
 		query = "INSERT INTO {0} VALUES (NULL, %s, %s, %s, %s)".format(tblName)
 		self.cur.execute(query, (nID, time, lat, lon))
@@ -256,6 +264,11 @@ class DBManager:
 		self.cur.connection.commit()
 		lID = self.cur.lastrowid
 		return lID
+		
+	def deleteLocByLID(self, tblName, lID):
+		query = "DELETE FROM {0} WHERE lID=%s".format(tblName)
+		self.cur.executemany(query, lID)
+		self.cur.connection.commit()
 
 ##########################################################################
 ##########################################################################
