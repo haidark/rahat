@@ -172,4 +172,8 @@ class NodeHandler(Thread):
 	def lastReportTime(self):	
 		self.update()
 		now = datetime.now()
-		return now - self.lastTime
+		#if no last report time
+		if self.lastTime == None:
+			return timedelta(minutes=100)
+		else:
+			return now - self.lastTime
