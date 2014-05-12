@@ -71,15 +71,14 @@ class NodeHandler(Thread):
 	def validateLocations(self):
 		#get updated location data from this nodes session table
 		self.updateLocations()
-		
+		#initialize list to hold lID's of location rows to delete 
+		locToDel = list()
 		#loop over every location
 		for location in self.locations:
 			lID = location['lID']
 			locTime = location['time']
-			locLat - location['lat']
-			locLon = location['lon']
-			#initialize list to hold lID's of location rows to delete 
-			locToDel = list()
+			locLat = location['lat']
+			locLon = location['lon']			
 			# if the timestamp is invalid (in the future)
 			if not self.validTime(locTime):
 				locToDel.append(lID)
@@ -87,12 +86,14 @@ class NodeHandler(Thread):
 			elif not self.validLoc(locLat, locLon):
 				locToDel.append(lID)
 		
-		#open a connection to the DB
-		db = DBManager()		
-		#delete the locations that were marked
-		db.deleteLocByLID(locToDel)
-		#close the database connection
-		db.close()
+		#if there are locations to delete
+		if locToDel:
+			#open a connection to the DB
+			db = DBManager()		
+			#delete the locations that were marked
+			db.deleteLocByLID(locToDel)
+			#close the database connection
+			db.close()
 		
 	def compressLocations(self):
 		#get updated location data from this nodes session table
@@ -119,12 +120,14 @@ class NodeHandler(Thread):
 				Start = index
 				End = index
 		
-		#open a connection to the DB
-		db = DBManager()		
-		#delete the locations that were marked
-		db.deleteLocByLID(locToDel)
-		#close the database connection
-		db.close()
+		#if there are locations to delete
+		if locToDel:
+			#open a connection to the DB
+			db = DBManager()		
+			#delete the locations that were marked
+			db.deleteLocByLID(locToDel)
+			#close the database connection
+			db.close()
 	
 	#checks if the location time stamp is valid 	
 	def validTime(self, locTime):

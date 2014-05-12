@@ -140,7 +140,7 @@ class SessionHandler(Process):
 		#for each NodeHandler object
 		for node in self.nodes:			
 			#get timedelta object representing time since last location report
-			timeSinceLast = node.LastReportTime()
+			timeSinceLast = node.lastReportTime()
 			normalDiff = timedelta(minutes=5)
 			warnDiff = timedelta(minutes=10)
 			if timeSinceLast < normalDiff:
