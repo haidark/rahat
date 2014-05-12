@@ -84,7 +84,7 @@ class NodeHandler(Thread):
 			if not self.validTime(locTime):
 				locToDel.append(lID)
 			# o.w. if the location is invalid
-			else if not self.validLoc(locLat, locLon):
+			elif not self.validLoc(locLat, locLon):
 				locToDel.append(lID)
 		
 		#open a connection to the DB
