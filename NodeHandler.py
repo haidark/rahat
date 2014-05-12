@@ -88,6 +88,7 @@ class NodeHandler(Thread):
 		
 		#if there are locations to delete
 		if locToDel:
+			print "Validating by deleting # rows: ", len(locToDel)
 			#open a connection to the DB
 			db = DBManager()		
 			#delete the locations that were marked
@@ -122,6 +123,7 @@ class NodeHandler(Thread):
 		
 		#if there are locations to delete
 		if locToDel:
+			print "Compressing by deleting # rows: ", len(locToDel)
 			#open a connection to the DB
 			db = DBManager()		
 			#delete the locations that were marked

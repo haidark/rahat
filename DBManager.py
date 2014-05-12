@@ -267,6 +267,7 @@ class DBManager:
 		
 	def deleteLocByLID(self, tblName, lID):
 		query = "DELETE FROM {0} WHERE lID=%s".format(tblName)
+		print lID
 		self.cur.executemany(query, lID)
 		self.cur.connection.commit()
 
