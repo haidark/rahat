@@ -211,7 +211,7 @@ class DBManager:
 		else:
 			#get the table name
 			session = self.getSession(phrase)
-			sessionTblName = session['session']
+			sessionTblName = session['tblName']
 			self.cur.execute("SELECT * FROM nodes WHERE session=%s", sessionTblName)
 		nodes = self.cur.fetchall()
 		return nodes
