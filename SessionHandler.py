@@ -1,5 +1,6 @@
 from multiprocessing import Process
 from DBManager import DBManager
+from NodeHandler import NodeHandler
 from datetime import datetime, timedelta
 from time import sleep
 
