@@ -91,7 +91,7 @@ class NodeHandler(Thread):
 			#open a connection to the DB
 			db = DBManager()		
 			#delete the locations that were marked
-			db.deleteLocByLID(locToDel)
+			db.deleteLocByLID(self.sessionTblName, locToDel)
 			#close the database connection
 			db.close()
 		
@@ -125,7 +125,7 @@ class NodeHandler(Thread):
 			#open a connection to the DB
 			db = DBManager()		
 			#delete the locations that were marked
-			db.deleteLocByLID(locToDel)
+			db.deleteLocByLID(self.sessionTblName, locToDel)
 			#close the database connection
 			db.close()
 	
