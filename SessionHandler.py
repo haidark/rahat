@@ -77,7 +77,8 @@ class SessionHandler(Process):
 			node.keepRunning = False
 		#wait for the threads to finish their work
 		for node in self.nodes:				
-			node.join()
+			if node.is_alive():
+				node.join()
 		
 		#---check if all nodes have been returned		
 		# initialize list of unreturned nodes: using list comprehension

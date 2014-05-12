@@ -83,7 +83,7 @@ class ClientHandlerThread(Thread):
 				#update node location in nodes table regardless of whether it is active
 				db.updateNodeLocation(nID, locTime, lat, lon)
 				sessionTblName = node['session']
-				if tblName == None:
+				if sessionTblName == None:
 					logMsg = "(-) %s - Node is not active. Device ID: %s" % (parentID, devID)
 				else:
 					#write the location data to DB
