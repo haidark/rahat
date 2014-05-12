@@ -85,10 +85,9 @@ class NodeHandler(Thread):
 			# o.w. if the location is invalid
 			elif not self.validLoc(locLat, locLon):
 				locToDel.append(lID)
-		
+		print "Validating by deleting # rows: ", len(locToDel)
 		#if there are locations to delete
-		if locToDel:
-			print "Validating by deleting # rows: ", len(locToDel)
+		if locToDel:			
 			#open a connection to the DB
 			db = DBManager()		
 			#delete the locations that were marked
@@ -120,10 +119,9 @@ class NodeHandler(Thread):
 					locToDel.pop()
 				Start = index
 				End = index
-		
+		print "Compressing by deleting # rows: ", len(locToDel)
 		#if there are locations to delete
-		if locToDel:
-			print "Compressing by deleting # rows: ", len(locToDel)
+		if locToDel:			
 			#open a connection to the DB
 			db = DBManager()		
 			#delete the locations that were marked
@@ -143,7 +141,7 @@ class NodeHandler(Thread):
 	#checks if two locations are pointing to roughly the same area
 	#location1 and location2 are dictionaries with keys 'lat' and 'lon'
 	def sameLoc(self, location1, location2):
-		tol = .001
+		tol = .005
 		lat1 = location1['lat']
 		lon1 = location1['lon']
 		lat2 = location2['lat']
