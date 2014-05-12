@@ -29,12 +29,12 @@ if __name__=="__main__":
 		db = DBManager()
 		#get all sessions data from DB
 		sessions = db.getSessions()
-		print sessions
 		db.close()
 		print "(+) Retrieved Session information from DB"
 		#generate SessionHandler objects add keys to sessionDict
 		#for each row in sessions table
 		for session in sessions:
+			print session
 			#if this row does not have a sessionHandler, make one for it and start it
 			if not session['phrase'] in sessionsDict:
 				sessionHandler = SessionHandler(session)

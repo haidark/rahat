@@ -120,6 +120,7 @@ class SessionHandler(Process):
 		#create a new Node object for each nodeData row in nodesData 
 		# if such an object does not already exist		
 		for nodeData in nodesData:
+			print nodeData
 			if not nodeData['devID'] in self.nodesDict:
 				#add NodeHandler object to the list of nodes
 				self.nodes.append(NodeHandler(nodeData))
