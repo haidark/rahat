@@ -112,12 +112,13 @@ class NodeHandler(Thread):
 			#if location is the same at self.locations[Start]
 			if self.sameLoc(location, self.locations[Start]):
 				locToDel.append(lID)
-				lEnd = index
+				End = index
 			else:
 				if not Start == End:
 					locToDel.pop()
 				Start = index
 				End = index
+		
 		#if there are locations to delete
 		if locToDel:			
 			#open a connection to the DB
@@ -139,7 +140,7 @@ class NodeHandler(Thread):
 	#checks if two locations are pointing to roughly the same area
 	#location1 and location2 are dictionaries with keys 'lat' and 'lon'
 	def sameLoc(self, location1, location2):
-		tol = .0001
+		tol = .00001
 		lat1 = location1['lat']
 		lon1 = location1['lon']
 		lat2 = location2['lat']

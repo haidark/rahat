@@ -16,7 +16,6 @@ class ClientThread(Thread):
 		
 	def run(self):
 		self.s.connect((self.HOST, self.PORT))
-		time.sleep(self.waitTime)
 		self.s.sendall(self.msg)
 		self.s.close()
 		
@@ -45,7 +44,7 @@ locTime = '1991-11-04 00:00:01'
 lat = '0.0'
 lon = '0.0'
 
-for i in range(10,20):
+for i in range(0,5):
 	cThread = ClientThread(HOST, PORT, devID, locTime, lat, lon, 30-i)
 	cThread.run()
 
