@@ -23,7 +23,7 @@ class Listener(Process):
 		Process.__init__(self)
 		self.listenSock  = listenSock
 		self.listenerID = listenerID
-		logging.basicConfig(filename='Listener.log', format='%(asctime)s: %(message)s', level=logging.INFO)
+		
 	
 	def run(self):
 		self.listenSock.listen(5)
@@ -59,11 +59,12 @@ class ClientHandlerThread(Thread):
 		self.cSock.settimeout(timeout)
 		self.sockname = str(clientAddr)
 		self.parentID = parentID
+		self.logger = logging.getLogger("listener")
 		
 	def run(self):
 		try:
 			logMsg = 'Place holder for log message'
-			#prepend parent ID to logging message
+			#prepend parent ID to log message
 			parentID = str(self.parentID)
 			#connect to the database by constructing a DBManager object
 			db = DBManager()
@@ -96,7 +97,7 @@ class ClientHandlerThread(Thread):
 		except (EOFError, socket.timeout):
 			logMsg = "(-) %s - Client %s closed connection or timed-out" % (parentID, self.sockname)
 
-		logging.info(logMsg)
+		self.logger.info(logMsg)
 		# print logMsg
 		db.close()
 		self.cSock.close()

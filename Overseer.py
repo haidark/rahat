@@ -15,6 +15,27 @@ overseerfh = logging.FileHandler('logs/Overseer.log')
 overseerfh.setFormatter(formatter)
 overseerlogger.addHandler(overseerfh)
 
+#SessionHandler.log
+sessionlogger = logging.getLogger("session")
+sessionlogger.setLevel(logging.DEBUG)
+sessionfh = logging.FileHandler('logs/SessionHandler.log')
+sessionfh.setFormatter(formatter)
+sessionlogger.addHandler(sessionfh)
+
+#NodeHandler.log
+nodelogger = logging.getLogger("node")
+nodelogger.setLevel(logging.DEBUG)
+nodefh = logging.FileHandler('logs/NodeHandler.log')
+nodefh.setFormatter(formatter)
+nodelogger.addHandler(nodefh)
+
+#Listener.log
+listenerlogger = logging.getLogger("listener")
+listenerlogger.setLevel(logging.DEBUG)
+listenerfh = logging.FileHandler('logs/Listener.log')
+listenerfh.setFormatter(formatter)
+listenerlogger.addHandler(listenerfh)
+
 ########initialize Listeners
 #first create server socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -67,5 +88,6 @@ while True:
 			sessionHandlers.remove(sessionHandler)
 			overseerlogger.info("(+) SessionHandler for session:"+sessionHandler.phrase+" terminated and destroyed.")
 	#wait 1 minute		
-	sleep(120)
 	overseerlogger.info("(+) Waiting 2 minutes.")
+	sleep(120)
+	

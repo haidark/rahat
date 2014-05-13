@@ -3,6 +3,7 @@ from DBManager import DBManager
 from NodeHandler import NodeHandler
 from datetime import datetime, timedelta
 from time import sleep
+import logging
 
 class SessionHandler(Process):
 	"""SessionHandler Class - inherits from multiprocessing.Process
@@ -43,6 +44,7 @@ class SessionHandler(Process):
 		self.nodesDict = dict()
 		#instantiate a NodeHandler object for each node in the session handled
 		self.createNodes()
+		self.logger = logging.getLogger("session")
 		
 	
 	def run(self):	
@@ -86,7 +88,7 @@ class SessionHandler(Process):
 		# fire off an alert for every node that has not been returned
 		for unreturnedNode in unreturnedNodes:
 			#TODO fire off an alert to let the user know this node has not been returned
-			print unreturnedNode.devID+" has not been returned."		
+			self.logger.info(self.phrase+"-node:"+unreturnedNode.devID+" has not been returned.")		
 		# now loop until all nodes are returned
 		while unreturnedNodes:
 			#check if any nodes have been returned
@@ -148,10 +150,10 @@ class SessionHandler(Process):
 				pass
 			elif timeSinceLast < warnDiff:
 				#The node is not acting normally
-				print "Warning: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes"
+				self.logger.info(self.phrase+"-Warning: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes")
 				#TODO construct Alert Object to let the user know
 			else:
 				#The node has not reported in a long time
-				print "Alert: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes"
+				self.logger.info(self.phrase+"-Alert: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes")
 				#TODO construct Alert Object to let the user know
 				

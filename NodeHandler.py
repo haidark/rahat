@@ -3,6 +3,7 @@ from DBManager import DBManager
 from datetime import datetime, timedelta
 from math import sqrt
 from time import sleep
+import logging
 
 class NodeHandler(Thread):
 	"""NodeHandler Class - inherits from threading.Thread
@@ -37,7 +38,7 @@ class NodeHandler(Thread):
 		self.setLocals(nodeData)				
 		self.updateLocations()
 		self.keepRunning = True
-		
+		self.logger = logging.getLogger("node")
 	
 	def update(self):
 		db = DBManager()
@@ -60,13 +61,13 @@ class NodeHandler(Thread):
 		db.close()	
 
 	def run(self):
-		print "(+) NodeHandler for node:" +self.devID+" running"
+		self.logger.info("(+) NodeHandler for node:" +self.devID+" running")
 		while self.keepRunning:			
 			self.validateLocations()
 			self.compressLocations()
 			#delay for a bit to ease the load on the DB?
 			sleep(120)
-		print "(+) NodeHandler for node:" +self.devID+" stopped"
+		self.logger.info("(+) NodeHandler for node:" +self.devID+" stopped")
 		
 	def validateLocations(self):
 		#get updated location data from this nodes session table
