@@ -1,7 +1,7 @@
 <?php
 function getNodesByPhrase($mysqli, $phrase){
 		$nodes  = NULL;
-		$rows = $mysqli->query("SELECT nID, devID FROM nodes WHERE session='{$phrase}'");
+		$rows = $mysqli->query("SELECT * FROM nodes WHERE session='{$phrase}'");
 		for($rowNum = 0; $rowNum < $rows->num_rows; $rowNum++){
 			$nodes[$rowNum] = $rows->fetch_assoc();
 		}
@@ -16,4 +16,5 @@ function getLocationsByPhrase_NID($mysqli, $phrase, $nID){
 	}
 	return $locations;
 }
+
 ?>

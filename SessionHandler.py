@@ -69,7 +69,7 @@ class SessionHandler(Process):
 			#TODO write a function to relate nodes and check relations
 			#how often do we want to repeat this? do not want to put too much strain on the DB
 			#should check report times every minute or so
-			sleep(30)
+			sleep(60)
 		
 		# # # # # # After Session Expires # # # # # # 
 		

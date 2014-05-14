@@ -66,7 +66,7 @@ class NodeHandler(Thread):
 			self.validateLocations()
 			self.compressLocations()
 			#delay for a bit to ease the load on the DB?
-			sleep(120)
+			sleep(15*60)
 		self.logger.info("(+) NodeHandler for node:" +self.devID+" stopped")
 		
 	def validateLocations(self):

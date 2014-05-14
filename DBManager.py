@@ -38,9 +38,10 @@ class DBManager:
 			checkNodeState(devID) - checks if node is free or active and raises appropriate error
 
 			----Locations------------------------------------------------------------------------------------------
+			getLocations(tblName, nID) - gets all locations of a node in a session table
 			createLocation(tblName, nID, time, lat, lon) - adds location row to a session table
 			updateNodeLocation(nID, time, lat, lon) - updates last known location of node
-		
+			deleteLocByLID(tblName, lID) - deletes location row or rows in a session table
 	"""
 	DBINFO = ('127.0.0.1', 'haidar', 'pin101', 'haramain2')
 	def __init__(self):
