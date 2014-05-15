@@ -11,28 +11,28 @@ formatter = logging.Formatter("%(asctime)s: %(message)s")
 #Overseer.log
 overseerlogger = logging.getLogger("overseer")
 overseerlogger.setLevel(logging.DEBUG)
-overseerfh = logging.RotatingFileHandler('logs/Overseer.log', maxBytes = 10*1024*1024, backupCount=2)
+overseerfh = logging.handlers.RotatingFileHandler('logs/Overseer.log', maxBytes = 10*1024*1024, backupCount=2)
 overseerfh.setFormatter(formatter)
 overseerlogger.addHandler(overseerfh)
 
 #SessionHandler.log
 sessionlogger = logging.getLogger("session")
 sessionlogger.setLevel(logging.DEBUG)
-sessionfh = logging.RotatingFileHandler('logs/SessionHandler.log', maxBytes = 10*1024*1024, backupCount=2)
+sessionfh = logging.handlers.RotatingFileHandler('logs/SessionHandler.log', maxBytes = 10*1024*1024, backupCount=2)
 sessionfh.setFormatter(formatter)
 sessionlogger.addHandler(sessionfh)
 
 #NodeHandler.log
 nodelogger = logging.getLogger("node")
 nodelogger.setLevel(logging.DEBUG)
-nodefh = logging.RotatingFileHandler('logs/NodeHandler.log', maxBytes = 10*1024*1024, backupCount=2)
+nodefh = logging.handlers.RotatingFileHandler('logs/NodeHandler.log', maxBytes = 10*1024*1024, backupCount=2)
 nodefh.setFormatter(formatter)
 nodelogger.addHandler(nodefh)
 
 #Listener.log
 listenerlogger = logging.getLogger("listener")
 listenerlogger.setLevel(logging.DEBUG)
-listenerfh = logging.RotatingFileHandler('logs/Listener.log', maxBytes = 10*1024*1024, backupCount=2)
+listenerfh = logging.handlers.RotatingFileHandler('logs/Listener.log', maxBytes = 10*1024*1024, backupCount=2)
 listenerfh.setFormatter(formatter)
 listenerlogger.addHandler(listenerfh)
 
