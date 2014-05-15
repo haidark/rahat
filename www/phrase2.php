@@ -7,7 +7,7 @@
 </head>
 <body>
 	<div id="sessionPhrase">
-		<form action="phrase.php" method="post">
+		<form action="phrase2.php" method="post">
 			<p>Enter pass-phrase:</p>
 			<input name="phrase" type="text" id="phrase" 
 				<?php

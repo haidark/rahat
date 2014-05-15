@@ -1,6 +1,6 @@
 <?php
 	if(!isset($_POST["phrase"]) or !isset($_POST["node"])){
-		header("Location: phrase.php");
+		header("Location: phrase2.php");
 	}
 	include_once("GoogleMap.php");
 	include_once("JSMin.php");
