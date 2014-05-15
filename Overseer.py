@@ -3,7 +3,7 @@ from Listener import Listener
 from DBManager import DBManager
 from SessionHandler import SessionHandler
 from time import sleep
-import logging
+import logging, logging.handlers
 
 #########Create/Configure Loggers for each module#######################
 #format of log messages
