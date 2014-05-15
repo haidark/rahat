@@ -152,10 +152,12 @@ class SessionHandler(Process):
 				#node is healthy, nothing to do here
 				pass
 			elif timeSinceLast < warnDiff:
+				pass
 				#The node is not acting normally
 				#self.logger.info(self.phrase+"-Warning: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes")
 				#TODO construct Alert Object to let the user know
 			else:
+				pass
 				#The node has not reported in a long time
 				#self.logger.info(self.phrase+"-Alert: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes")
 				#TODO construct Alert Object to let the user know
