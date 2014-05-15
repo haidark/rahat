@@ -11,28 +11,28 @@ formatter = logging.Formatter("%(asctime)s: %(message)s")
 #Overseer.log
 overseerlogger = logging.getLogger("overseer")
 overseerlogger.setLevel(logging.DEBUG)
-overseerfh = logging.FileHandler('logs/Overseer.log')
+overseerfh = logging.RotatingFileHandler('logs/Overseer.log', maxBytes = 10*1024*1024, backupCount=2)
 overseerfh.setFormatter(formatter)
 overseerlogger.addHandler(overseerfh)
 
 #SessionHandler.log
 sessionlogger = logging.getLogger("session")
 sessionlogger.setLevel(logging.DEBUG)
-sessionfh = logging.FileHandler('logs/SessionHandler.log')
+sessionfh = logging.RotatingFileHandler('logs/SessionHandler.log', maxBytes = 10*1024*1024, backupCount=2)
 sessionfh.setFormatter(formatter)
 sessionlogger.addHandler(sessionfh)
 
 #NodeHandler.log
 nodelogger = logging.getLogger("node")
 nodelogger.setLevel(logging.DEBUG)
-nodefh = logging.FileHandler('logs/NodeHandler.log')
+nodefh = logging.RotatingFileHandler('logs/NodeHandler.log', maxBytes = 10*1024*1024, backupCount=2)
 nodefh.setFormatter(formatter)
 nodelogger.addHandler(nodefh)
 
 #Listener.log
 listenerlogger = logging.getLogger("listener")
 listenerlogger.setLevel(logging.DEBUG)
-listenerfh = logging.FileHandler('logs/Listener.log')
+listenerfh = logging.RotatingFileHandler('logs/Listener.log', maxBytes = 10*1024*1024, backupCount=2)
 listenerfh.setFormatter(formatter)
 listenerlogger.addHandler(listenerfh)
 
@@ -60,7 +60,7 @@ while True:
 	#get all sessions data from DB
 	sessions = db.getSessions()
 	db.close()
-	overseerlogger.info("(+) Retrieved Session information from DB")
+	#overseerlogger.info("(+) Retrieved Session information from DB")
 	#generate SessionHandler objects add keys to sessionDict
 	#for each row in sessions table
 	for session in sessions:
@@ -88,6 +88,6 @@ while True:
 			sessionHandlers.remove(sessionHandler)
 			overseerlogger.info("(+) SessionHandler for session:"+sessionHandler.phrase+" terminated and destroyed.")
 	#wait 1 minute		
-	overseerlogger.info("(+) Waiting 2 minutes.")
+	#overseerlogger.info("(+) Waiting 2 minutes.")
 	sleep(120)
 	

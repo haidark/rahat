@@ -76,11 +76,13 @@ class SessionHandler(Process):
 		#---signal to stop to all housekeeping threads
 		#tell the threads to stop
 		for node in self.nodes:			
+			self.logger.info(self.phrase+": signalling node:"+node.devID+" to stop running")
 			node.keepRunning = False
 		#wait for the threads to finish their work
 		for node in self.nodes:				
 			if node.is_alive():
 				node.join()
+				self.logger.info(self.phrase+": node:"+node.devID+" thread stopped")
 		
 		#---check if all nodes have been returned		
 		# initialize list of unreturned nodes: using list comprehension
@@ -94,6 +96,7 @@ class SessionHandler(Process):
 			#check if any nodes have been returned
 			unreturnedNodes = [node for node in unreturnedNodes if not node.returned()]
 			#delay before checking again?
+			sleep(60)
 
 		# after all nodes are returned, archive the session table and delete its row from the database
 		db = DBManager()
@@ -150,10 +153,10 @@ class SessionHandler(Process):
 				pass
 			elif timeSinceLast < warnDiff:
 				#The node is not acting normally
-				self.logger.info(self.phrase+"-Warning: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes")
+				#self.logger.info(self.phrase+"-Warning: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes")
 				#TODO construct Alert Object to let the user know
 			else:
 				#The node has not reported in a long time
-				self.logger.info(self.phrase+"-Alert: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes")
+				#self.logger.info(self.phrase+"-Alert: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes")
 				#TODO construct Alert Object to let the user know
 				
