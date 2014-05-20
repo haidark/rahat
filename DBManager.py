@@ -151,6 +151,13 @@ class DBManager:
 		sessions = self.cur.fetchall()
 		return sessions		
 	
+	def printSessions(self):
+		sessions = self.getSessions()
+		#print header
+		print "sID |\t phrase |\t tblName |\t start |\t end |\t contactID"
+		for session in sessions:
+			print session['sID']+' |\t'+session['phrase']+' |\t'+session['tblName']+' |\t'+session['start']+' |\t'+session['end']+' |\t'+session['contactID']
+	
 	def SessionExists(self, phrase):
 		#checks if a session exists, boolean function
 		#returns true if session exists and false if it does not
@@ -242,6 +249,16 @@ class DBManager:
 			self.cur.execute("SELECT * FROM nodes WHERE session=%s", sessionTblName)
 		nodes = self.cur.fetchall()
 		return nodes
+	
+	def printNodes(self, phrase=0):
+		if phrase == 0:
+			nodes = self.getNodes()
+		else:
+			nodes = self.getNodes(phrase)
+		#print header
+		print "nID |\t devID |\t session |\t time |\t contactID"
+		for node in nodes:
+			print node['nID']+' |\t'+node['devID']+' |\t'+node['session']+' |\t'+node['time']+' |\t'+node['contactID']
 	
 	def NodeExists(self, devID):
 		#checks if a node exists, boolean function
@@ -392,6 +409,13 @@ class DBManager:
 		query = "SELECT * FROM contacts"
 		self.cur.execute(query)
 		return self.cur.fetchall()
+	
+	def printContacts(self):
+		contacts = self.getContacts()
+		#print header
+		print "cID |\t fName |\t lName |\t email |\t sms"
+		for contact in contacts:
+			print contact['cID']+' |\t'+contact['fName']+' |\t'+contact['lName']+' |\t'+contact['email']+' |\t'+contact['sms']
 	
 	def contactExists(self, fName=None, lName=None, email=None, sms=None):
 		#returns 0 if contact with given parameters does not exist

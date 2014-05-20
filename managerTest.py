@@ -75,6 +75,9 @@ elif args.NODES != None:
 	for node in nodes:
 		print node
 else:
+	self.printSessions()
+	self.printNodes()
+	self.printContacts()
 #------------------------------------------TESTING CODE---------------------------------------------------#	
 	ses = 'testsession'
 	dev1 = 'testdevx'
@@ -126,9 +129,7 @@ else:
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing getSessions function"
 	print "(=) List of all sessions"
-	sessions = db.getSessions()
-	for session in sessions:
-		print session		
+	self.printSessions()	
 #---------------------------------------------------------------------------------------------------------#		
 #---------------------------------------------------------------------------------------------------------#		
 	print "(========)NODE FUNCTION TESTS(========)"
@@ -145,9 +146,7 @@ else:
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing displayNodes function"
 	print "(=) List of all nodes"
-	nodes = db.getNodes()
-	for node in nodes:
-		print node
+	self.printNodes()
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Testing creation of existing node"
 	try:
@@ -237,22 +236,16 @@ else:
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing assignSession function"
 	db.assignSession(ses, fName=cont1['fName'], lName=cont1['lName'], email=cont1['email'], sms=cont1['sms'])	
-	sessions = db.getSessions()
-	for session in sessions:
-		print session
+	self.printSessions()
 	db.unassignSession(ses)
 #---------------------------------------------------------------------------------------------------------#
 	print "(=) Testing assignNode function"
 	db.assignNode(dev1, contID)
-	nodes = db.getNodes()
-	for node in nodes:
-		print node
+	self.printNodes()
 	db.unassignNode(dev1)
 #---------------------------------------------------------------------------------------------------------#
 	print "(=) Printing list of Contacts"
-	contacts = db.getContacts()
-	for contact in contacts:
-		print contact
+	self.printContacts()
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Cleaning up...."		
 	db.deleteContact(contID)
