@@ -141,7 +141,7 @@ class DBManager:
 		#raises a SessionError if the session does not exist
 		sessionExists = self.cur.execute("SELECT * FROM sessions WHERE phrase=%s", phrase)
 		if sessionExists == 0:
-			raise SessionError(devID, SessionError.DNE)
+			raise SessionError(phrase, SessionError.DNE)
 		else:
 			return self.cur.fetchone()
 			
