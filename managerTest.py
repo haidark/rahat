@@ -236,18 +236,18 @@ else:
 		print "\t(-) Could not find contact by information"	
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing assignSession function"
-	db.assignSession(ses, fName=cont1['fName'], lName=cont1['lName'], email=cont1['email'], sms=cont1['sms'])
-	db.unassignSession(ses)
+	db.assignSession(ses, fName=cont1['fName'], lName=cont1['lName'], email=cont1['email'], sms=cont1['sms'])	
 	sessions = db.getSessions()
 	for session in sessions:
 		print session
+	db.unassignSession(ses)
 #---------------------------------------------------------------------------------------------------------#
 	print "(=) Testing assignNode function"
 	db.assignNode(dev1, contID)
-	db.unassignNode(dev1)
 	nodes = db.getNodes()
 	for node in nodes:
 		print node
+	db.unassignNode(dev1)
 #---------------------------------------------------------------------------------------------------------#
 	print "(=) Printing list of Contacts"
 	contacts = db.getContacts()
