@@ -154,12 +154,12 @@ class DBManager:
 	def printSessions(self):
 		sessions = self.getSessions()
 		#print header
-		print "sID |\t phrase |\t tblName |\t start |\t end |\t contactID"
+		print "sID |\t phrase |\t tblName |\t start |\t\t end |\t contactID"
 		for session in sessions:
 			print ( str(session['sID'])+' |\t'+session['phrase']+' |\t'+session['tblName']+' |\t'+
 					session['start'].strftime('%Y/%m/%d %H:%M:%S')+' |\t'+
 					session['end'].strftime('%Y/%m/%d %H:%M:%S')+
-					' |\t'+str(session['contactID']) )
+					' |\t\t'+str(session['contactID']) )
 	
 	def SessionExists(self, phrase):
 		#checks if a session exists, boolean function
@@ -259,10 +259,10 @@ class DBManager:
 		else:
 			nodes = self.getNodes(phrase)
 		#print header
-		print "nID |\t devID |\t session |\t time |\t contactID"
+		print "nID |\t devID |\t session |\t time |\t\t contactID"
 		for node in nodes:
 			print ( str(node['nID'])+' |\t'+node['devID']+' |\t'+node['session']+
-					' |\t'+node['time'].strftime('%Y/%m/%d %H:%M:%S')+' |\t'+str(node['contactID']) )
+					' |\t'+str(node['time'])+' |\t\t'+str(node['contactID']) )
 	
 	def NodeExists(self, devID):
 		#checks if a node exists, boolean function
