@@ -199,7 +199,6 @@ else:
 #---------------------------------------------------------------------------------------------------------#
 	print "(=) Creating contact"
 	contID = db.createContact(cont1['fName'], cont1['lName'], cont1['email'], cont1['sms'])
-	print contID
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing Failure of createContact function"
 	try:
@@ -225,13 +224,13 @@ else:
 #---------------------------------------------------------------------------------------------------------#		
 	print "(=) Testing findContact function"
 	byID = db.findContact(cID=contID)
-	if byID == contID:
+	if byID['cID'] == contID:
 		print "\t(+) Found contact by cID"
 	else:
 		print "\t(-) Could not find contact by cID"	
 #---------------------------------------------------------------------------------------------------------#
 	byInfo = db.findContact(fName=cont1['fName'], lName=cont1['lName'], email=cont1['email'], sms=cont1['sms'])
-	if byInfo == contID:
+	if byInfo['cID'] == contID:
 		print "\t(+) Found contact by information"
 	else:
 		print "\t(-) Could not find contact by information"	
