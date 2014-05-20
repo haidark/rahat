@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from DBManager import DBManager, SessionError, NodeError
+from DBManager import DBManager, SessionError, NodeError, ContactError
 
 import argparse
 parser = argparse.ArgumentParser()
