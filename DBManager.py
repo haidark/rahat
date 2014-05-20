@@ -154,15 +154,15 @@ class DBManager:
 	def printSessions(self):
 		sessions = self.getSessions()
 		#enumerate columns to print		
-		sessionKeys = ['sID', 'phrase', 'tblName', 'start', 'end', 'contactID']
+		cols = ['sID', 'phrase', 'tblName', 'start', 'end', 'contactID']
 		#print header
-		print ' | '.join(sessionKeys)
+		print ' | '.join(cols)
 		for session in sessions:
 			#get value of each column
-			sessionValues = []
-			for key in sessionKeys:
-				sessionValues.append(str(session[key]))
-			print ' | '.join(sessionValues)
+			values = []
+			for col in cols:
+				values.append(str(session[col]))
+			print ' | '.join(values)
 	
 	def SessionExists(self, phrase):
 		#checks if a session exists, boolean function
@@ -261,11 +261,16 @@ class DBManager:
 			nodes = self.getNodes()
 		else:
 			nodes = self.getNodes(phrase)
+		#enumerate columns to print		
+		cols = ['nID', 'devID', 'session', 'time', 'contactID']
 		#print header
-		print "nID | devID | session | time | contactID"
+		print ' | '.join(cols)
 		for node in nodes:
-			print ( str(node['nID'])+' | '+node['devID']+' | '+str(node['session'])+
-					' | '+str(node['time'])+' | '+str(node['contactID']) )
+			#get value of each column
+			values = []
+			for col in cols:
+				values.append(str(node[col]))
+			print ' | '.join(values)
 	
 	def NodeExists(self, devID):
 		#checks if a node exists, boolean function
@@ -419,12 +424,17 @@ class DBManager:
 	
 	def printContacts(self):
 		contacts = self.getContacts()
+		#enumerate columns to print		
+		cols = ['cID', 'fName', 'lName', 'email', 'sms']
 		#print header
-		print "cID | fName | lName | email | sms"
+		print ' | '.join(cols)
 		for contact in contacts:
-			print ( str(contact['cID'])+' | '+str(contact['fName'])+' | '+str(contact['lName'])+
-					' | '+str(contact['email'])+' | '+str(contact['sms']) )
-	
+			#get value of each column
+			values = []
+			for col in cols:
+				values.append(str(contact[col]))
+			print ' | '.join(values)
+		
 	def contactExists(self, fName=None, lName=None, email=None, sms=None):
 		#returns 0 if contact with given parameters does not exist
 		#otherwise returns 1
