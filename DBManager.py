@@ -153,13 +153,16 @@ class DBManager:
 	
 	def printSessions(self):
 		sessions = self.getSessions()
+		#enumerate columns to print		
+		sessionKeys = ['sID', 'phrase', 'tblName', 'start', 'end', 'contactID']
 		#print header
-		print "sID | phrase | tblName | start | end | contactID"
+		print ' | '.join(sessionKeys)
 		for session in sessions:
-			print ( str(session['sID'])+' |'+session['phrase']+' |'+session['tblName']+' |'+
-					session['start'].strftime('%Y/%m/%d %H:%M:%S')+' |'+
-					session['end'].strftime('%Y/%m/%d %H:%M:%S')+
-					' |'+str(session['contactID']) )
+			#get value of each column
+			sessionValues = []
+			for key in sessionKeys:
+				sessionValues.append(str(session[key]))
+			print ' | '.join(sessionValues)
 	
 	def SessionExists(self, phrase):
 		#checks if a session exists, boolean function
@@ -261,8 +264,8 @@ class DBManager:
 		#print header
 		print "nID | devID | session | time | contactID"
 		for node in nodes:
-			print ( str(node['nID'])+' |'+node['devID']+' |'+str(node['session'])+
-					' |'+str(node['time'])+' |'+str(node['contactID']) )
+			print ( str(node['nID'])+' | '+node['devID']+' | '+str(node['session'])+
+					' | '+str(node['time'])+' | '+str(node['contactID']) )
 	
 	def NodeExists(self, devID):
 		#checks if a node exists, boolean function
@@ -419,8 +422,8 @@ class DBManager:
 		#print header
 		print "cID | fName | lName | email | sms"
 		for contact in contacts:
-			print ( str(contact['cID'])+' |'+str(contact['fName'])+' |'+str(contact['lName'])+
-					' |'+str(contact['email'])+' |'+str(contact['sms']) )
+			print ( str(contact['cID'])+' | '+str(contact['fName'])+' | '+str(contact['lName'])+
+					' | '+str(contact['email'])+' | '+str(contact['sms']) )
 	
 	def contactExists(self, fName=None, lName=None, email=None, sms=None):
 		#returns 0 if contact with given parameters does not exist
