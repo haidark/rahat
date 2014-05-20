@@ -122,7 +122,7 @@ else:
 		db.setSessionPeriod(ses, 'invalid duration')
 		print "\t(-) Failure of setSessionPeriod Test Failed"
 	except ValueError as ve:
-		print "\t(+) Failure of setSessionPeriod Test Passed. Error Caught:", ve.msg
+		print "\t(+) Failure of setSessionPeriod Test Passed. Error Caught:", ve
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing getSessions function"
 	print "(=) List of all sessions"
