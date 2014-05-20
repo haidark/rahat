@@ -199,6 +199,7 @@ else:
 #---------------------------------------------------------------------------------------------------------#
 	print "(=) Creating contact"
 	contID = db.createContact(cont1['fName'], cont1['lName'], cont1['email'], cont1['sms'])
+	print contID
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing Failure of createContact function"
 	try:
@@ -247,7 +248,7 @@ else:
 	db.unassignNode(dev1)
 	nodes = db.getNodes()
 	for node in nodes:
-		print nodes
+		print node
 #---------------------------------------------------------------------------------------------------------#
 	print "(=) Printing list of Contacts"
 	contacts = db.getContacts()
