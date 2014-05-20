@@ -81,11 +81,11 @@ else:
 	dev2 = 'testdevy'
 	dev3 = 'testdevz'
 	dev4 = 'testdevu'
-	cont1 = {'fName':'testfName', 'lName':'testlName', 'email':'test@email.com', 'phone':'18453384705'}
+	cont1 = {'fName':'testfName', 'lName':'testlName', 'email':'test@email.com', 'sms':'18453384705'}
 	badfName = 'bad1234'
 	badlName = 'bad5678'
 	bademail = 'email@@..1'
-	badphone = '87asd123'
+	badsms = '87asd123'
 #---------------------------------------------------------------------------------------------------------#	
 #---------------------------------------------------------------------------------------------------------#	
 	print "(========)Testing all DB managing functions(========)"
@@ -198,7 +198,7 @@ else:
 	print "(========)CONTACT FUNCTION TESTS(========)"
 #---------------------------------------------------------------------------------------------------------#
 	print "(=) Creating contact"
-	contID = db.createContact(cont1['fName'], cont1['lName'], cont1['email'], cont1['phone'])
+	contID = db.createContact(cont1['fName'], cont1['lName'], cont1['email'], cont1['sms'])
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing Failure of createContact function"
 	try:
@@ -217,7 +217,7 @@ else:
 	except ContactError as ce:
 		print "\t(+) Failure of createContact Test Passed. Error Caught:", ce.msg
 	try:
-		db.createContact(phone=badphone)
+		db.createContact(sms=badsms)
 		print "\t(-) Failure of createContact Test Failed"
 	except ContactError as ce:
 		print "\t(+) Failure of createContact Test Passed. Error Caught:", ce.msg
@@ -229,14 +229,14 @@ else:
 	else:
 		print "\t(-) Could not find contact by cID"	
 #---------------------------------------------------------------------------------------------------------#
-	byInfo = db.findContact(fName=cont1['fName'], lName=cont1['lName'], email=cont1['email'], phone=cont1['phone'])
+	byInfo = db.findContact(fName=cont1['fName'], lName=cont1['lName'], email=cont1['email'], sms=cont1['sms'])
 	if byInfo == contID:
 		print "\t(+) Found contact by information"
 	else:
 		print "\t(-) Could not find contact by information"	
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing assignSession function"
-	db.assignSession(ses, fName=cont1['fName'], lName=cont1['lName'], email=cont1['email'], phone=cont1['phone'])
+	db.assignSession(ses, fName=cont1['fName'], lName=cont1['lName'], email=cont1['email'], sms=cont1['sms'])
 	db.unassignSession(ses)
 	sessions = db.getSessions()
 	for session in sessions:

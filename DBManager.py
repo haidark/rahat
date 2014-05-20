@@ -40,16 +40,16 @@ class DBManager:
 			checkNodeState(devID) - checks if node is free or active and raises appropriate error
 			
 			----Contacts-------------------------------------------------------------------------------------------
-			createContact([fName, lName, email, phone]) - creates a new contact
-			deleteContact([fName, lName, email, phone]) - deletes a given contact
-			findContact([cID, fName, lName, email, phone]) - finds the contact with given info			
-			assignSession(phrase, [cID, fName, lName, email, phone]) - assigns the session to a contact in the contact table
+			createContact([fName, lName, email, sms]) - creates a new contact
+			deleteContact([fName, lName, email, sms]) - deletes a given contact
+			findContact([cID, fName, lName, email, sms]) - finds the contact with given info			
+			assignSession(phrase, [cID, fName, lName, email, sms]) - assigns the session to a contact in the contact table
 			unassignSession(phrase) - unassigns the session from a contact
-			assignNode(devID, [cID, fName, lName, email, phone]) - assigns the node to a contact
+			assignNode(devID, [cID, fName, lName, email, sms]) - assigns the node to a contact
 			unassignNode(devID) - unassigns the node from a contact
 			getContacts() - gets all contacts in the contacts table
-			contactExists(fName, lName, email, phone) - boolean function to check if a contact exists
-			checkFields([fName, lName, email, phone]) - checks to make sure all fields are valid
+			contactExists(fName, lName, email, sms) - boolean function to check if a contact exists
+			checkFields([fName, lName, email, sms]) - checks to make sure all fields are valid
 			assertUnassigned(row) - asserts a session or node is unassigned
 			assertAssigned(row) - asserts a session or not is assigned
 			
@@ -274,13 +274,13 @@ class DBManager:
 			
 		
 	"""CONTACT FUNCTIONS"""
-	def createContact(self, fName=None, lName=None, email=None, phone=None):
+	def createContact(self, fName=None, lName=None, email=None, sms=None):
 		#first check if fields are valid
-		self.checkFields(fName=fName, lName=lName, email=email, phone=phone)
+		self.checkFields(fName=fName, lName=lName, email=email, sms=sms)
 		#create an entry in the contacts table if one does not already exist
-		if not self.contactExists(fName=fName, lName=lName, email=email, phone=phone):
-			query = "INSERT INTO contacts (fName, lName, email, phone) VALUES (%s, %s, %s, %s)"
-			self.cur.execute(query, (fName, lName, email, phone))
+		if not self.contactExists(fName=fName, lName=lName, email=email, sms=sms):
+			query = "INSERT INTO contacts (fName, lName, email, sms) VALUES (%s, %s, %s, %s)"
+			self.cur.execute(query, (fName, lName, email, sms))
 			self.cur.connection.commit()
 			#get the node ID
 			cID = self.cur.lastrowid
@@ -288,8 +288,8 @@ class DBManager:
 		else:
 			raise ContactError(lName, ContactError.AE)
 			
-	def deleteContact(self, fName=0, lName=0, email=0, phone=0):
-		contact = self.findContact(fName, lName, email, phone)		
+	def deleteContact(self, fName=0, lName=0, email=0, sms=0):
+		contact = self.findContact(fName, lName, email, sms)		
 		#drop the row from the contacts table
 		query = "DELETE FROM contacts WHERE cID=%s"
 		self.cur.execute(query, contact['cID'])
@@ -301,9 +301,9 @@ class DBManager:
 		self.cur.execute(query, contact['cID'])
 		self.cur.connection.commit()
 		
-	def findContact(self, cID=0, fName=0, lName=0, email=0, phone=0):			
+	def findContact(self, cID=0, fName=0, lName=0, email=0, sms=0):			
 		#check if no argument provided
-		if fName is 0 and lName is 0 and email is 0 and phone is 0 and cID is 0:
+		if fName is 0 and lName is 0 and email is 0 and sms is 0 and cID is 0:
 			raise ContactError("Find", ContactError.FA)
 		#first check if cID is provided, if it is, get the contact immediately
 		if cID is not 0:
@@ -326,9 +326,9 @@ class DBManager:
 			if email is not 0:
 				clauses.append("email=%s")
 				values.append(email)
-			if phone is not 0:
-				clauses.append("phone=%s")
-				values.append(phone)
+			if sms is not 0:
+				clauses.append("sms=%s")
+				values.append(sms)
 			#after clauses are put into array
 			#check if just one clause is provided, if so pass it directly
 			if len(clauses) is 1:
@@ -348,12 +348,12 @@ class DBManager:
 		elif contactExists > 1:
 			raise ContactError("Find", ContactError.MTO)
 			
-	def assignSession(self, phrase, cID=0, fName=0, lName=0, email=0, phone=0):
+	def assignSession(self, phrase, cID=0, fName=0, lName=0, email=0, sms=0):
 		session = self.getSession(phrase)
 		#raises error if session is already assigned to a person
 		self.assertUnassigned(session)
 		#get the contact info of the person
-		contact = self.findContact(cID=cID, fName=fName, lName=lName, email=email, phone=phone)		
+		contact = self.findContact(cID=cID, fName=fName, lName=lName, email=email, sms=sms)		
 		query = "UPDATE sessions SET contactID=%s WHERE sID=%s"
 		self.cur.execute(query, (contact['cID'], session['sID']))
 		self.cur.connection.commit()
@@ -368,12 +368,12 @@ class DBManager:
 		self.cur.connection.commit()
 		return
 	
-	def assignNode(self, devID, cID=0, fName=0, lName=0, email=0, phone=0):
+	def assignNode(self, devID, cID=0, fName=0, lName=0, email=0, sms=0):
 		node = self.getNode(devID)
 		#raises error if node is already assigned to a person
 		self.assertUnassigned(node)
 		#get the contact info of the person
-		contact = self.findContact(cID=cID, fName=fName, lName=lName, email=email, phone=phone)		
+		contact = self.findContact(cID=cID, fName=fName, lName=lName, email=email, sms=sms)		
 		query = "UPDATE nodes SET contactID=%s WHERE nID=%s"
 		self.cur.execute(query, (contact['cID'], node['nID']))
 		self.cur.connection.commit()
@@ -393,13 +393,13 @@ class DBManager:
 		self.cur.execute(query)
 		return self.cur.fetchall()
 	
-	def contactExists(self, fName=None, lName=None, email=None, phone=None):
+	def contactExists(self, fName=None, lName=None, email=None, sms=None):
 		#returns 0 if contact with given parameters does not exist
 		#otherwise returns 1
-		query = "SELECT cID FROM contacts where fName=%s AND lName=%s AND email=%s AND phone=%s"
-		return self.cur.execute(query, (fName, lName, email, phone))
+		query = "SELECT cID FROM contacts where fName=%s AND lName=%s AND email=%s AND sms=%s"
+		return self.cur.execute(query, (fName, lName, email, sms))
 	
-	def checkFields(self, fName=None, lName=None, email=None, phone=None):
+	def checkFields(self, fName=None, lName=None, email=None, sms=None):
 		#raise errors if first name and last name are not all letters
 		if fName is not None and not fName.isalpha():
 			raise ContactError(fName, ContactError.IN)		
@@ -410,9 +410,9 @@ class DBManager:
 		if email is not None and not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email):
 			raise ContactError(email, ContactError.IE)
 			
-		#raise error if phone is not all numbers
-		if phone is not None and not phone.isdigit():
-			raise ContactError(phone, ContactError.IP)
+		#raise error if sms is not all numbers
+		if sms is not None and not sms.isdigit():
+			raise ContactError(sms, ContactError.IP)
 	
 	def assertUnassigned(self, row):
 		#if row is assigned raise ContactError
@@ -519,7 +519,7 @@ class ContactError(Error):
 	MTO = "More than one Contact matches"
 	IN = "Invalid fName or lName"
 	IE = "Invalid Email"
-	IP = "Invalid Phone"
+	IP = "Invalid sms"
 	AA = "Row is already assigned"
 	NA = "Row is not assigned"
 	FA = "Too few arguments provided"
