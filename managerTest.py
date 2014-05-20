@@ -81,6 +81,11 @@ else:
 	dev2 = 'testdevy'
 	dev3 = 'testdevz'
 	dev4 = 'testdevu'
+	cont1 = {'fName':'testfName', 'lName':'testlName', 'email':'test@email.com', 'phone':'18453384705'}
+	badfName = 'bad1234'
+	badlName = 'bad5678'
+	bademail = 'email@@..1'
+	badphone = '87asd123'
 #---------------------------------------------------------------------------------------------------------#	
 #---------------------------------------------------------------------------------------------------------#	
 	print "(========)Testing all DB managing functions(========)"
@@ -88,25 +93,42 @@ else:
 #---------------------------------------------------------------------------------------------------------#	
 	print "(========)SESSION FUNCTION TESTS(========)"	
 #---------------------------------------------------------------------------------------------------------#	
-	print "(=) Creating a new session called '%s' for 1 day" % ses
+	print "(=) Creating a new session called '%s'" % ses
 	try:
-		db.createSession(ses, 1)
+		db.createSession(ses)
 	except SessionError as se:
 		print "\t(-) Failed to create session! Already Exists"
 	print "\t(+) Session created!"
+#---------------------------------------------------------------------------------------------------------#	
+	print "(=) Testing Failure of createSession function"
+	try:
+		db.createSession(ses)
+		print "\t(-) Failure of createSession Test Failed"
+	except SessionError as se:
+		print "\t(+) Failure of createSession Test Passed. Error Caught:", se.msg
+#---------------------------------------------------------------------------------------------------------#	
+	print "(=) Testing Failure of getSession function"
+	try:
+		db.getSession('invalidphrase')
+		print "\t(-) Failure of getSession Test Failed"
+	except SessionError as se:
+		print "\t(+) Failure of getSession Test Passed. Error Caught:", se.msg
+#---------------------------------------------------------------------------------------------------------#	
+	print "(=) Setting period of %s to 1 day." % ses
+	db.setSessionPeriod(ses, 1)
+#---------------------------------------------------------------------------------------------------------#		
+	print "(=) Testing Failure of setSessionPeriod function"
+	try:
+		db.setSessionPeriod(ses, 'invalid duration')
+		print "\t(-) Failure of setSessionPeriod Test Failed"
+	except ValueError as ve:
+		print "\t(+) Failure of setSessionPeriod Test Passed. Error Caught:", ve.msg
 #---------------------------------------------------------------------------------------------------------#	
 	print "(=) Testing getSessions function"
 	print "(=) List of all sessions"
 	sessions = db.getSessions()
 	for session in sessions:
-		print session
-#---------------------------------------------------------------------------------------------------------#	
-	print "(=) Testing Failure of createSession function"
-	try:
-		db.createSession(ses, 1)
-		print "\t(-) Failure of createSession Test Failed"
-	except SessionError as se:
-		print "\t(+) Failure of createSession Test Passed. Error Caught:", se.msg
+		print session		
 #---------------------------------------------------------------------------------------------------------#		
 #---------------------------------------------------------------------------------------------------------#		
 	print "(========)NODE FUNCTION TESTS(========)"
@@ -134,8 +156,7 @@ else:
 	except:
 		print "\t(+) Existing Node Creation Test Passed."
 #---------------------------------------------------------------------------------------------------------#		
-	print "(=) activateNode Test"
-	
+	print "(=) activateNode Test"	
 	print "(=) activating device=%s" % dev2
 	db.activateNode(dev2, ses)
 	print "\t(+) Activated, printing all nodes in %s" % ses
@@ -151,7 +172,6 @@ else:
 		print "\t(+) Assert Free Node Test Passed. Error Caught: ", ne.msg
 #---------------------------------------------------------------------------------------------------------#			
 	print "(=) freeNode Test"
-
 	print "(=) freeing device=%s" % dev2
 	db.freeNode(dev2)
 	print "\t(+) Freed"
@@ -174,7 +194,68 @@ else:
 	except NodeError as ne:
 		print "\t(+) deleteNode Test Passed. Error Caught: ", ne.msg
 #---------------------------------------------------------------------------------------------------------#		
+#---------------------------------------------------------------------------------------------------------#		
+	print "(========)CONTACT FUNCTION TESTS(========)"
+#---------------------------------------------------------------------------------------------------------#
+	print "(=) Creating contact"
+	contID = db.createContact(cont1['fName'], cont1['lName'], cont1['email'], cont1['phone'])
+#---------------------------------------------------------------------------------------------------------#	
+	print "(=) Testing Failure of createContact function"
+	try:
+		db.createContact(fName=badfName)
+		print "\t(-) Failure of createContact Test Failed"
+	except ContactError as ce:
+		print "\t(+) Failure of createContact Test Passed. Error Caught:", ce.msg
+	try:
+		db.createContact(lName=badlName)
+		print "\t(-) Failure of createContact Test Failed"
+	except ContactError as ce:
+		print "\t(+) Failure of createContact Test Passed. Error Caught:", ce.msg
+	try:
+		db.createContact(email=bademail)
+		print "\t(-) Failure of createContact Test Failed"
+	except ContactError as ce:
+		print "\t(+) Failure of createContact Test Passed. Error Caught:", ce.msg
+	try:
+		db.createContact(phone=badphone)
+		print "\t(-) Failure of createContact Test Failed"
+	except ContactError as ce:
+		print "\t(+) Failure of createContact Test Passed. Error Caught:", ce.msg
+#---------------------------------------------------------------------------------------------------------#		
+	print "(=) Testing findContact function"
+	byID = db.findContact(cID=contID)
+	if byID == contID:
+		print "\t(+) Found contact by cID"
+	else:
+		print "\t(-) Could not find contact by cID"	
+#---------------------------------------------------------------------------------------------------------#
+	byInfo = db.findContact(fName=cont1['fName'], lName=cont1['lName'], email=cont1['email'], phone=cont1['phone'])
+	if byInfo == contID:
+		print "\t(+) Found contact by information"
+	else:
+		print "\t(-) Could not find contact by information"	
+#---------------------------------------------------------------------------------------------------------#	
+	print "(=) Testing assignSession function"
+	db.assignSession(ses, fName=cont1['fName'], lName=cont1['lName'], email=cont1['email'], phone=cont1['phone'])
+	db.unassignSession(ses)
+	sessions = db.getSessions()
+	for session in sessions:
+		print session
+#---------------------------------------------------------------------------------------------------------#
+	print "(=) Testing assignNode function"
+	db.assignNode(dev1, contID)
+	db.unassignNode(dev1)
+	nodes = db.getNodes()
+	for node in nodes:
+		print nodes
+#---------------------------------------------------------------------------------------------------------#
+	print "(=) Printing list of Contacts"
+	contacts = db.getContacts()
+	for contact in contacts:
+		print contact
+#---------------------------------------------------------------------------------------------------------#		
 	print "(=) Cleaning up...."		
+	db.deleteContact(contID)
 	db.deleteNode(dev1)
 	db.deleteNode(dev2)	
 	db.deleteSession(ses)		
