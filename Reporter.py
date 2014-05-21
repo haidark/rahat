@@ -1,7 +1,7 @@
 from multiprocessing import Process
 from DBManager import DBManager, ContactError
-
 import logging
+
 class Reporter(Process):
 	"""Reporter class receives Alert objects from a Queue and dispatches proper message to contacts
 		Static Members:
@@ -17,9 +17,10 @@ class Reporter(Process):
 			sendSms(sms, alert) - sends an sms with data from Alert object
 	"""
 	def __init__(self, queue, reporterID=0):
+		Process.__init__(self)
 		self.queue = queue
 		self.reporterID = reporterID
-		self.logger = logger.getLogger("reporter")
+		self.logger = logging.getLogger("reporter")
 		
 	def run(self):
 		#run until forced to stop
