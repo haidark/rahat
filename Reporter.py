@@ -34,20 +34,27 @@ class Reporter(Process):
 					db = DBManager()
 					contact = db.findContact(cID=alert.contactID)
 					db.close()
-					email = contact['email']
-					sms = contact['sms']
-					#if contact has an email address on file send an email to that address
-					if email is not None:
-						self.sendEmail(email, alert) 
-					#if contact has an sms number on file send an sms to that number
-					if sms is not None:
-						self.sendSms(sms, alert)
+					#send the alert using the provided communication types
+					self.sendAlert(contact, alert)
 				except ContactError as ce:
 					self.logger.info( str(self.reporterID) + ": Contact with ID: %s was not found" % str(alert.contactID) )
-	def sendEmail(self, email, alert):
-		self.logger.info( str(self.reporterID) + ": Sent Alert to %s." % str(email) ) 
+	
+	def sendAlert(self, contact, alert):
+		#dictionary which matches communication type to its handler function
+		commFuncs={ 'email':self.sendEmail,
+					'sms':self.sendSms }
+		#for every communication type
+		for type in commFuncs:
+			#if its column for this contact is not NULL
+			if contact[type] is not None:
+				#call its handler function and pass it the contact info and the alert info
+				commFuncs[type](contact, alert)
+	
+	def sendEmail(self, contact, alert):
+		self.logger.info( str(self.reporterID) + ": Sent Alert to %s at %s." % (contact['fName'], contact['email']) ) 
 		
-	def sendSms(self, sms, alert):
-		self.logger.info( str(self.reporterID) + ": Sent Alert to %s." % str(sms) ) 
+	def sendSms(self, contact, alert):
+		self.logger.info( str(self.reporterID) + ": Sent Alert to %s at %s." % (contact['fName'], contact['sms']) ) 
 		
-		
+	
+				

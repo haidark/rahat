@@ -473,9 +473,12 @@ class DBManager:
 	
 	"""LOCATION FUNCTIONS"""	
 	def getLocations(self, tblName, nID):
-		query = "SELECT * FROM {0} WHERE nodeID=%s".format(tblName)
-		self.cur.execute(query, nID)
-		return self.cur.fetchall()
+		if tblName is not None:
+			query = "SELECT * FROM {0} WHERE nodeID=%s".format(tblName)
+			self.cur.execute(query, nID)
+			return self.cur.fetchall()
+		else:
+			return None
 	
 	def createLocation(self, tblName, nID, time, lat, lon):
 		query = "INSERT INTO {0} VALUES (NULL, %s, %s, %s, %s)".format(tblName)
