@@ -159,7 +159,7 @@ class SessionHandler(Process):
 			timeSinceLast = node.lastReportTime()
 			normalDiff = timedelta(minutes=5)
 			warnDiff = timedelta(minutes=10)
-			
+			lostDiff = timedelta(minutes=100)
 			if timeSinceLast < normalDiff:
 				#node is healthy, nothing to do here
 				pass
@@ -170,6 +170,9 @@ class SessionHandler(Process):
 				#create alert for session leader
 				sessionAlert = Alert(self.contactID, message, title)
 				self.queue.put(sessionAlert)
+			elif timeSinceLase > lostDiff:
+				#the node is lost
+				pass
 			else:
 				#The node has not reported in a long time
 				title = "Report Time Alert"
