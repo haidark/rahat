@@ -170,7 +170,7 @@ class SessionHandler(Process):
 				#create alert for session leader
 				sessionAlert = Alert(self.contactID, message, title)
 				self.queue.put(sessionAlert)
-			elif timeSinceLase > lostDiff:
+			elif timeSinceLast > lostDiff:
 				#the node is lost
 				pass
 			else:
