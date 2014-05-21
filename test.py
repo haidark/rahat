@@ -21,10 +21,10 @@ t = testClass()
 import smtplib
 
 sender = 'from@fromdomain.com'
-receivers = ['to@todomain.com']
+receivers = ['haidark@gmail.com']
 
 message = """From: From Person <from@fromdomain.com>
-To: To Person <to@todomain.com>
+To: To Person <haidark@gmail.com>
 Subject: SMTP e-mail test
 
 This is a test e-mail message.
