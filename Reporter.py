@@ -43,9 +43,9 @@ class Reporter(Process):
 				self.logger.info( str(self.reporterID) + ": Contact with ID: %s was not found" % str(alert.contactID) )
 				
 	def sendEmail(self, email, alert):
-		self.logger.info( str(self.reporterID) + ": Sent Alert to %s." str(email) ) 
+		self.logger.info( str(self.reporterID) + ": Sent Alert to %s." % str(email) ) 
 		
 	def sendSms(self, sms, alert):
-		self.logger.info( str(self.reporterID) + ": Sent Alert to %s." str(sms) ) 
+		self.logger.info( str(self.reporterID) + ": Sent Alert to %s." % str(sms) ) 
 		
 		
