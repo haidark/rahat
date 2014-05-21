@@ -20,15 +20,16 @@ t = testClass()
 
 import smtplib
 
+email = input("Enter email address: ")
 sender = 'from@fromdomain.com'
-receivers = ['haidark@gmail.com']
+receivers = [email]
 
 message = """From: From Person <from@fromdomain.com>
-To: To Person <haidark@gmail.com>
+To: To Person <%s>
 Subject: SMTP e-mail test
 
 This is a test e-mail message.
-"""
+""" % email
 
 try:
    smtpObj = smtplib.SMTP('localhost')
