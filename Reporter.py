@@ -27,6 +27,7 @@ class Reporter(Process):
 		while True:
 			#block until a new alert object appears on the queue
 			alert = self.queue.get()
+			self.logger.debug(str(alert))
 			#try to find the contact information for the alert object's contactID
 			try:
 				db = DBManager()
