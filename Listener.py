@@ -22,8 +22,7 @@ class Listener(Process):
 	def __init__(self, listenSock, listenerID):
 		Process.__init__(self)
 		self.listenSock  = listenSock
-		self.listenerID = listenerID
-		
+		self.listenerID = listenerID		
 	
 	def run(self):
 		self.listenSock.listen(5)
@@ -43,6 +42,7 @@ class ClientHandlerThread(Thread):
 			sockname - name assigned to remote socket
 			timeout - time in seconds before connection is dropped due to inactivity
 			parentID - parent listener identifier
+			logger - handle for Listener logger
 		Functions:
 			implements threading.Thread.run() - can be multi threaded
 			run() - gets location info from client, handles all errors

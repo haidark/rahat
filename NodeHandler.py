@@ -16,6 +16,7 @@ class NodeHandler(Thread):
 			lastTime - last report time of this node
 			lastLat, lastLon - last location of this node
 			keepRunning - boolean used to tell the housekeeping thread to keep running or stop
+			logger - handle for NodeHandler logger
 		Functions:
 			__init__(nodeData)
 			update - updates object data to match with database
@@ -53,6 +54,7 @@ class NodeHandler(Thread):
 		self.lastTime = nodeData['time']
 		self.lastLat = nodeData['lat']
 		self.lastLon = nodeData['lon']
+		self.contactID = nodeData['contactID']
 		
 	def updateLocations(self):
 		db = DBManager()
@@ -66,7 +68,7 @@ class NodeHandler(Thread):
 			self.validateLocations()
 			self.compressLocations()
 			#delay for a bit to ease the load on the DB?
-			sleep(15*60)
+			sleep(30*60)
 		self.logger.info("(+) NodeHandler for node:" +self.devID+" stopped")
 		
 	def validateLocations(self):

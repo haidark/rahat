@@ -1,7 +1,9 @@
 import socket
 from Listener import Listener
+from Reporter import Reporter
 from DBManager import DBManager
 from SessionHandler import SessionHandler
+from multiprocessing import SimpleQueue
 from time import sleep
 import logging, logging.handlers
 
@@ -36,6 +38,13 @@ listenerfh = logging.handlers.RotatingFileHandler('logs/Listener.log', maxBytes 
 listenerfh.setFormatter(formatter)
 listenerlogger.addHandler(listenerfh)
 
+#Reporter.log
+reporterlogger = logging.getLogger("reporter")
+reporterlogger.setLevel(logging.DEBUG)
+reporterfh = logging.handlers.RotatingFileHandler('logs/Reporter.log', maxBytes = 10*1024*1024, backupCount=2)
+reporterfh.setFormatter(formatter)
+reporterlogger.addHandler(reporterfh)
+
 ########initialize Listeners
 #first create server socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -48,6 +57,14 @@ for i in range(5):
 	t.start()
 	overseerlogger.info("(+) Listener "+str(i+1)+" started.")
 
+########Initialize Alert Queue
+alertQueue = SimpleQueue()
+
+########initialize Reporter
+reporter = Reporter(alertQueue, 0)
+reporter.start()
+overseerlogger.info("(+) Reporter started.")
+	
 ########Initialize dict to hold phrases of active sessions and their states
 sessionsDict = dict()
 #Initialize list to hold SessionHanlder objects
@@ -66,7 +83,7 @@ while True:
 	for session in sessions:
 		#if this row does not have a sessionHandler, make one for it and start it
 		if not session['phrase'] in sessionsDict:
-			sessionHandler = SessionHandler(session)
+			sessionHandler = SessionHandler(session, alertQueue)
 			sessionHandlers.append(sessionHandler)
 			sessionHandler.start()
 			overseerlogger.info("(+) SessionHandler for session:"+sessionHandler.phrase+" started.")
@@ -87,7 +104,6 @@ while True:
 			sessionHandler.terminate()
 			sessionHandlers.remove(sessionHandler)
 			overseerlogger.info("(+) SessionHandler for session:"+sessionHandler.phrase+" terminated and destroyed.")
-	#wait 1 minute		
-	#overseerlogger.info("(+) Waiting 2 minutes.")
-	sleep(120)
+	#wait 30 minutes		
+	sleep(30*60)
 	

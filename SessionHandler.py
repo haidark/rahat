@@ -19,6 +19,8 @@ class SessionHandler(Process):
 			nodesDict - dict with devIDs of nodes as keys and ...
 				value True if housekeeping thread has been started
 				value False if housekeeping thread has not been started
+			logger - handle for SessionHandler logger
+			queue - Queue to place Alert objects on to send to Reporters
 		Functions:
 			__init__(sessionData)
 			run() - runs main session loop until session expires, then terminates all child threads safely,
@@ -33,7 +35,7 @@ class SessionHandler(Process):
 			NodesHealthAlert() - Creates alerts if nodes are not healthy
 	"""
 	
-	def __init__(self, sessionData):
+	def __init__(self, sessionData, queue):
 		Process.__init__(self)
 		#initialize local members from passed DB data
 		self.setLocals(sessionData)
@@ -45,7 +47,7 @@ class SessionHandler(Process):
 		#instantiate a NodeHandler object for each node in the session handled
 		self.createNodes()
 		self.logger = logging.getLogger("session")
-		
+		self.queue = queue
 	
 	def run(self):	
 		#Main SessionHandler loop (runs while session is active)
@@ -69,7 +71,7 @@ class SessionHandler(Process):
 			#TODO write a function to relate nodes and check relations
 			#how often do we want to repeat this? do not want to put too much strain on the DB
 			#should check report times every minute or so
-			sleep(60)
+			sleep(2*60)
 		
 		# # # # # # After Session Expires # # # # # # 
 		
@@ -89,14 +91,22 @@ class SessionHandler(Process):
 		unreturnedNodes = [node for node in self.nodes if not node.returned()]	
 		# fire off an alert for every node that has not been returned
 		for unreturnedNode in unreturnedNodes:
-			#TODO fire off an alert to let the user know this node has not been returned
-			self.logger.info(self.phrase+"-node:"+unreturnedNode.devID+" has not been returned.")		
+			#fire off an alerts to let session leader and node holder know this node has not been returned
+			title = "Unreturned Node"
+			message =  unreturnedNode.devID+" has not been returned."
+			#create an alert for the session leader
+			sessionAlert = Alert(self.contactID, message, title)
+			self.queue.put(sessionAlert)
+			#create an alert for the unreturned node holder
+			nodeAlert = Alert(unreturnedNode.contactID, message, title)
+			self.queue.put(nodeAlert)
+		
 		# now loop until all nodes are returned
 		while unreturnedNodes:
 			#check if any nodes have been returned
 			unreturnedNodes = [node for node in unreturnedNodes if not node.returned()]
 			#delay before checking again?
-			sleep(60)
+			sleep(5*60)
 
 		# after all nodes are returned, archive the session table and delete its row from the database
 		db = DBManager()
@@ -116,6 +126,7 @@ class SessionHandler(Process):
 		self.tblName = sessionData['tblName']
 		self.startTime = sessionData['start']
 		self.endTime = sessionData['end']
+		self.contactID = sessionData['contactID']
 	
 	def createNodes(self):
 		#get data for nodes in the session
@@ -148,17 +159,38 @@ class SessionHandler(Process):
 			timeSinceLast = node.lastReportTime()
 			normalDiff = timedelta(minutes=5)
 			warnDiff = timedelta(minutes=10)
+			
 			if timeSinceLast < normalDiff:
 				#node is healthy, nothing to do here
 				pass
 			elif timeSinceLast < warnDiff:
-				pass
-				#The node is not acting normally
-				#self.logger.info(self.phrase+"-Warning: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes")
-				#TODO construct Alert Object to let the user know
+				#warning about time since last report
+				title = "Report Time Warning"
+				message = "Node: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes"
+				#create alert for session leader
+				sessionAlert = Alert(self.contactID, message, title)
+				self.queue.put(sessionAlert)
 			else:
-				pass
 				#The node has not reported in a long time
-				#self.logger.info(self.phrase+"-Alert: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes")
-				#TODO construct Alert Object to let the user know
+				title = "Report Time Alert"
+				message = "Node: "+str(node.devID)+" has not reported for "+str(timeSinceLast.seconds/60)+" minutes"
+				#create alert for session leader
+				sessionAlert = Alert(self.contactID, message, title)
+				self.queue.put(sessionAlert)
+
+class Alert:
+	"""Alert class packages data that needs to be sent to the Reporters from the SessionHandlers
+		Static Members:
+			None
+		Members:
+			contactID
+			message
+			title
+		Functions:
+			__init__(contactID, message, [title])
+	"""
+	def __init__(self, contactID, message, title="Rahat Alert Message"):
+		self.contactID = contactID
+		self.message = message
+		self.title = title
 				

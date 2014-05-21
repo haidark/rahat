@@ -75,9 +75,6 @@ elif args.NODES != None:
 	for node in nodes:
 		print node
 else:
-	db.printSessions()
-	db.printNodes()
-	db.printContacts()
 #------------------------------------------TESTING CODE---------------------------------------------------#	
 	ses = 'testsession'
 	dev1 = 'testdevx'
