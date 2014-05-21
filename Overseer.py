@@ -58,7 +58,7 @@ for i in range(5):
 	overseerlogger.info("(+) Listener "+str(i+1)+" started.")
 
 ########Initialize Alert Queue
-alertQueue = SimpleQueue()
+alertQueue = Queue()
 
 ########initialize Reporter
 reporter = Reporter(alertQueue, 0)
