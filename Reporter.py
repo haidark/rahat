@@ -27,23 +27,23 @@ class Reporter(Process):
 		while True:
 			#block until a new alert object appears on the queue
 			alert = self.queue.get()
-			self.logger.debug(str(alert.contactID))
-			#try to find the contact information for the alert object's contactID
-			try:
-				db = DBManager()
-				contact = db.findContact(cID=alert.contactID)
-				db.close()
-				email = contact['email']
-				sms = contact['sms']
-				#if contact has an email address on file send an email to that address
-				if email is not None:
-					self.sendEmail(email, alert) 
-				#if contact has an sms number on file send an sms to that number
-				if sms is not None:
-					self.sendSms(sms, alert)
-			except ContactError as ce:
-				self.logger.info( str(self.reporterID) + ": Contact with ID: %s was not found" % str(alert.contactID) )
-				
+			#if alert.contactID exists
+			if alert.contactID is not None:
+				#try to find the contact information for the alert object's contactID
+				try:
+					db = DBManager()
+					contact = db.findContact(cID=alert.contactID)
+					db.close()
+					email = contact['email']
+					sms = contact['sms']
+					#if contact has an email address on file send an email to that address
+					if email is not None:
+						self.sendEmail(email, alert) 
+					#if contact has an sms number on file send an sms to that number
+					if sms is not None:
+						self.sendSms(sms, alert)
+				except ContactError as ce:
+					self.logger.info( str(self.reporterID) + ": Contact with ID: %s was not found" % str(alert.contactID) )
 	def sendEmail(self, email, alert):
 		self.logger.info( str(self.reporterID) + ": Sent Alert to %s." % str(email) ) 
 		
