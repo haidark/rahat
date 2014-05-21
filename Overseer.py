@@ -3,7 +3,7 @@ from Listener import Listener
 from Reporter import Reporter
 from DBManager import DBManager
 from SessionHandler import SessionHandler
-from multiprocessing import SimpleQueue
+from multiprocessing import Queue
 from time import sleep
 import logging, logging.handlers
 
