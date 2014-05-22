@@ -1,6 +1,7 @@
 from multiprocessing import Process
 from DBManager import DBManager, ContactError
 import logging
+import smtplib
 
 class Reporter(Process):
 	"""Reporter class receives Alert objects from a Queue and dispatches proper message to contacts
@@ -51,7 +52,35 @@ class Reporter(Process):
 				commFuncs[type](contact, alert)
 	
 	def sendEmail(self, contact, alert):
-		self.logger.info( str(self.reporterID) + ": Sent Alert to %s at %s." % (contact['fName'], contact['email']) ) 
+		#get address of recipient 
+		address = contact['email']
+		#set sender and receivers addresses
+		sender = 'alerts@rahat.com'
+		receivers = [address]
+		#get the users full name
+		flName = [name for name in [contact['fName'], contact['lName']] if not name==None]
+		#if any part of the name is available
+		if flName:
+			flName = ' '.join(flName)
+		#if it is not available, set it to their email
+		else:
+			flName=address
+		message = """From: Reporter <%s>
+		To: %s <%s>
+		Subject: %s
+
+		%s,
+		%s
+		This is an alert from the Rahat Project.
+		""" % (sender, flName, address, alert['title'], flName, alert['message'])
+		
+		try:
+		   smtpObj = smtplib.SMTP('localhost')
+		   smtpObj.sendmail(sender, receivers, message)         
+		   self.logger.info( str(self.reporterID) + ":(+) Sent email Alert to %s at %s." % (flName, address) )
+		except SMTPException:
+		   self.logger.info( str(self.reporterID) + ":(-) Unable to send email Alert to %s at %s." % (flName, address) )
+		
 		
 	def sendSms(self, contact, alert):
 		self.logger.info( str(self.reporterID) + ": Sent Alert to %s at %s." % (contact['fName'], contact['sms']) ) 

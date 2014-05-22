@@ -17,7 +17,12 @@ class testClass:
 		print arg2
 		
 t = testClass()
-
+print """Hello 
+asdf
+	asdasd
+			asdasd
+			
+"""
 import smtplib
 
 email = input("Enter email address: ")

@@ -55,12 +55,18 @@ class NodeHandler(Thread):
 		self.lastLat = nodeData['lat']
 		self.lastLon = nodeData['lon']
 		self.contactID = nodeData['contactID']
+		#if this node has been freed, stop the housekeeping threads
+		if self.sessionTblName is None:
+			self.keepRunning = False
 		
 	def updateLocations(self):
 		db = DBManager()
 		#get this nodes location data
 		self.locations = db.getLocations(self.sessionTblName, self.nID)
-		db.close()	
+		db.close()
+		#if this node has no locations or is not in a sessions, stop the housekeeping threads
+		if self.locations is None:
+			self.keepRunning = False
 
 	def run(self):
 		self.logger.info("(+) NodeHandler for node:" +self.devID+" running")
