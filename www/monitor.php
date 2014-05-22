@@ -22,7 +22,7 @@
 	
 	//get a list of nodes keyed by this pass phrase
 	$nodes = getNodesByPhrase($mysqli, $phrase);
-	//if phrase is invalid, destroy the seesisonsend the user back to try again
+	//if phrase is invalid, destroy the session and send the user back to try again
 	if(!isset($nodes)){
 		session_destroy();
 		header("Location: phrase.php");
@@ -90,12 +90,12 @@
 				
 				//add last location of each node as a marker
 				for(var i = 0; i < markerData.length; i++){
-					var marker = addMarker(markerData[i].devID, markerData[i].lat, markerData[i].lon);
+					var marker = addMarker(markerData[i].ident, markerData[i].lat, markerData[i].lon);
 					
 					//set listener for click even on this marker
 					google.maps.event.addListener(marker, 'click', (function(marker, i) {
 						return function() {
-							infowindow.setContent(markerData[i].devID+":"+markerData[i].time);
+							infowindow.setContent(markerData[i].ident+" at "+markerData[i].time);
 							infowindow.open(map, marker);
 						}
 					})(marker, i));				
@@ -128,10 +128,10 @@
 		}
 		
 		// Add a marker to the map and push to the array.
-		function addMarker(devID, lat, lon) {
+		function addMarker(ident, lat, lon) {
 			var marker = new google.maps.Marker({
 				position: new google.maps.LatLng(lat, lon),
-				title: devID
+				title: ident
 			});
 			markers.push(marker);
 			return marker
@@ -147,11 +147,11 @@
 			setAllMap(null);
 			markers = [];
 		}
-		
-		function getMarker(devID){
+
+		function getMarker(ident){
 			//iterate through the whole list
 			for(var i = 0; i < markers.length; i++){
-				if(markers[i].title == devID) break;
+				if(markers[i].title == ident) break;
 			}
 			return markers[i];
 		}
@@ -218,8 +218,8 @@
 		
 		google.maps.event.addDomListener(window, 'load', initialize);
 		google.maps.event.addDomListener(window, 'load', createNodeControl);
-		//update locations every minute
-		window.setInterval(function(){getLatestLocations();}, 1000*5);		
+		//update locations every 15 seconds
+		window.setInterval(function(){getLatestLocations();}, 1000*15);		
     </script>
 </head>
 <body>

@@ -16,13 +16,15 @@ $nodes = getNodesByPhrase($mysqli, $phrase);
 //add them to markerData array
 $markerData = array();
 $i = 0;
+
 foreach($nodes as $node){					
-	$devID = $node['devID'];
+	$ident = $node['ident'];
 	$time = $node['time'];
 	$lat = $node['lat'];
 	$lon = $node['lon'];
+	
 	if(isset($time) and isset($lat) and isset($lon)){
-		$markerData[$i] = array('devID'=>$devID, 'time'=>$time,'lat'=>$lat,'lon'=>$lon);
+		$markerData[$i] = array('ident'=>$ident, 'time'=>$time,'lat'=>$lat,'lon'=>$lon, );
 		$i = $i+1;
 	}
 }
