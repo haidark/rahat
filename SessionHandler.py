@@ -159,7 +159,7 @@ class SessionHandler(Process):
 			timeSinceLast = node.lastReportTime()
 			normalDiff = timedelta(minutes=5)
 			warnDiff = timedelta(minutes=10)
-			lostDiff = timedelta(minutes=100)
+			lostDiff = timedelta(minutes=99)
 			if timeSinceLast < normalDiff:
 				#node is healthy, nothing to do here
 				pass

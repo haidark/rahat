@@ -66,13 +66,12 @@ class Reporter(Process):
 		else:
 			flName=address
 		message = """From: Reporter <%s>
-		To: %s <%s>
-		Subject: %s
+To: %s <%s>
+Subject: %s
 
-		%s,
-		%s
-		This is an alert from the Rahat Project.
-		""" % (sender, flName, address, alert.title, flName, alert.message)
+%s,
+%s
+This is an alert from the Rahat Project.""" % (sender, flName, address, alert.title, flName, alert.message)
 		
 		try:
 		   smtpObj = smtplib.SMTP('localhost')
