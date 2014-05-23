@@ -72,7 +72,7 @@ class Reporter(Process):
 		%s,
 		%s
 		This is an alert from the Rahat Project.
-		""" % (sender, flName, address, alert.title, flName, alert.message])
+		""" % (sender, flName, address, alert.title, flName, alert.message)
 		
 		try:
 		   smtpObj = smtplib.SMTP('localhost')
