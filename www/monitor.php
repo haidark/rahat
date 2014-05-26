@@ -37,15 +37,19 @@
 		#map-canvas { height: 100% }
     </style>
 	<script type="text/javascript"
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqzCOiJ7cs28M9hbwISmeDaHzvaF2aoGc&sensor=false">
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqzCOiJ7cs28M9hbwISmeDaHzvaF2aoGc&sensor=true">
     </script>
+	<script 
+	src="//google-maps-utility-library-v3.googlecode.com/svn/trunk/geolocationmarker/src/geolocationmarker-compiled.js">
+	</script>
     <script type="text/javascript">
 		//google map variable
 		var map;
 		//array to hold markers
 		var markers = [];
 		var cBoxState = [];
-		var firstLoad = true;
+		var firstLoad = true;		
+		
 		//create map and add all node markers
 		function initialize(){		
 			var mapOptions = {
@@ -57,7 +61,8 @@
 			};
 			map = new google.maps.Map(document.getElementById("map-canvas"),
 				mapOptions);
-					
+			// if user allows geolocation, track and display their current position
+			var GeoMarker = new GeolocationMarker(map);
 			//onload, update node locations to latest
 			getLatestLocations();			
 		}
